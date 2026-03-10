@@ -1,244 +1,1642 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>M1SLY — Roblox UI Designer</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono&family=Playfair+Display:wght@900&family=Bebas+Neue&family=Courier+Prime:wght@700&family=Impact&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--bg2:#0f0f0f;--bg3:#141414;--bg4:#1a1a1a;
-  --neon:#00ff88;--neon2:#00d4ff;--neonpk:#ff2d78;
-  --tx:#f0f0f0;--tx2:#a0a0a0;--tx3:#505050;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
-  --card:rgba(15,15,15,.95);
-  --glow-g:0 0 40px rgba(0,255,136,.2);
-  --glow-b:0 0 40px rgba(0,212,255,.2);
-  --glow-p:0 0 40px rgba(255,45,120,.2);
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* NOISE & GRID */
-body::before{content:'';position:fixed;inset:0;z-index:0;opacity:.025;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:80px 80px;}
+        :root {
+            --black: #0a0a0a;
+            --dark: #111111;
+            --dark-2: #1a1a1a;
+            --dark-3: #222222;
+            --gray-1: #2a2a2a;
+            --gray-2: #3a3a3a;
+            --gray-3: #555555;
+            --gray-4: #888888;
+            --gray-5: #aaaaaa;
+            --gray-6: #cccccc;
+            --light: #e5e5e5;
+            --white: #f5f5f5;
+            --pure-white: #ffffff;
+            --accent: #888888;
+        }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:18px 56px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.logo{font-weight:900;font-size:1.2rem;letter-spacing:3px;text-transform:uppercase;color:var(--tx);text-decoration:none;transition: 0.2s; display: flex; align-items: center;}
-.logo-mark{font-size:.65rem;color:var(--neon);vertical-align:super;margin-left:4px;}
-.nav-links{display:flex;gap:36px;list-style:none}
-.nav-links a{color:var(--tx3);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--tx)}
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-2) var(--black);
+        }
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:4px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;border:none;transition:all .25s}
-.btn-neon{background:var(--neon);color:#000;box-shadow:0 0 20px rgba(0,255,136,.3)}
-.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--tx)}
-.btn-discord{background:#5865F2;color:#fff}
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
 
-/* HERO */
-#hero{min-height:100vh;display:flex;align-items:center;padding:120px 56px 80px;gap:80px;position:relative;z-index:1;justify-content:space-between}
-.hero-l{max-width:580px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:28px;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--tx3)}
-.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px var(--neon)}
-.hero-title{font-size:clamp(3rem,5.5vw,5rem);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:8px;text-transform:uppercase}
-.nt{display:block;color:var(--neon);text-shadow:0 0 40px rgba(0,255,136,.4)}
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
 
-/* SECTIONS */
-.si{max-width:1100px;margin:0 auto;padding:88px 56px}
-.sec-head{margin-bottom:56px}
-.sec-num{font-size:.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--neon);margin-bottom:8px}
-.sec-title{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;letter-spacing:-2px;text-transform:uppercase;line-height:1}
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-2);
+            border-radius: 3px;
+        }
 
-/* ABOUT */
-#about{background:var(--bg2)}
-.srv-grid{display:flex;flex-direction:column;gap:1px;margin-top:32px;border:1px solid var(--border)}
-.srv{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--card);border-bottom:1px solid var(--border)}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: default;
+        }
 
-/* PRICING */
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
-.pc{background:var(--bg2);padding:32px 28px;transition:all .3s; position: relative; overflow: hidden;}
-.pc.ft{background:var(--bg3); border-top: 2px solid var(--neon);}
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.15s ease, border-color 0.3s ease, background 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
 
-/* WORK - X.COM WIDGET */
-.twitter-wrapper {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: var(--glow-g);
-}
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(2);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--pure-white);
+        }
 
-/* CONTACT */
-.contact-form{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
-.fg{display:flex;flex-direction:column;background:var(--bg)}
-.fg label{font-size:.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--tx3);padding:14px 16px 0}
-.fg input,.fg textarea,.fg select{background:transparent;border:none;padding:10px 16px 14px;color:var(--tx);font-family:inherit;outline:none}
+        .cursor-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--pure-white);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
 
-/* FAQ */
-.faq-wrap{border:1px solid var(--border);}
-.fi{border-bottom:1px solid var(--border); transition: 0.3s;}
-.fq{padding: 20px; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between;}
-.fb{max-height: 0; overflow: hidden; transition: 0.4s ease-out;}
-.fi.open .fb{max-height: 200px; padding: 0 20px 20px; color: var(--tx2);}
+        /* Noise Overlay */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        }
 
-/* ADMIN PANEL (CTRL + L) */
-#ep{display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--bg2);border:1px solid var(--neon);padding:20px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
 
-@media(max-width:800px){
-  nav{padding:14px 20px}
-  #hero{flex-direction:column;padding:100px 20px 60px}
-  .price-grid{grid-template-columns:1fr}
-}
-</style>
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-text {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gray-5);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 1px;
+            background: var(--gray-2);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(10,10,10,0.9) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--pure-white);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gray-4);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .logo:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-5);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--pure-white);
+            transition: width 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--pure-white);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-btn span {
+            width: 25px;
+            height: 1.5px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid var(--gray-2);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-5);
+            margin-bottom: 40px;
+            animation: fadeUp 1s ease 0.5s both;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -3px;
+            margin-bottom: 25px;
+            animation: fadeUp 1s ease 0.7s both;
+        }
+
+        .hero h1 .outline {
+            -webkit-text-stroke: 1.5px var(--gray-4);
+            color: transparent;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--gray-4) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--gray-4);
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            font-weight: 300;
+            animation: fadeUp 1s ease 0.9s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            animation: fadeUp 1s ease 1.1s both;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--pure-white);
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background: var(--gray-6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--gray-2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gray-4);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: fadeUp 1s ease 1.3s both;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-3);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: var(--gray-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gray-5);
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 120px 50px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gray-4);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        .section-line {
+            width: 60px;
+            height: 1px;
+            background: var(--gray-3);
+            margin: 0 auto;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            padding: 60px 50px;
+            border-top: 1px solid var(--gray-1);
+            border-bottom: 1px solid var(--gray-1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--pure-white);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-4);
+            font-weight: 400;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: var(--dark);
+            border: 1px solid var(--gray-1);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gray-2);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+        }
+
+        .project-image {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background: var(--dark-2);
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
+            filter: grayscale(40%);
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.08);
+            filter: grayscale(0%);
+        }
+
+        .project-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.8) 100%);
+            z-index: 1;
+        }
+
+        .project-twitter-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--gray-5);
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-twitter-badge {
+            background: rgba(0,0,0,0.8);
+            color: var(--pure-white);
+        }
+
+        .project-twitter-badge i {
+            font-size: 0.8rem;
+        }
+
+        .project-status {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-live {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .status-dev {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .status-archived {
+            background: rgba(150, 150, 150, 0.15);
+            color: #999;
+            border: 1px solid rgba(150, 150, 150, 0.2);
+        }
+
+        .project-info {
+            padding: 25px;
+        }
+
+        .project-info h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-info h3 {
+            color: var(--pure-white);
+        }
+
+        .project-info p {
+            font-size: 0.85rem;
+            color: var(--gray-4);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .project-tags span {
+            padding: 4px 12px;
+            background: var(--dark-2);
+            border: 1px solid var(--gray-1);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            color: var(--gray-5);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-tags span {
+            border-color: var(--gray-2);
+            color: var(--gray-6);
+        }
+
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-1);
+        }
+
+        .project-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-4);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--pure-white);
+        }
+
+        .project-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .project-link:hover i {
+            transform: translateX(4px);
+        }
+
+        .project-date {
+            font-size: 0.75rem;
+            color: var(--gray-3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Reveal Arrow */
+        .project-reveal {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            background: var(--pure-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            opacity: 0;
+            transform: translateY(10px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 3;
+        }
+
+        .project-card:hover .project-reveal {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Featured Project */
+        .featured-project {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 400px;
+        }
+
+        .featured-project .project-image {
+            height: 100%;
+            min-height: 400px;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .featured-project .project-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .featured-project .project-info h3 {
+            font-size: 1.8rem;
+        }
+
+        .featured-label {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gray-4);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* Twitter Feed Section */
+        .twitter-section {
+            background: var(--dark);
+            border-top: 1px solid var(--gray-1);
+            border-bottom: 1px solid var(--gray-1);
+        }
+
+        .twitter-feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .twitter-feed-header i {
+            font-size: 1.3rem;
+            color: var(--gray-5);
+        }
+
+        /* Image Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--dark-2) 25%, var(--dark-3) 50%, var(--dark-2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+        }
+
+        .contact-box {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px;
+            border: 1px solid var(--gray-1);
+            border-radius: 20px;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 60%);
+        }
+
+        .contact-box h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .contact-box p {
+            color: var(--gray-4);
+            margin-bottom: 30px;
+            line-height: 1.7;
+            position: relative;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .contact-link {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--gray-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-4);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .contact-link:hover {
+            border-color: var(--pure-white);
+            color: var(--pure-white);
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 50px;
+            border-top: 1px solid var(--gray-1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--gray-3);
+        }
+
+        footer .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        footer .footer-links a {
+            color: var(--gray-3);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: var(--pure-white);
+        }
+
+        /* Intersection Observer Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-menu-links li {
+            margin: 25px 0;
+        }
+
+        .mobile-menu-links a {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu-links a:hover {
+            color: var(--gray-4);
+        }
+
+        .mobile-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 2rem;
+            color: var(--white);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Tilt Effect */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Image Error State */
+        .img-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-2);
+            color: var(--gray-3);
+            font-size: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .featured-project {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-project .project-image {
+                min-height: 250px;
+                border-radius: 16px 16px 0 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 25px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            section {
+                padding: 80px 25px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+                gap: 40px;
+                padding: 40px 25px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cursor, .cursor-dot {
+                display: none;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 25px;
+            }
+
+            .contact-box {
+                padding: 40px 25px;
+            }
+        }
+
+        /* Glitch effect on hover for logo */
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--gray-3), -2px 0 var(--gray-5); }
+            25% { text-shadow: -2px 0 var(--gray-3), 2px 0 var(--gray-5); }
+            50% { text-shadow: 2px 2px var(--gray-3), -2px -2px var(--gray-5); }
+            75% { text-shadow: -2px 2px var(--gray-3), 2px -2px var(--gray-5); }
+            100% { text-shadow: 2px 0 var(--gray-3), -2px 0 var(--gray-5); }
+        }
+
+        /* Project card magnetic effect placeholder */
+        .magnetic {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Filter buttons */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 22px;
+            border: 1px solid var(--gray-1);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--gray-4);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--pure-white);
+            color: var(--pure-white);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Image shimmer loading */
+        .img-loading {
+            position: relative;
+        }
+
+        .img-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--dark-2) 25%, var(--dark-3) 50%, var(--dark-2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            z-index: 1;
+        }
+
+        .img-loading.loaded::before {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-  <a class="logo" href="#hero" id="dynamicLogo">M1SLY <sup class="logo-mark">®</sup></a>
-  <ul class="nav-links">
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <div class="nav-r">
-    <a href="https://discord.gg/8vd3MZ5VYH" target="_blank" class="btn btn-discord btn-sm" style="padding:8px 18px; font-size:0.7rem;">Discord</a>
-  </div>
-</nav>
+    <!-- Noise -->
+    <div class="noise"></div>
 
-<section id="hero">
-  <div class="hero-l">
-    <div class="hero-eyebrow"><span class="hero-dot"></span><span>Available for commissions</span></div>
-    <h1 class="hero-title">Roblox<br/><span class="nt">UI Design</span></h1>
-    <div class="hero-sub-title" style="letter-spacing:8px; font-weight:300; margin-bottom:32px; color:var(--tx2);">By M1SLY®</div>
-    <p class="hero-desc" style="color:var(--tx2); margin-bottom:36px; line-height: 1.8;">Interfaces that feel native, look sharp and work exactly how players expect. Every screen designed with intent.</p>
-    <div class="hero-btns" style="display:flex; gap:12px;">
-      <a href="#work" class="btn btn-neon">View Work</a>
-      <a href="#pricing" class="btn btn-ghost">Pricing</a>
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-text">Yükleniyor</div>
+        <div class="loader-bar"></div>
     </div>
-  </div>
-  <div class="hero-r">
-    <div style="width:320px; height:380px; border:1px solid var(--neon); position:relative; display:flex; align-items:center; justify-content:center; font-size:5rem; background: var(--bg3);">🎨</div>
-  </div>
-</section>
 
-<section id="about" class="si">
-  <div class="sec-head"><div class="sec-num">01 / About</div><h2 class="sec-title">Built with<br/>Intent.</h2></div>
-  <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:80px;">
-    <div>
-      <p style="color:var(--tx2); line-height:1.9; margin-bottom:20px;">I design Roblox game interfaces that feel native to the platform — clean layouts, sharp typography and smooth interactions.</p>
-      <div class="srv-grid">
-        <div class="srv">▸ <div><strong>Any Roblox UI type</strong><br/><span style="font-size:0.7rem; color:var(--tx3)">HUDs, menus, shops, inventories</span></div></div>
-        <div class="srv">▸ <div><strong>Studio-ready output</strong><br/><span style="font-size:0.7rem; color:var(--tx3)">Image sizes, font compatibility</span></div></div>
-      </div>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo" data-hover>PORTFOLIO</a>
+        <ul class="nav-links">
+            <li><a href="#projects" data-hover>Projeler</a></li>
+            <li><a href="#about" data-hover>Hakkında</a></li>
+            <li><a href="#contact" data-hover>İletişim</a></li>
+            <li><a href="https://twitter.com" target="_blank" data-hover><i class="fa-brands fa-x-twitter"></i></a></li>
+        </ul>
+        <div class="menu-btn" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">&times;</button>
+        <ul class="mobile-menu-links">
+            <li><a href="#projects" class="mobile-link">Projeler</a></li>
+            <li><a href="#about" class="mobile-link">Hakkında</a></li>
+            <li><a href="#contact" class="mobile-link">İletişim</a></li>
+        </ul>
     </div>
-    <div style="background:var(--card); padding:20px; border:1px solid var(--border);">
-        <div style="font-size:0.6rem; color:var(--neon); margin-bottom:15px; letter-spacing:2px;">QUICK INFO</div>
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding:8px 0;"><span>Payment</span><strong>Robux / TL</strong></div>
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding:8px 0;"><span>Timezone</span><strong>UTC+3</strong></div>
-        <div style="display:flex; justify-content:space-between; padding:8px 0;"><span>Status</span><strong style="color:var(--neon)">● Open</strong></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Açık pozisyonlara uygun
+            </div>
+            <h1>
+                <span class="gradient">Yaratıcı</span><br>
+                <span class="outline">Geliştirici</span>
+            </h1>
+            <p class="hero-desc">
+                Modern web teknolojileri ile etkileyici dijital deneyimler tasarlıyor ve geliştiriyorum.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary" data-hover>Projeleri Gör</a>
+                <a href="#contact" class="btn btn-secondary" data-hover>İletişim</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat reveal">
+            <div class="stat-number" data-count="24">0</div>
+            <div class="stat-label">Proje</div>
+        </div>
+        <div class="stat reveal reveal-delay-1">
+            <div class="stat-number" data-count="3">0</div>
+            <div class="stat-label">Yıl Deneyim</div>
+        </div>
+        <div class="stat reveal reveal-delay-2">
+            <div class="stat-number" data-count="12">0</div>
+            <div class="stat-label">Müşteri</div>
+        </div>
+        <div class="stat reveal reveal-delay-3">
+            <div class="stat-number" data-count="99">0</div>
+            <div class="stat-label">Memnuniyet %</div>
+        </div>
     </div>
-  </div>
-</section>
 
-<section id="pricing" class="si" style="background:var(--bg)">
-  <div class="sec-head" style="text-align:center"><div class="sec-num">02 / Pricing</div><h2 class="sec-title">Flat rate.</h2></div>
-  <div class="price-grid">
-    <div class="pc">
-      <span style="font-size:0.6rem; color:var(--tx3); letter-spacing: 2px;">STARTER</span>
-      <div style="font-size:2rem; font-weight:900; margin:10px 0;">500–1K</div>
-      <p style="color:var(--tx3); font-size: 0.8rem;">Single frame or small panel</p>
-    </div>
-    <div class="pc ft">
-      <span style="font-size:0.6rem; color:var(--neon); letter-spacing: 2px;">★ MOST POPULAR</span>
-      <div style="font-size:2rem; font-weight:900; margin:10px 0;">2K–5K</div>
-      <p style="color:var(--tx3); font-size: 0.8rem;">Full HUD / multi-screen</p>
-    </div>
-    <div class="pc">
-      <span style="font-size:0.6rem; color:var(--tx3); letter-spacing: 2px;">CUSTOM</span>
-      <div style="font-size:2rem; font-weight:900; margin:10px 0;">Quote</div>
-      <p style="color:var(--tx3); font-size: 0.8rem;">Larger or complex scopes</p>
-    </div>
-  </div>
-</section>
+    <!-- Projects -->
+    <section id="projects">
+        <div class="section-header reveal">
+            <div class="section-label">Çalışmalar</div>
+            <h2 class="section-title">Seçilmiş Projeler</h2>
+            <div class="section-line"></div>
+        </div>
 
-<section id="work" class="si" style="background:var(--bg2)">
-  <div class="sec-head"><div class="sec-num">03 / Work</div><h2 class="sec-title">Selected Projects.</h2></div>
-  <div class="twitter-wrapper">
-    <a class="twitter-timeline" data-height="650" data-theme="dark" href="https://twitter.com/stor4m?ref_src=twsrc%5Etfw">Loading tweets...</a> 
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </div>
-</section>
+        <!-- Filters -->
+        <div class="filter-bar reveal">
+            <button class="filter-btn active" data-filter="all">Tümü</button>
+            <button class="filter-btn" data-filter="web">Web</button>
+            <button class="filter-btn" data-filter="mobile">Mobile</button>
+            <button class="filter-btn" data-filter="design">Design</button>
+            <button class="filter-btn" data-filter="api">API</button>
+        </div>
 
-<section id="faq" class="si">
-  <div class="sec-head" style="text-align:center"><div class="sec-num">04 / FAQ</div><h2 class="sec-title">Questions.</h2></div>
-  <div class="faq-wrap">
-    <div class="fi" onclick="this.classList.toggle('open')">
-      <div class="fq">How do I place an order? <span>+</span></div>
-      <div class="fb"><p>DM me on Discord or use the contact form. We agree on scope and price before I start.</p></div>
-    </div>
-    <div class="fi" onclick="this.classList.toggle('open')">
-      <div class="fq">Do you accept TL? <span>+</span></div>
-      <div class="fb"><p>Yes, TL is available on request. Robux is primary, but we can work out a TL rate.</p></div>
-    </div>
-  </div>
-</section>
+        <div class="projects-grid" id="projectsGrid">
+            <!-- Projects will be injected via JS -->
+        </div>
+    </section>
 
-<section id="contact" class="si" style="background:var(--bg2)">
-  <div class="sec-head" style="text-align:center"><div class="sec-num">05 / Contact</div><h2 class="sec-title">Let's build.</h2></div>
-  <div style="max-width:600px; margin:0 auto;">
-    <div class="contact-form">
-      <div class="fg"><label>Discord Username</label><input type="text" id="f-name" placeholder="User#0000"></div>
-      <div class="fg"><label>Game / Project Link</label><input type="text" id="f-game" placeholder="Roblox link"></div>
-      <div class="fg"><label>Details</label><textarea id="f-details" rows="5" placeholder="Tell me about your project..."></textarea></div>
-      <button class="btn btn-neon" style="width:100%; border-radius:0; padding:20px;" onclick="sendEmail()">→ Send Request</button>
-    </div>
-  </div>
-</section>
+    <!-- About / Twitter Section -->
+    <section class="twitter-section" id="about">
+        <div class="section-header reveal">
+            <div class="twitter-feed-header">
+                <i class="fa-brands fa-x-twitter"></i>
+            </div>
+            <div class="section-label">Sosyal Medya</div>
+            <h2 class="section-title">Son Paylaşımlar</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="projects-grid" id="tweetGrid">
+            <!-- Tweets injected via JS -->
+        </div>
+    </section>
 
-<footer>
-    <div style="text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--tx3); font-size: 0.7rem; letter-spacing: 2px;">
-        © 2026 M1SLY — ALL RIGHTS RESERVED
-    </div>
-</footer>
+    <!-- Contact -->
+    <section id="contact" class="contact">
+        <div class="section-header reveal">
+            <div class="section-label">İletişim</div>
+            <h2 class="section-title">Birlikte Çalışalım</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="contact-box reveal">
+            <h3>Merhaba 👋</h3>
+            <p>Bir projeniz mi var? Birlikte harika şeyler yaratabiliriz. Bana ulaşmaktan çekinmeyin.</p>
+            <div class="contact-links">
+                <a href="#" class="contact-link" data-hover><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="contact-link" data-hover><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="contact-link" data-hover><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" class="contact-link" data-hover><i class="fa-brands fa-discord"></i></a>
+                <a href="mailto:hello@email.com" class="contact-link" data-hover><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </section>
 
-<div id="ep">
-  <h4 style="color:var(--neon); margin-bottom:10px;">ADMIN PANEL</h4>
-  <p style="font-size:10px; color:var(--tx3)">Gizli Mod Aktif.</p>
-  <button onclick="location.reload()" style="margin-top:10px; width:100%; cursor:pointer; padding: 5px;">Refresh</button>
-</div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Portfolio. Tüm hakları saklıdır.</p>
+        <div class="footer-links">
+            <a href="#" data-hover>GitHub</a>
+            <a href="#" data-hover>Twitter</a>
+            <a href="#" data-hover>LinkedIn</a>
+        </div>
+    </footer>
 
-<script>
-// 1. LOGO FONT ANIMASYONU
-const fonts = ['Inter', 'Space Mono', 'Playfair Display', 'Bebas Neue', 'Courier Prime', 'Impact'];
-let fIdx = 0;
-setInterval(() => {
-  const logo = document.getElementById('dynamicLogo');
-  logo.style.fontFamily = fonts[fIdx];
-  fIdx = (fIdx + 1) % fonts.length;
-}, 1000);
+    <script>
+        // ===================== DATA =====================
+        const projects = [
+            {
+                title: "E-Commerce Platform",
+                desc: "Modern e-ticaret platformu. Next.js ve Stripe entegrasyonu ile tam özellikli alışveriş deneyimi.",
+                tags: ["Next.js", "Stripe", "Tailwind"],
+                category: "web",
+                status: "live",
+                date: "2024",
+                twitterImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+                twitterHandle: "@ecommerce_proj",
+                link: "#",
+                featured: true
+            },
+            {
+                title: "AI Dashboard",
+                desc: "Yapay zeka destekli analitik paneli. Gerçek zamanlı veri görselleştirme ve tahminleme.",
+                tags: ["React", "Python", "TensorFlow"],
+                category: "web",
+                status: "live",
+                date: "2024",
+                twitterImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                twitterHandle: "@ai_dashboard",
+                link: "#"
+            },
+            {
+                title: "Crypto Tracker",
+                desc: "Kripto para takip uygulaması. Canlı fiyatlar, portföy yönetimi ve bildirimler.",
+                tags: ["React Native", "WebSocket", "Node.js"],
+                category: "mobile",
+                status: "dev",
+                date: "2024",
+                twitterImage: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
+                twitterHandle: "@crypto_track",
+                link: "#"
+            },
+            {
+                title: "Brand Identity - Noir",
+                desc: "Lüks moda markası için minimalist marka kimliği ve web tasarımı.",
+                tags: ["Figma", "Branding", "UI/UX"],
+                category: "design",
+                status: "live",
+                date: "2023",
+                twitterImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
+                twitterHandle: "@noir_brand",
+                link: "#"
+            },
+            {
+                title: "REST API Gateway",
+                desc: "Mikroservis mimarisi için yüksek performanslı API gateway. Rate limiting ve caching.",
+                tags: ["Go", "Redis", "Docker"],
+                category: "api",
+                status: "live",
+                date: "2023",
+                twitterImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+                twitterHandle: "@api_gateway",
+                link: "#"
+            },
+            {
+                title: "Social Media App",
+                desc: "Yeni nesil sosyal medya platformu. Gerçek zamanlı mesajlaşma ve hikaye paylaşımı.",
+                tags: ["Flutter", "Firebase", "WebRTC"],
+                category: "mobile",
+                status: "dev",
+                date: "2024",
+                twitterImage: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
+                twitterHandle: "@social_app",
+                link: "#"
+            },
+            {
+                title: "Portfolio Generator",
+                desc: "Geliştiriciler için otomatik portföy sitesi oluşturucu. GitHub entegrasyonu.",
+                tags: ["Svelte", "Node.js", "GitHub API"],
+                category: "web",
+                status: "archived",
+                date: "2023",
+                twitterImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                twitterHandle: "@portfolio_gen",
+                link: "#"
+            },
+            {
+                title: "Design System",
+                desc: "Kurumsal düzeyde kapsamlı tasarım sistemi. 200+ bileşen ve dokümantasyon.",
+                tags: ["Storybook", "React", "TypeScript"],
+                category: "design",
+                status: "live",
+                date: "2024",
+                twitterImage: "https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800&q=80",
+                twitterHandle: "@design_sys",
+                link: "#"
+            }
+        ];
 
-// 2. GİZLİ PANEL (CTRL + L)
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key === 'l') {
-    e.preventDefault();
-    const p = document.getElementById('ep');
-    p.style.display = (p.style.display === 'block') ? 'none' : 'block';
-  }
-});
+        const tweets = [
+            {
+                title: "Yeni proje duyurusu 🚀",
+                desc: "E-Commerce platformumuz yayında! Modern UI, hızlı ödeme ve akıllı öneriler ile alışverişi yeniden tanımlıyoruz.",
+                twitterImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                twitterHandle: "@developer",
+                date: "2 saat önce",
+                likes: "342",
+                retweets: "89"
+            },
+            {
+                title: "Dark mode tasarım süreci 🎨",
+                desc: "Minimalist dark mode tasarımında kontrast ve okunabilirlik dengesini nasıl kuruyoruz? Thread 🧵",
+                twitterImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
+                twitterHandle: "@developer",
+                date: "1 gün önce",
+                likes: "1.2K",
+                retweets: "456"
+            },
+            {
+                title: "Performance optimizasyonu ⚡",
+                desc: "Web Vitals skorlarını %40 artırdık. Lazy loading, code splitting ve edge caching stratejimiz.",
+                twitterImage: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80",
+                twitterHandle: "@developer",
+                date: "3 gün önce",
+                likes: "567",
+                retweets: "123"
+            }
+        ];
 
-// 3. MAIL GÖNDERME
-function sendEmail(){
-  const n=document.getElementById('f-name').value;
-  const g=document.getElementById('f-game').value;
-  const d=document.getElementById('f-details').value;
-  if(!n || !d){ alert('Please fill Discord and Details.'); return; }
-  window.location.href = `mailto:iletisim@example.com?subject=Commission&body=Discord: ${n}%0AProject: ${g}%0ADetails: ${d}`;
-}
-</script>
+        // ===================== RENDER PROJECTS =====================
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+            filtered.forEach((project, i) => {
+                const statusClass = project.status === 'live' ? 'status-live' : 
+                                   project.status === 'dev' ? 'status-dev' : 'status-archived';
+                const statusText = project.status === 'live' ? '● Live' : 
+                                  project.status === 'dev' ? '◐ Dev' : '○ Archived';
+
+                const card = document.createElement('div');
+                card.className = `project-card tilt-card reveal ${project.featured ? 'featured-project' : ''} reveal-delay-${(i % 4) + 1}`;
+                card.setAttribute('data-category', project.category);
+
+                card.innerHTML = `
+                    <div class="project-image img-loading">
+                        <img src="${project.twitterImage}" alt="${project.title}" loading="lazy" 
+                             onload="this.parentElement.classList.add('loaded')"
+                             onerror="this.parentElement.classList.add('img-error'); this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fa-solid fa-image\\'></i>'">
+                        <div class="project-image-overlay"></div>
+                        <div class="project-twitter-badge">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            ${project.twitterHandle}
+                        </div>
+                        <div class="project-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="project-info">
+                        ${project.featured ? '<div class="featured-label">★ Öne Çıkan Proje</div>' : ''}
+                        <h3>${project.title}</h3>
+                        <p>${project.desc}</p>
+                        <div class="project-tags">
+                            ${project.tags.map(t => `<span>${t}</span>`).join('')}
+                        </div>
+                        <div class="project-footer">
+                            <a href="${project.link}" class="project-link" data-hover>
+                                Detayları Gör <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                            <span class="project-date">${project.date}</span>
+                        </div>
+                    </div>
+                    <div class="project-reveal">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            // Re-observe for animations
+            observeElements();
+            initTiltCards();
+        }
+
+        // ===================== RENDER TWEETS =====================
+        function renderTweets() {
+            const grid = document.getElementById('tweetGrid');
+            grid.innerHTML = '';
+
+            tweets.forEach((tweet, i) => {
+                const card = document.createElement('div');
+                card.className = `project-card reveal reveal-delay-${(i % 3) + 1}`;
+
+                card.innerHTML = `
+                    <div class="project-image img-loading">
+                        <img src="${tweet.twitterImage}" alt="${tweet.title}" loading="lazy"
+                             onload="this.parentElement.classList.add('loaded')"
+                             onerror="this.parentElement.classList.add('img-error'); this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fa-solid fa-image\\'></i>'">
+                        <div class="project-image-overlay"></div>
+                        <div class="project-twitter-badge">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            ${tweet.twitterHandle}
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>${tweet.title}</h3>
+                        <p>${tweet.desc}</p>
+                        <div class="project-footer">
+                            <div style="display:flex;gap:20px;">
+                                <span class="project-link" style="cursor:default;">
+                                    <i class="fa-regular fa-heart"></i> ${tweet.likes}
+                                </span>
+                                <span class="project-link" style="cursor:default;">
+                                    <i class="fa-solid fa-retweet"></i> ${tweet.retweets}
+                                </span>
+                            </div>
+                            <span class="project-date">${tweet.date}</span>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            observeElements();
+        }
+
+        // ===================== FILTERS =====================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProjects(btn.dataset.filter);
+            });
+        });
+
+        // ===================== CURSOR =====================
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('[data-hover], a, button, .project-card, .filter-btn')) {
+                cursor.classList.add('hover');
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.closest('[data-hover], a, button, .project-card, .filter-btn')) {
+                cursor.classList.remove('hover');
+            }
+        });
+
+        // ===================== TILT CARDS =====================
+        function initTiltCards() {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 25;
+                    const rotateY = (centerX - x) / 25;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+        }
+
+        // ===================== INTERSECTION OBSERVER =====================
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // ===================== COUNTER ANIMATION =====================
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-count]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseInt(entry.target.dataset.count);
+                        let current = 0;
+                        const increment = target / 60;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                entry.target.textContent = target + (entry.target.closest('.stat').querySelector('.stat-label').textContent.includes('%') ? '%' : '+');
+                                clearInterval(timer);
+                            } else {
+                                entry.target.textContent = Math.floor(current);
+                            }
+                        }, 16);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(c => observer.observe(c));
+        }
+
+        // ===================== MOBILE MENU =====================
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+
+        menuBtn.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        });
+
+        // ===================== LOADER =====================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // ===================== NAV SCROLL =====================
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                nav.style.background = 'rgba(10,10,10,0.95)';
+                nav.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+            } else {
+                nav.style.background = 'linear-gradient(180deg, rgba(10,10,10,0.9) 0%, transparent 100%)';
+                nav.style.borderBottom = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ===================== SMOOTH SCROLL =====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===================== INIT =====================
+        renderProjects();
+        renderTweets();
+        observeElements();
+        animateCounters();
+    </script>
 </body>
-</html>
+  </html>
