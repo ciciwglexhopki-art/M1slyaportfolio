@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,506 +7,786 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ============================================
-           CONFIGURATION - CHANGE COMMISSION STATUS HERE
-           true = Open | false = Closed
-           ============================================ */
+        /*
+        ╔══════════════════════════════════════════════╗
+        ║          🎨 SETUP / CONFIG AREA 🎨           ║
+        ║  Change colors below to customize your site  ║
+        ╚══════════════════════════════════════════════╝
+        */
+        :root {
+            /* Main Accent - Change this to change the whole vibe */
+            --accent: #ff6b00;
+            --accent-light: #ff8c38;
+            --accent-dark: #cc5500;
+            --accent-glow: rgba(255, 107, 0, 0.3);
+            --accent-subtle: rgba(255, 107, 0, 0.08);
 
-        *{margin:0;padding:0;box-sizing:border-box}
+            /* Background Colors */
+            --bg: #000000;
+            --bg-secondary: #050505;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --bg-glass-hover: rgba(255, 255, 255, 0.07);
 
-        :root{
-            --primary:#7c3aed;
-            --primary-light:#a78bfa;
-            --primary-dark:#5b21b6;
-            --accent:#06b6d4;
-            --accent2:#f472b6;
-            --bg:#050508;
-            --bg-card:#0c0c14;
-            --bg-card2:#111120;
-            --text:#e2e8f0;
-            --text-dim:#94a3b8;
-            --text-dimmer:#64748b;
-            --border:rgba(124,58,237,0.15);
-            --border-hover:rgba(124,58,237,0.4);
-            --glow:rgba(124,58,237,0.35);
+            /* Text Colors */
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666666;
+
+            /* Border */
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --border-accent: rgba(255, 107, 0, 0.3);
+
+            /* Glass */
+            --glass-blur: 20px;
         }
 
-        html{scroll-behavior:smooth}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
-        body{
-            font-family:'Inter',sans-serif;
-            background:var(--bg);
-            color:var(--text);
-            overflow-x:hidden;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar{width:6px}
-        ::-webkit-scrollbar-track{background:var(--bg)}
-        ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+        ::selection {
+            background: var(--accent);
+            color: #000;
+        }
 
-        /* ---- BG EFFECTS ---- */
-        .bg-grid{
-            position:fixed;top:0;left:0;width:100%;height:100%;
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-dark); border-radius: 4px; }
+
+        /* ============ BG EFFECTS ============ */
+        .bg-noise {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .bg-gradient {
+            position: fixed; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(255,107,0,0.04) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255,107,0,0.02) 0%, transparent 50%);
+            z-index: 0; pointer-events: none;
+            animation: bgShift 20s ease-in-out infinite;
+        }
+        @keyframes bgShift {
+            0%,100% { transform: translate(0,0); }
+            50% { transform: translate(-3%,-3%); }
+        }
+
+        .grid-overlay {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background-image:
-                linear-gradient(rgba(124,58,237,0.025)1px,transparent 1px),
-                linear-gradient(90deg,rgba(124,58,237,0.025)1px,transparent 1px);
-            background-size:60px 60px;
-            pointer-events:none;z-index:0;
-        }
-        .bg-orb{
-            position:fixed;border-radius:50%;
-            filter:blur(120px);opacity:.12;
-            pointer-events:none;z-index:0;
-        }
-        .bg-orb-1{width:600px;height:600px;top:-200px;right:-200px;background:var(--primary)}
-        .bg-orb-2{width:500px;height:500px;bottom:-200px;left:-200px;background:var(--accent)}
-        .bg-orb-3{width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent2);opacity:.06}
-
-        .cursor-follow{
-            position:fixed;width:400px;height:400px;border-radius:50%;
-            background:radial-gradient(circle,rgba(124,58,237,0.05),transparent 70%);
-            pointer-events:none;z-index:0;
-            transform:translate(-50%,-50%);
-            transition:left .15s ease,top .15s ease;
+                linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 80px 80px;
         }
 
-        /* ---- NAV ---- */
-        nav{
-            position:fixed;top:0;width:100%;z-index:1000;
-            padding:18px 0;transition:all .3s ease;
+        /* ============ GLASS MIXIN ============ */
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border);
         }
-        nav.scrolled{
-            background:rgba(5,5,8,0.85);
-            backdrop-filter:blur(20px);
-            border-bottom:1px solid var(--border);
-            padding:10px 0;
-        }
-        .nav-inner{
-            max-width:1200px;margin:0 auto;padding:0 32px;
-            display:flex;justify-content:space-between;align-items:center;
-        }
-        .nav-logo{
-            font-family:'Space Grotesk',sans-serif;
-            font-size:22px;font-weight:700;
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            text-decoration:none;
-        }
-        .nav-links{display:flex;list-style:none;gap:4px;align-items:center}
-        .nav-links a{
-            color:var(--text-dim);text-decoration:none;
-            padding:8px 18px;border-radius:8px;
-            font-size:13px;font-weight:500;
-            transition:all .3s ease;
-        }
-        .nav-links a:hover,.nav-links a.active{
-            color:var(--text);background:rgba(124,58,237,.1);
+        .glass:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-hover);
         }
 
-        .comm-badge{
-            display:inline-flex;align-items:center;gap:6px;
-            padding:5px 14px;border-radius:20px;
-            font-size:11px;font-weight:700;
-            text-transform:uppercase;letter-spacing:.5px;
-            margin-left:8px;
+        /* ============ NAV ============ */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 16px 0; transition: all 0.4s ease;
         }
-        .comm-badge.open{
-            background:rgba(16,185,129,.12);color:#10b981;
-            border:1px solid rgba(16,185,129,.3);
+        nav.scrolled {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
         }
-        .comm-badge.closed{
-            background:rgba(239,68,68,.12);color:#ef4444;
-            border:1px solid rgba(239,68,68,.3);
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 40px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .comm-dot{
-            width:6px;height:6px;border-radius:50%;
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--text); text-decoration: none;
+            letter-spacing: -0.5px;
         }
-        .comm-badge.open .comm-dot{
-            background:#10b981;box-shadow:0 0 8px #10b981;
-            animation:pulse-d 2s infinite;
-        }
-        .comm-badge.closed .comm-dot{
-            background:#ef4444;box-shadow:0 0 8px #ef4444;
-        }
-        @keyframes pulse-d{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.8)}}
+        .nav-logo span { color: var(--accent); }
 
-        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;z-index:1001}
-        .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s ease}
-        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-        .hamburger.active span:nth-child(2){opacity:0}
-        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-
-        /* ---- HERO ---- */
-        .hero{
-            min-height:100vh;display:flex;align-items:center;justify-content:center;
-            position:relative;padding:130px 32px 80px;
+        .nav-links {
+            display: flex; list-style: none; gap: 2px; align-items: center;
         }
-        .hero-content{text-align:center;max-width:780px;position:relative;z-index:1}
-
-        .hero-tag{
-            display:inline-flex;align-items:center;gap:8px;
-            background:rgba(124,58,237,.08);border:1px solid var(--border);
-            padding:8px 20px;border-radius:30px;
-            font-size:13px;color:var(--primary-light);
-            margin-bottom:28px;font-weight:500;
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            padding: 8px 16px; border-radius: 8px;
+            font-size: 13px; font-weight: 400; letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text);
+        }
+        .nav-links a.active {
+            background: var(--accent-subtle);
+            color: var(--accent-light);
         }
 
-        .hero h1{
-            font-family:'Space Grotesk',sans-serif;
-            font-size:clamp(40px,7.5vw,78px);
-            font-weight:800;line-height:1.08;margin-bottom:24px;
+        .comm-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-left: 8px; transition: all 0.3s ease;
         }
-        .grad-text{
-            background:linear-gradient(135deg,var(--primary),var(--accent),var(--accent2));
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-size:200% 200%;animation:gshift 4s ease infinite;
+        .comm-badge.open {
+            background: rgba(16,185,129,0.08);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.2);
         }
-        @keyframes gshift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        .comm-badge.closed {
+            background: rgba(239,68,68,0.08);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+        .comm-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+        }
+        .comm-badge.open .comm-dot {
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+            animation: dotPulse 2s infinite;
+        }
+        .comm-badge.closed .comm-dot {
+            background: #ef4444;
+        }
+        @keyframes dotPulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
 
-        .hero p{
-            font-size:17px;color:var(--text-dim);line-height:1.75;
-            margin-bottom:40px;max-width:560px;margin-left:auto;margin-right:auto;
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; z-index: 1001; padding: 4px;
+        }
+        .hamburger span {
+            width: 22px; height: 1.5px; background: var(--text);
+            border-radius: 2px; transition: all 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; position: relative;
+            padding: 120px 40px 80px;
+        }
+        .hero-content {
+            text-align: center; max-width: 700px;
+            position: relative; z-index: 1;
         }
 
-        .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 24px;
+            font-size: 11px; font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 32px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        .hero-badge i { color: var(--accent); }
 
-        .btn{
-            display:inline-flex;align-items:center;gap:8px;
-            padding:14px 30px;border-radius:12px;
-            font-size:14px;font-weight:600;text-decoration:none;
-            transition:all .3s ease;cursor:pointer;border:none;
-            font-family:'Inter',sans-serif;
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(36px, 7vw, 72px);
+            font-weight: 800; line-height: 1.05;
+            margin-bottom: 20px; letter-spacing: -2px;
         }
-        .btn-p{
-            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-            color:#fff;box-shadow:0 4px 24px var(--glow);
+        .hero h1 .accent { color: var(--accent); }
+        .hero h1 .outline {
+            -webkit-text-stroke: 1.5px var(--text-dim);
+            color: transparent;
         }
-        .btn-p:hover{transform:translateY(-3px);box-shadow:0 8px 32px var(--glow)}
-        .btn-s{
-            background:rgba(124,58,237,.08);color:var(--primary-light);
-            border:1px solid var(--border);
-        }
-        .btn-s:hover{background:rgba(124,58,237,.16);transform:translateY(-3px)}
 
-        .stats{
-            display:flex;gap:48px;justify-content:center;
-            margin-top:72px;padding-top:36px;
-            border-top:1px solid var(--border);flex-wrap:wrap;
+        .hero p {
+            font-size: 15px; color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: 40px;
+            max-width: 500px; margin-left: auto; margin-right: auto;
+            font-weight: 300;
         }
-        .stat-num{
-            font-family:'Space Grotesk',sans-serif;
-            font-size:32px;font-weight:700;color:var(--primary-light);
-        }
-        .stat-lbl{font-size:12px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 
-        /* ---- MARQUEE ---- */
-        .marquee-wrap{
-            padding:32px 0;overflow:hidden;
-            border-top:1px solid var(--border);
-            border-bottom:1px solid var(--border);
-            position:relative;z-index:1;
+        .hero-btns {
+            display: flex; gap: 12px;
+            justify-content: center; flex-wrap: wrap;
         }
-        .marquee{display:flex;gap:48px;animation:marq 25s linear infinite;white-space:nowrap}
-        .marq-item{
-            display:flex;align-items:center;gap:10px;
-            font-size:15px;font-weight:600;color:var(--text-dimmer);opacity:.5;
-        }
-        .marq-item i{color:var(--primary-light);font-size:18px}
-        @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-        /* ---- SECTIONS ---- */
-        section{padding:100px 32px;position:relative;z-index:1}
-        .sec-head{text-align:center;margin-bottom:56px}
-        .sec-tag{
-            display:inline-block;font-size:11px;font-weight:700;
-            text-transform:uppercase;letter-spacing:2.5px;
-            color:var(--accent);margin-bottom:14px;
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 28px; border-radius: 10px;
+            font-size: 13px; font-weight: 500; text-decoration: none;
+            transition: all 0.3s ease; cursor: pointer;
+            border: none; font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
         }
-        .sec-title{
-            font-family:'Space Grotesk',sans-serif;
-            font-size:clamp(28px,4.5vw,44px);font-weight:700;margin-bottom:14px;
+        .btn-primary {
+            background: var(--accent); color: #000;
+            box-shadow: 0 0 30px var(--accent-glow);
         }
-        .sec-desc{color:var(--text-dim);font-size:15px;max-width:480px;margin:0 auto;line-height:1.6}
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px var(--accent-glow);
+        }
+        .btn-ghost {
+            background: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            color: var(--text); border-color: var(--border-hover);
+            background: var(--bg-glass); transform: translateY(-2px);
+        }
 
-        /* ---- SERVICES / WORK ---- */
-        .services-grid{
-            max-width:1100px;margin:0 auto;
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;
+        .stats-row {
+            display: flex; gap: 48px; justify-content: center;
+            margin-top: 64px; flex-wrap: wrap;
         }
-        .svc-card{
-            background:var(--bg-card);border:1px solid var(--border);
-            border-radius:16px;padding:36px 28px;
-            transition:all .4s ease;position:relative;overflow:hidden;
+        .stat { text-align: center; }
+        .stat-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px; font-weight: 700; color: var(--text);
         }
-        .svc-card::after{
-            content:'';position:absolute;top:0;left:0;right:0;height:3px;
-            background:linear-gradient(90deg,var(--primary),var(--accent));
-            transform:scaleX(0);transition:transform .4s ease;transform-origin:left;
+        .stat-val span { color: var(--accent); }
+        .stat-label {
+            font-size: 11px; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1.5px;
+            margin-top: 4px;
         }
-        .svc-card:hover::after{transform:scaleX(1)}
-        .svc-card:hover{transform:translateY(-6px);border-color:var(--border-hover)}
-        .svc-icon{
-            width:52px;height:52px;
-            background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.15));
-            border-radius:14px;display:flex;align-items:center;justify-content:center;
-            font-size:22px;color:var(--primary-light);margin-bottom:22px;
-        }
-        .svc-card h3{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;margin-bottom:10px}
-        .svc-card p{font-size:13px;color:var(--text-dim);line-height:1.7}
-        .svc-price{
-            margin-top:20px;padding-top:18px;border-top:1px solid var(--border);
-            font-family:'Space Grotesk',sans-serif;
-            font-size:22px;font-weight:700;color:var(--accent);
-        }
-        .svc-price span{font-size:13px;color:var(--text-dimmer);font-weight:400;font-family:'Inter',sans-serif}
 
-        /* ---- PROJECTS ---- */
-        .projects-grid{
-            max-width:1200px;margin:0 auto;
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;
+        .scroll-hint {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; color: var(--text-dim); font-size: 10px;
+            letter-spacing: 2px; text-transform: uppercase;
+            animation: scrollBounce 2s infinite;
         }
-        .proj-card{
-            background:var(--bg-card);border:1px solid var(--border);
-            border-radius:16px;overflow:hidden;transition:all .4s ease;
+        @keyframes scrollBounce {
+            0%,100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
         }
-        .proj-card:hover{transform:translateY(-8px);border-color:var(--border-hover);box-shadow:0 24px 64px rgba(124,58,237,.12)}
-        .proj-img-wrap{overflow:hidden;position:relative;height:210px;background:var(--bg-card2)}
-        .proj-img{
-            width:100%;height:100%;object-fit:cover;
-            transition:transform .5s ease;
-        }
-        .proj-card:hover .proj-img{transform:scale(1.08)}
-        .proj-overlay{
-            position:absolute;inset:0;
-            background:linear-gradient(to top,rgba(5,5,8,.85),transparent 60%);
-            opacity:0;transition:opacity .3s ease;
-            display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;
-        }
-        .proj-card:hover .proj-overlay{opacity:1}
-        .proj-body{padding:22px 24px}
-        .proj-tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-        .proj-tag{
-            padding:3px 10px;background:rgba(124,58,237,.08);
-            border:1px solid var(--border);border-radius:5px;
-            font-size:10px;color:var(--primary-light);font-weight:600;
-            text-transform:uppercase;letter-spacing:.5px;
-        }
-        .proj-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px}
-        .proj-desc{font-size:13px;color:var(--text-dim);line-height:1.6}
 
-        /* ---- PRICING ---- */
-        .pricing-grid{
-            max-width:1000px;margin:0 auto;
-            display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;
+        /* ============ SECTION BASE ============ */
+        section {
+            padding: 100px 40px; position: relative; z-index: 1;
         }
-        .price-card{
-            background:var(--bg-card);border:1px solid var(--border);
-            border-radius:16px;padding:36px 28px;
-            transition:all .4s ease;position:relative;
+        .section-header {
+            text-align: center; margin-bottom: 56px;
         }
-        .price-card.pop{border-color:var(--primary);box-shadow:0 0 50px rgba(124,58,237,.12)}
-        .price-card.pop::before{
-            content:'EN POPÜLER';position:absolute;top:-11px;left:50%;
-            transform:translateX(-50%);
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            color:#fff;padding:4px 16px;border-radius:6px;
-            font-size:10px;font-weight:700;letter-spacing:1px;
+        .section-tag {
+            font-size: 10px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 3px;
+            color: var(--accent); margin-bottom: 12px;
+            display: block;
         }
-        .price-card:hover{transform:translateY(-4px)}
-        .price-card h4{font-family:'Space Grotesk',sans-serif;font-size:18px;margin-bottom:6px}
-        .price-card .price-tag{
-            font-family:'Space Grotesk',sans-serif;
-            font-size:34px;font-weight:700;color:var(--primary-light);margin-bottom:20px;
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(26px, 4vw, 40px);
+            font-weight: 700; letter-spacing: -1px;
+            margin-bottom: 12px;
         }
-        .price-card .price-tag span{font-size:14px;color:var(--text-dimmer);font-weight:400}
-        .price-feats{list-style:none;display:flex;flex-direction:column;gap:10px}
-        .price-feats li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-dim)}
-        .price-feats li i{color:var(--accent);font-size:11px}
+        .section-desc {
+            color: var(--text-dim); font-size: 14px;
+            max-width: 420px; margin: 0 auto;
+            line-height: 1.7; font-weight: 300;
+        }
 
-        /* ---- REVIEWS ---- */
-        .reviews-grid{
-            max-width:1000px;margin:0 auto;
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;
+        .divider {
+            width: 100%; height: 1px;
+            background: var(--border);
+            position: relative; z-index: 1;
         }
-        .rev-card{
-            background:var(--bg-card);border:1px solid var(--border);
-            border-radius:16px;padding:28px;transition:all .3s ease;
-        }
-        .rev-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
-        .rev-stars{color:#fbbf24;font-size:13px;margin-bottom:14px;letter-spacing:2px}
-        .rev-text{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:18px;font-style:italic}
-        .rev-author{display:flex;align-items:center;gap:12px}
-        .rev-avatar{
-            width:38px;height:38px;border-radius:10px;
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            display:flex;align-items:center;justify-content:center;
-            font-weight:700;font-size:14px;
-        }
-        .rev-name{font-weight:600;font-size:13px}
-        .rev-role{font-size:11px;color:var(--text-dimmer)}
 
-        /* ---- CONTACT ---- */
-        .contact-grid{
-            max-width:960px;margin:0 auto;
-            display:grid;grid-template-columns:1fr 1fr;gap:48px;
+        /* ============ ABOUT ============ */
+        .about-grid {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 60px; align-items: center;
         }
-        .contact-info h3{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:14px}
-        .contact-info>p{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:28px}
-        .c-links{display:flex;flex-direction:column;gap:12px}
-        .c-link{
-            display:flex;align-items:center;gap:16px;
-            padding:16px 20px;background:var(--bg-card);
-            border:1px solid var(--border);border-radius:12px;
-            text-decoration:none;color:var(--text);
-            transition:all .3s ease;
+        .about-visual {
+            position: relative;
         }
-        .c-link:hover{border-color:var(--border-hover);transform:translateX(6px);background:var(--bg-card2)}
-        .c-link i{font-size:18px;color:var(--primary-light);width:22px;text-align:center}
-        .c-link .c-lbl{font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:1px}
-        .c-link .c-val{font-weight:500;font-size:14px}
+        .about-avatar-wrap {
+            width: 280px; height: 280px;
+            border-radius: 24px; overflow: hidden;
+            position: relative; margin: 0 auto;
+        }
+        .about-avatar-wrap::before {
+            content: ''; position: absolute; inset: -2px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, var(--accent), transparent, var(--accent));
+            z-index: -1;
+        }
+        .about-avatar {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #111, #1a1a1a);
+            border-radius: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px;
+        }
+        .about-float-card {
+            position: absolute; padding: 10px 16px;
+            border-radius: 10px; font-size: 11px;
+            font-weight: 600; backdrop-filter: blur(16px);
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+        }
+        .about-float-card.c1 { bottom: 20px; right: -30px; color: var(--accent); }
+        .about-float-card.c2 { top: 20px; left: -30px; color: #10b981; }
 
-        .contact-form{display:flex;flex-direction:column;gap:14px}
-        .f-group{display:flex;flex-direction:column;gap:5px}
-        .f-group label{font-size:12px;font-weight:500;color:var(--text-dim)}
-        .f-group input,.f-group textarea,.f-group select{
-            padding:13px 16px;background:var(--bg-card);
-            border:1px solid var(--border);border-radius:10px;
-            color:var(--text);font-family:'Inter',sans-serif;
-            font-size:13px;transition:all .3s ease;outline:none;
+        .about-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px; font-weight: 700;
+            margin-bottom: 16px; letter-spacing: -0.5px;
         }
-        .f-group input:focus,.f-group textarea:focus,.f-group select:focus{
-            border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,58,237,.1);
+        .about-text p {
+            color: var(--text-secondary); font-size: 14px;
+            line-height: 1.8; margin-bottom: 24px; font-weight: 300;
         }
-        .f-group textarea{min-height:110px;resize:vertical}
-        .f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-        .f-group select option{background:var(--bg-card);color:var(--text)}
+        .about-skills {
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .skill-tag {
+            padding: 6px 14px; border-radius: 6px;
+            font-size: 11px; font-weight: 500;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
 
-        /* ---- FOOTER ---- */
-        footer{
-            padding:36px 32px;border-top:1px solid var(--border);
-            position:relative;z-index:1;
+        /* ============ SERVICES ============ */
+        .services-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
         }
-        .footer-inner{
-            max-width:1200px;margin:0 auto;
-            display:flex;justify-content:space-between;align-items:center;
-            flex-wrap:wrap;gap:16px;
+        .svc-card {
+            border-radius: 16px; padding: 32px 28px;
+            transition: all 0.4s ease; position: relative;
+            overflow: hidden; cursor: default;
         }
-        .footer-txt{font-size:13px;color:var(--text-dimmer)}
-        .footer-socials{display:flex;gap:10px}
-        .footer-socials a{
-            width:38px;height:38px;display:flex;align-items:center;justify-content:center;
-            border-radius:10px;background:var(--bg-card);border:1px solid var(--border);
-            color:var(--text-dimmer);font-size:15px;transition:all .3s ease;
-            text-decoration:none;
+        .svc-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 3px; height: 0;
+            background: var(--accent);
+            transition: height 0.4s ease;
         }
-        .footer-socials a:hover{color:var(--primary-light);border-color:var(--primary);transform:translateY(-2px)}
+        .svc-card:hover::before { height: 100%; }
+        .svc-card:hover { transform: translateY(-4px); }
 
-        /* ---- ADMIN PANEL ---- */
-        .admin-bg{
-            display:none;position:fixed;inset:0;
-            background:rgba(0,0,0,.75);backdrop-filter:blur(12px);
-            z-index:9999;align-items:center;justify-content:center;
+        .svc-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px; color: var(--text-dim);
+            margin-bottom: 20px; letter-spacing: 2px;
         }
-        .admin-bg.show{display:flex}
-        .admin-box{
-            background:var(--bg-card);border:1px solid var(--border);
-            border-radius:20px;padding:40px;max-width:380px;width:92%;text-align:center;
+        .svc-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px; font-weight: 600;
+            margin-bottom: 10px;
         }
-        .admin-box h3{font-family:'Space Grotesk',sans-serif;font-size:20px;margin-bottom:6px}
-        .admin-box>p{color:var(--text-dim);font-size:13px;margin-bottom:24px}
-        .tog-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
-        .tog-lbl{font-size:14px;font-weight:500}
-        .tog{position:relative;width:54px;height:28px;cursor:pointer}
-        .tog input{display:none}
-        .tog-track{
-            position:absolute;inset:0;
-            background:rgba(239,68,68,.25);border-radius:28px;
-            transition:all .3s ease;border:1px solid rgba(239,68,68,.4);
+        .svc-card p {
+            font-size: 13px; color: var(--text-dim);
+            line-height: 1.7; font-weight: 300;
         }
-        .tog-track::before{
-            content:'';position:absolute;
-            width:20px;height:20px;border-radius:50%;
-            background:#ef4444;top:3px;left:3px;
-            transition:all .3s ease;
+        .svc-price {
+            margin-top: 20px; padding-top: 16px;
+            border-top: 1px solid var(--border);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--accent);
         }
-        .tog input:checked+.tog-track{
-            background:rgba(16,185,129,.25);border-color:rgba(16,185,129,.4);
+        .svc-price .robux-icon {
+            display: inline-flex; align-items: center; gap: 4px;
         }
-        .tog input:checked+.tog-track::before{transform:translateX(26px);background:#10b981}
+        .svc-price span {
+            font-size: 12px; color: var(--text-dim);
+            font-weight: 300; font-family: 'Inter', sans-serif;
+        }
 
-        .admin-btn{
-            padding:10px 22px;background:rgba(124,58,237,.15);
-            border:1px solid var(--border);border-radius:10px;
-            color:var(--text);cursor:pointer;font-family:'Inter',sans-serif;
-            font-size:13px;font-weight:500;transition:all .3s ease;
+        /* ============ PROJECTS ============ */
+        .projects-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
         }
-        .admin-btn:hover{background:rgba(124,58,237,.25)}
-        .admin-note{margin-top:18px;font-size:10px;color:var(--text-dimmer);line-height:1.5}
-        .admin-status-txt{font-size:13px;font-weight:600;margin-bottom:8px}
-
-        /* ---- FADE IN ---- */
-        .fi{opacity:0;transform:translateY(28px);transition:all .65s ease}
-        .fi.vis{opacity:1;transform:translateY(0)}
-
-        /* ---- FLOATING DECOR ---- */
-        .float-el{
-            position:absolute;border:2px solid var(--border);
-            border-radius:16px;opacity:.06;pointer-events:none;
-            animation:floaty 7s ease-in-out infinite;
+        .proj-card {
+            border-radius: 16px; overflow: hidden;
+            transition: all 0.4s ease; cursor: default;
         }
-        @keyframes floaty{0%,100%{transform:translateY(0) rotate(12deg)}50%{transform:translateY(-18px) rotate(12deg)}}
+        .proj-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+        }
+        .proj-thumb {
+            position: relative; height: 220px;
+            overflow: hidden; background: #0a0a0a;
+        }
+        .proj-thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .proj-card:hover .proj-thumb img { transform: scale(1.05); }
+        .proj-placeholder {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a, #111);
+            font-size: 40px; color: var(--text-dim);
+        }
+        .proj-thumb-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+        }
+        .proj-body { padding: 20px 24px; }
+        .proj-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+        .proj-tag {
+            padding: 3px 10px; border-radius: 4px;
+            font-size: 9px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            background: var(--accent-subtle);
+            color: var(--accent-light);
+            border: 1px solid rgba(255,107,0,0.1);
+        }
+        .proj-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px; font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .proj-desc {
+            font-size: 12px; color: var(--text-dim);
+            line-height: 1.6; font-weight: 300;
+        }
 
-        /* ---- RESPONSIVE ---- */
-        @media(max-width:768px){
-            .nav-links{
-                display:none;position:fixed;inset:0;
-                background:rgba(5,5,8,.96);backdrop-filter:blur(20px);
-                flex-direction:column;align-items:center;justify-content:center;gap:12px;
+        /* ============ PRICING ============ */
+        .pricing-grid {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .price-card {
+            border-radius: 16px; padding: 36px 28px;
+            transition: all 0.4s ease; position: relative;
+        }
+        .price-card.featured {
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 60px rgba(255,107,0,0.06);
+        }
+        .price-card.featured::before {
+            content: 'POPULAR'; position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #000;
+            padding: 4px 14px; border-radius: 5px;
+            font-size: 9px; font-weight: 700; letter-spacing: 1px;
+        }
+        .price-card:hover { transform: translateY(-4px); }
+        .price-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px; font-weight: 600;
+            margin-bottom: 4px; color: var(--text-secondary);
+        }
+        .price-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px; font-weight: 700;
+            color: var(--text); margin-bottom: 4px;
+        }
+        .price-amount .r-icon { color: var(--accent); }
+        .price-amount span {
+            font-size: 13px; color: var(--text-dim);
+            font-weight: 300;
+        }
+        .price-note {
+            font-size: 11px; color: var(--text-dim);
+            margin-bottom: 24px; font-weight: 300;
+        }
+        .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .price-features li {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 12px; color: var(--text-secondary); font-weight: 300;
+        }
+        .price-features li i { color: var(--accent); font-size: 10px; width: 14px; }
+        .price-features li.disabled { color: var(--text-dim); text-decoration: line-through; opacity: 0.4; }
+        .price-features li.disabled i { color: var(--text-dim); }
+
+        /* ============ REVIEWS ============ */
+        .reviews-grid {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .rev-card {
+            border-radius: 16px; padding: 28px;
+            transition: all 0.3s ease;
+        }
+        .rev-card:hover { transform: translateY(-3px); }
+        .rev-stars {
+            color: var(--accent); font-size: 12px;
+            margin-bottom: 16px; letter-spacing: 3px;
+        }
+        .rev-text {
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: 20px;
+            font-weight: 300; font-style: italic;
+        }
+        .rev-author { display: flex; align-items: center; gap: 12px; }
+        .rev-pfp {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; color: #000;
+        }
+        .rev-name { font-size: 13px; font-weight: 600; }
+        .rev-role { font-size: 10px; color: var(--text-dim); }
+
+        /* ============ CONTACT ============ */
+        .contact-layout {
+            max-width: 960px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+        .contact-left h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px; font-weight: 700;
+            margin-bottom: 12px; letter-spacing: -0.5px;
+        }
+        .contact-left > p {
+            color: var(--text-dim); font-size: 13px;
+            line-height: 1.8; margin-bottom: 28px; font-weight: 300;
+        }
+        .c-links { display: flex; flex-direction: column; gap: 10px; }
+        .c-link {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 18px; border-radius: 12px;
+            text-decoration: none; color: var(--text);
+            transition: all 0.3s ease;
+        }
+        .c-link:hover {
+            transform: translateX(6px);
+        }
+        .c-link-icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: var(--accent-subtle);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: var(--accent);
+            flex-shrink: 0;
+        }
+        .c-link-label {
+            font-size: 10px; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .c-link-value { font-size: 13px; font-weight: 500; }
+
+        .contact-form { display: flex; flex-direction: column; gap: 12px; }
+        .f-group { display: flex; flex-direction: column; gap: 5px; }
+        .f-group label {
+            font-size: 11px; font-weight: 500;
+            color: var(--text-dim); text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .f-group input, .f-group textarea, .f-group select {
+            padding: 12px 16px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px; transition: all 0.3s ease;
+            outline: none; backdrop-filter: blur(10px);
+        }
+        .f-group input:focus, .f-group textarea:focus, .f-group select:focus {
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 0 3px rgba(255,107,0,0.08);
+        }
+        .f-group textarea { min-height: 100px; resize: vertical; }
+        .f-group select option { background: #111; color: var(--text); }
+        .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            padding: 32px 40px;
+            border-top: 1px solid var(--border);
+            position: relative; z-index: 1;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .footer-text {
+            font-size: 12px; color: var(--text-dim); font-weight: 300;
+        }
+        .footer-socials { display: flex; gap: 8px; }
+        .footer-socials a {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; font-size: 14px;
+            color: var(--text-dim); text-decoration: none;
+            transition: all 0.3s ease;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+        }
+        .footer-socials a:hover {
+            color: var(--accent); border-color: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ============ ADMIN PANEL ============ */
+        .admin-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(16px);
+            z-index: 99999;
+            align-items: center; justify-content: center;
+        }
+        .admin-overlay.show { display: flex; }
+        .admin-panel {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 20px; padding: 36px;
+            max-width: 360px; width: 92%; text-align: center;
+        }
+        .admin-panel h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px; margin-bottom: 4px;
+        }
+        .admin-panel > p {
+            color: var(--text-dim); font-size: 12px;
+            margin-bottom: 24px;
+        }
+        .toggle-row {
+            display: flex; align-items: center;
+            justify-content: center; gap: 14px;
+            margin-bottom: 20px;
+        }
+        .toggle-label { font-size: 13px; font-weight: 500; }
+        .toggle {
+            position: relative; width: 50px; height: 26px;
+            cursor: pointer; display: inline-block;
+        }
+        .toggle input { display: none; }
+        .toggle-slider {
+            position: absolute; inset: 0;
+            background: rgba(239,68,68,0.2);
+            border-radius: 26px; transition: all 0.3s ease;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+        .toggle-slider::before {
+            content: ''; position: absolute;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #ef4444; top: 3px; left: 3px;
+            transition: all 0.3s ease;
+        }
+        .toggle input:checked + .toggle-slider {
+            background: rgba(16,185,129,0.2);
+            border-color: rgba(16,185,129,0.3);
+        }
+        .toggle input:checked + .toggle-slider::before {
+            transform: translateX(24px); background: #10b981;
+        }
+        .admin-status {
+            font-size: 13px; font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .admin-save-msg {
+            font-size: 11px; color: var(--accent);
+            min-height: 16px; margin-bottom: 16px;
+        }
+        .admin-close-btn {
+            padding: 10px 24px;
+            background: var(--bg-glass); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            font-size: 12px; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-close-btn:hover { background: var(--bg-glass-hover); }
+        .admin-note {
+            margin-top: 18px; font-size: 9px;
+            color: var(--text-dim); line-height: 1.6;
+        }
+
+        /* ============ ANIMATIONS ============ */
+        .fade-in {
+            opacity: 0; transform: translateY(24px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in.visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; position: fixed; inset: 0;
+                background: rgba(0,0,0,0.95);
+                backdrop-filter: blur(24px);
+                flex-direction: column; align-items: center;
+                justify-content: center; gap: 12px;
             }
-            .nav-links.open{display:flex}
-            .hamburger{display:flex}
-            .hero{padding:100px 20px 60px}
-            .hero h1{font-size:32px}
-            .stats{gap:24px}
-            .projects-grid,.services-grid,.reviews-grid{grid-template-columns:1fr}
-            .contact-grid{grid-template-columns:1fr;gap:32px}
-            .f-row{grid-template-columns:1fr}
-            .footer-inner{flex-direction:column;text-align:center}
-            section{padding:64px 18px}
-            .pricing-grid{grid-template-columns:1fr}
+            .nav-links.open { display: flex; }
+            .hamburger { display: flex; }
+            section { padding: 72px 20px; }
+            .hero { padding: 100px 20px 60px; }
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .projects-grid, .services-grid, .reviews-grid { grid-template-columns: 1fr; }
+            .contact-layout { grid-template-columns: 1fr; gap: 32px; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .f-row { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .stats-row { gap: 28px; }
+            .nav-inner { padding: 0 20px; }
         }
     </style>
 </head>
 <body>
 
-<!-- BG EFFECTS -->
-<div class="bg-grid"></div>
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-<div class="bg-orb bg-orb-3"></div>
-<div class="cursor-follow" id="cursorFollow"></div>
+<div class="bg-noise"></div>
+<div class="bg-gradient"></div>
+<div class="grid-overlay"></div>
 
-<!-- ADMIN PANEL (Ctrl+Shift+K) -->
-<div class="admin-bg" id="adminPanel">
-    <div class="admin-box">
+<!-- ============================================
+     ADMIN PANEL — Press Ctrl+Shift+K to open
+     ============================================ -->
+<div class="admin-overlay" id="adminPanel">
+    <div class="admin-panel">
         <h3>🔒 Admin Panel</h3>
-        <p>Commission durumunu buradan değiştir</p>
-        <div class="admin-status-txt" id="adminStatusTxt">Durum: Açık</div>
-        <div class="tog-row">
-            <span class="tog-lbl">Kapalı</span>
-            <label class="tog">
+        <p>Toggle commission status</p>
+        <div class="admin-status" id="adminStatus">Status: Open</div>
+        <div class="toggle-row">
+            <span class="toggle-label">Closed</span>
+            <label class="toggle">
                 <input type="checkbox" id="commToggle" checked>
-                <div class="tog-track"></div>
+                <div class="toggle-slider"></div>
             </label>
-            <span class="tog-lbl">Açık</span>
+            <span class="toggle-label">Open</span>
         </div>
-        <p style="font-size:11px;color:var(--accent);margin-bottom:16px" id="saveMsg"></p>
-        <button class="admin-btn" onclick="closeAdmin()">Kapat</button>
+        <div class="admin-save-msg" id="saveMsg"></div>
+        <button class="admin-close-btn" onclick="closeAdmin()">Close</button>
         <div class="admin-note">
-            ⚠️ Bu değişiklik herkes için geçerli olsun istiyorsan<br>
-            <strong>index.html</strong> dosyasında en üstteki<br>
-            <code>COMMISSIONS_OPEN = true/false</code> değerini değiştir<br>
-            ve GitHub'a push et.
+            ⚠ To make it permanent for everyone:<br>
+            Change <code>COMMISSIONS_OPEN = true/false</code><br>
+            in the script section and push to GitHub.
         </div>
     </div>
 </div>
@@ -514,12 +794,13 @@
 <!-- NAV -->
 <nav id="navbar">
     <div class="nav-inner">
-        <a href="#home" class="nav-logo">YourName</a>
+        <a href="#home" class="nav-logo">Your<span>Name</span></a>
         <div class="hamburger" id="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#home" class="active" onclick="closeMenu()">Home</a></li>
+            <li><a href="#about" onclick="closeMenu()">About</a></li>
             <li><a href="#work" onclick="closeMenu()">Work</a></li>
             <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
             <li><a href="#pricing" onclick="closeMenu()">Pricing</a></li>
@@ -536,338 +817,404 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-    <div class="float-el" style="width:100px;height:100px;top:18%;left:6%;font-size:36px;display:flex;align-items:center;justify-content:center">🎮</div>
-    <div class="float-el" style="width:80px;height:80px;top:28%;right:8%;animation-delay:2s;font-size:30px;display:flex;align-items:center;justify-content:center">🎨</div>
-    <div class="float-el" style="width:90px;height:90px;bottom:22%;left:12%;animation-delay:4s;font-size:32px;display:flex;align-items:center;justify-content:center">✨</div>
-
-    <div class="hero-content fi">
-        <div class="hero-tag">
-            <i class="fas fa-gamepad"></i>
-            Roblox UI Designer
+    <div class="hero-content fade-in">
+        <div class="hero-badge">
+            <i class="fas fa-gamepad"></i> Roblox UI Designer
         </div>
         <h1>
-            Crafting <span class="grad-text">Stunning UI</span><br>
-            for Roblox Games
+            I design <span class="accent">interfaces</span><br>
+            that <span class="outline">players</span> love
         </h1>
         <p>
-            Oyunlarınız için modern, kullanıcı dostu ve göz alıcı arayüzler tasarlıyorum.
-            Her piksel özenle yerleştirilir, her animasyon amacına hizmet eder.
+            Creating clean, modern, and immersive UI experiences
+            for Roblox games. Every pixel matters.
         </p>
         <div class="hero-btns">
-            <a href="#contact" class="btn btn-p">
-                <i class="fas fa-paper-plane"></i> İletişime Geç
+            <a href="#contact" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Get in Touch
             </a>
-            <a href="#projects" class="btn btn-s">
-                <i class="fas fa-eye"></i> Projelerimi Gör
+            <a href="#projects" class="btn btn-ghost">
+                <i class="fas fa-arrow-down"></i> View Work
             </a>
         </div>
 
-        <div class="stats">
-            <div>
-                <div class="stat-num">50+</div>
-                <div class="stat-lbl">Proje</div>
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-val">50<span>+</span></div>
+                <div class="stat-label">Projects</div>
             </div>
-            <div>
-                <div class="stat-num">30+</div>
-                <div class="stat-lbl">Mutlu Müşteri</div>
+            <div class="stat">
+                <div class="stat-val">30<span>+</span></div>
+                <div class="stat-label">Clients</div>
             </div>
-            <div>
-                <div class="stat-num">2+</div>
-                <div class="stat-lbl">Yıl Deneyim</div>
+            <div class="stat">
+                <div class="stat-val">2<span>+</span></div>
+                <div class="stat-label">Years</div>
             </div>
-            <div>
-                <div class="stat-num">⭐ 5.0</div>
-                <div class="stat-lbl">Ortalama Puan</div>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <span>Scroll</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="about-grid">
+        <div class="about-visual fade-in">
+            <div class="about-avatar-wrap">
+                <!--
+                ╔════════════════════════════════════╗
+                ║  SETUP: Replace emoji with your    ║
+                ║  avatar image:                     ║
+                ║  <img src="avatar.png" ...>        ║
+                ╚════════════════════════════════════╝
+                -->
+                <div class="about-avatar">🎨</div>
+            </div>
+            <div class="about-float-card c1">
+                <i class="fas fa-fire"></i> Available for work
+            </div>
+            <div class="about-float-card c2">
+                <i class="fas fa-check-circle"></i> Verified Seller
+            </div>
+        </div>
+        <div class="about-text fade-in">
+            <!--
+            ╔════════════════════════════════════╗
+            ║  SETUP: Edit your bio below        ║
+            ╚════════════════════════════════════╝
+            -->
+            <h3>Hey, I'm <span style="color:var(--accent)">YourName</span></h3>
+            <p>
+                I'm a Roblox UI designer with 2+ years of experience
+                crafting clean, modern interfaces for games. I focus
+                on user experience and pixel-perfect designs that
+                make games feel professional.
+            </p>
+            <p>
+                From full GUI systems to single screen designs,
+                I bring your vision to life with attention to detail
+                and smooth animations.
+            </p>
+            <div class="about-skills">
+                <span class="skill-tag">UI Design</span>
+                <span class="skill-tag">UX Design</span>
+                <span class="skill-tag">Roblox Studio</span>
+                <span class="skill-tag">Figma</span>
+                <span class="skill-tag">Photoshop</span>
+                <span class="skill-tag">Animations</span>
+                <span class="skill-tag">Luau</span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-    <div class="marquee" id="marqueeTrack">
-        <div class="marq-item"><i class="fas fa-palette"></i> UI Design</div>
-        <div class="marq-item"><i class="fas fa-wand-magic-sparkles"></i> UX Design</div>
-        <div class="marq-item"><i class="fas fa-gamepad"></i> Roblox Studio</div>
-        <div class="marq-item"><i class="fas fa-code"></i> Luau</div>
-        <div class="marq-item"><i class="fas fa-layer-group"></i> GUI Systems</div>
-        <div class="marq-item"><i class="fas fa-mobile-screen"></i> Responsive UI</div>
-        <div class="marq-item"><i class="fas fa-film"></i> Animations</div>
-        <div class="marq-item"><i class="fab fa-figma"></i> Figma</div>
-        <div class="marq-item"><i class="fas fa-palette"></i> UI Design</div>
-        <div class="marq-item"><i class="fas fa-wand-magic-sparkles"></i> UX Design</div>
-        <div class="marq-item"><i class="fas fa-gamepad"></i> Roblox Studio</div>
-        <div class="marq-item"><i class="fas fa-code"></i> Luau</div>
-        <div class="marq-item"><i class="fas fa-layer-group"></i> GUI Systems</div>
-        <div class="marq-item"><i class="fas fa-mobile-screen"></i> Responsive UI</div>
-        <div class="marq-item"><i class="fas fa-film"></i> Animations</div>
-        <div class="marq-item"><i class="fab fa-figma"></i> Figma</div>
-    </div>
-</div>
+<div class="divider"></div>
 
-<!-- WORK / SERVICES -->
+<!-- SERVICES / WORK -->
 <section id="work">
-    <div class="sec-head fi">
-        <div class="sec-tag">Hizmetler</div>
-        <h2 class="sec-title">Neler Yapıyorum?</h2>
-        <p class="sec-desc">Roblox oyunlarınız için profesyonel UI/UX çözümleri sunuyorum</p>
+    <div class="section-header fade-in">
+        <span class="section-tag">Services</span>
+        <h2 class="section-title">What I Offer</h2>
+        <p class="section-desc">Professional UI/UX solutions for your Roblox game</p>
     </div>
 
     <div class="services-grid">
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-desktop"></i></div>
-            <h3>Komple GUI Sistemi</h3>
-            <p>Oyununuz için baştan sona tam bir arayüz sistemi. Main menu, inventory, shop, settings ve daha fazlası.</p>
-            <div class="svc-price">₺500+ <span>/ proje</span></div>
+        <!--
+        ╔════════════════════════════════════╗
+        ║  SETUP: Edit services & prices     ║
+        ║  Prices are in ROBUX (R$)          ║
+        ╚════════════════════════════════════╝
+        -->
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">01</div>
+            <h3>Full GUI System</h3>
+            <p>Complete interface system for your game. Main menu, inventory, shop, settings, and more — all cohesive and polished.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 5,000+</span>
+                <span> / project</span>
+            </div>
         </div>
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-paint-brush"></i></div>
-            <h3>Tekil UI Tasarım</h3>
-            <p>Tek bir ekran veya panel tasarımı. HUD, loading screen, popup veya herhangi bir UI elementi.</p>
-            <div class="svc-price">₺150+ <span>/ adet</span></div>
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">02</div>
+            <h3>Single UI Screen</h3>
+            <p>One screen or panel design. HUD, loading screen, popup, or any individual UI element you need.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 1,500+</span>
+                <span> / piece</span>
+            </div>
         </div>
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-arrows-rotate"></i></div>
-            <h3>UI Yenileme / Revamp</h3>
-            <p>Mevcut oyununuzun arayüzünü modern ve profesyonel bir görünüme kavuşturuyorum.</p>
-            <div class="svc-price">₺350+ <span>/ proje</span></div>
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">03</div>
+            <h3>UI Revamp</h3>
+            <p>Give your existing game's interface a modern, professional makeover. Fresh look, same soul.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 3,500+</span>
+                <span> / project</span>
+            </div>
         </div>
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-film"></i></div>
-            <h3>Animasyonlu UI</h3>
-            <p>Tween animasyonları, geçiş efektleri ve interaktif UI elementleri ile oyununuza hayat katın.</p>
-            <div class="svc-price">₺200+ <span>/ adet</span></div>
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">04</div>
+            <h3>Animated UI</h3>
+            <p>Tween animations, transition effects, and interactive elements that bring your UI to life.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 2,000+</span>
+                <span> / piece</span>
+            </div>
         </div>
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-icons"></i></div>
-            <h3>İkon & Asset Tasarım</h3>
-            <p>Oyununuza özel ikonlar, butonlar ve görsel assetler tasarlıyorum.</p>
-            <div class="svc-price">₺100+ <span>/ set</span></div>
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">05</div>
+            <h3>Icons & Assets</h3>
+            <p>Custom icons, buttons, and visual assets designed specifically for your game's style.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 800+</span>
+                <span> / set</span>
+            </div>
         </div>
-        <div class="svc-card fi">
-            <div class="svc-icon"><i class="fas fa-headset"></i></div>
-            <h3>UI Danışmanlık</h3>
-            <p>Oyununuzun UX'ini analiz eder, iyileştirme önerileri sunar ve tasarım rehberliği yaparım.</p>
-            <div class="svc-price">₺75+ <span>/ saat</span></div>
+        <div class="svc-card glass fade-in">
+            <div class="svc-num">06</div>
+            <h3>UI Consultation</h3>
+            <p>UX analysis for your game with improvement suggestions and design guidance.</p>
+            <div class="svc-price">
+                <span class="robux-icon">R$ 500+</span>
+                <span> / hour</span>
+            </div>
         </div>
     </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- PROJECTS -->
-<section id="projects" style="background:rgba(124,58,237,.02)">
-    <div class="sec-head fi">
-        <div class="sec-tag">Portfolyo</div>
-        <h2 class="sec-title">Son Projelerim</h2>
-        <p class="sec-desc">İşte üzerinde çalıştığım bazı projeler</p>
+<section id="projects">
+    <div class="section-header fade-in">
+        <span class="section-tag">Portfolio</span>
+        <h2 class="section-title">Recent Projects</h2>
+        <p class="section-desc">Some of my latest work</p>
     </div>
 
     <div class="projects-grid">
+        <!--
+        ╔══════════════════════════════════════════════════╗
+        ║  SETUP: HOW TO ADD YOUR OWN PROJECTS             ║
+        ║                                                   ║
+        ║  1. Replace the <div class="proj-placeholder">   ║
+        ║     with: <img src="YOUR_IMAGE.png" alt="...">  ║
+        ║                                                   ║
+        ║  2. Edit the title, tags, and description         ║
+        ║                                                   ║
+        ║  3. Copy-paste a proj-card block to add more      ║
+        ║                                                   ║
+        ║  4. Put images in same folder or use full URL     ║
+        ╚══════════════════════════════════════════════════╝
+        -->
+
         <!-- PROJECT 1 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:48px">🎮</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <!-- Replace with: <img src="project1.png" alt="Project Name"> -->
+                <div class="proj-placeholder">🎮</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">RPG</span>
                     <span class="proj-tag">Full GUI</span>
                 </div>
-                <div class="proj-title">Fantasy RPG - Full UI Kit</div>
-                <div class="proj-desc">Komple RPG oyunu arayüz sistemi. Inventory, skill tree, quest log, minimap ve character panel.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
 
         <!-- PROJECT 2 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#0d0221,#150734,#1b0a47);display:flex;align-items:center;justify-content:center;font-size:48px">⚔️</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <div class="proj-placeholder">⚔️</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">PVP</span>
                     <span class="proj-tag">HUD</span>
                 </div>
-                <div class="proj-title">Battle Arena - HUD System</div>
-                <div class="proj-desc">PVP oyunu için health bar, ability cooldowns, kill feed ve scoreboard tasarımı.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
 
         <!-- PROJECT 3 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#1a0a2e,#2d1b69,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:48px">🏪</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <div class="proj-placeholder">🏪</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">Simulator</span>
                     <span class="proj-tag">Shop UI</span>
                 </div>
-                <div class="proj-title">Pet Simulator - Shop & Inventory</div>
-                <div class="proj-desc">Pet simulator oyunu için shop sistemi, pet inventory ve trading UI tasarımı.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
 
         <!-- PROJECT 4 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#0a192f,#112240,#1d3557);display:flex;align-items:center;justify-content:center;font-size:48px">🏠</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <div class="proj-placeholder">🏠</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">Tycoon</span>
                     <span class="proj-tag">Menu</span>
                 </div>
-                <div class="proj-title">Tycoon Game - Main Menu</div>
-                <div class="proj-desc">Tycoon oyunu için ana menü, settings, leaderboard ve upgrade panelleri.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
 
         <!-- PROJECT 5 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#1a0520,#2d0a3e,#4a0e6b);display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <div class="proj-placeholder">🎵</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">Rhythm</span>
                     <span class="proj-tag">Animated</span>
                 </div>
-                <div class="proj-title">Rhythm Game - Animated UI</div>
-                <div class="proj-desc">Ritim oyunu için tam animasyonlu not highway, combo counter ve song select ekranı.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
 
         <!-- PROJECT 6 -->
-        <div class="proj-card fi">
-            <div class="proj-img-wrap">
-                <div class="proj-img" style="background:linear-gradient(135deg,#0a1628,#132743,#1c3d5a);display:flex;align-items:center;justify-content:center;font-size:48px">🌍</div>
-                <div class="proj-overlay">
-                    <a href="#" class="btn btn-s" style="padding:8px 18px;font-size:12px">
-                        <i class="fas fa-external-link-alt"></i> Detaylar
-                    </a>
-                </div>
+        <div class="proj-card glass fade-in">
+            <div class="proj-thumb">
+                <div class="proj-placeholder">🌍</div>
+                <div class="proj-thumb-overlay"></div>
             </div>
             <div class="proj-body">
                 <div class="proj-tags">
                     <span class="proj-tag">MMO</span>
-                    <span class="proj-tag">Complex UI</span>
+                    <span class="proj-tag">Complex</span>
                 </div>
-                <div class="proj-title">Open World MMO - UI System</div>
-                <div class="proj-desc">MMO oyunu için karmaşık UI sistemi. Party, guild, chat, map ve crafting arayüzleri.</div>
+                <div class="proj-title">Project Name Here</div>
+                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
             </div>
         </div>
     </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- PRICING -->
 <section id="pricing">
-    <div class="sec-head fi">
-        <div class="sec-tag">Fiyatlandırma</div>
-        <h2 class="sec-title">Paketler & Fiyatlar</h2>
-        <p class="sec-desc">İhtiyacınıza uygun paketi seçin</p>
+    <div class="section-header fade-in">
+        <span class="section-tag">Pricing</span>
+        <h2 class="section-title">Packages</h2>
+        <p class="section-desc">Choose a package that fits your needs. All prices in Robux.</p>
     </div>
 
     <div class="pricing-grid">
-        <div class="price-card fi">
-            <h4>Başlangıç</h4>
-            <div class="price-tag">₺150 <span>başlangıç</span></div>
-            <ul class="price-feats">
-                <li><i class="fas fa-check"></i> 1 adet UI ekranı</li>
-                <li><i class="fas fa-check"></i> Basit animasyonlar</li>
-                <li><i class="fas fa-check"></i> 1 revizyon hakkı</li>
-                <li><i class="fas fa-check"></i> 3-5 gün teslimat</li>
-                <li><i class="fas fa-check"></i> Kaynak dosya</li>
+        <!--
+        ╔════════════════════════════════════╗
+        ║  SETUP: Edit prices (in Robux)     ║
+        ╚════════════════════════════════════╝
+        -->
+        <div class="price-card glass fade-in">
+            <h4>Starter</h4>
+            <div class="price-amount"><span class="r-icon">R$</span> 1,500 <span>start</span></div>
+            <div class="price-note">Perfect for small projects</div>
+            <ul class="price-features">
+                <li><i class="fas fa-check"></i> 1 UI screen</li>
+                <li><i class="fas fa-check"></i> Basic animations</li>
+                <li><i class="fas fa-check"></i> 1 revision</li>
+                <li><i class="fas fa-check"></i> 3-5 day delivery</li>
+                <li><i class="fas fa-check"></i> Source file</li>
+                <li class="disabled"><i class="fas fa-times"></i> Priority support</li>
             </ul>
         </div>
-        <div class="price-card pop fi">
-            <h4>Profesyonel</h4>
-            <div class="price-tag">₺400 <span>başlangıç</span></div>
-            <ul class="price-feats">
-                <li><i class="fas fa-check"></i> 3-5 adet UI ekranı</li>
-                <li><i class="fas fa-check"></i> Gelişmiş animasyonlar</li>
-                <li><i class="fas fa-check"></i> 3 revizyon hakkı</li>
-                <li><i class="fas fa-check"></i> 5-7 gün teslimat</li>
-                <li><i class="fas fa-check"></i> Kaynak dosya + ikonlar</li>
-                <li><i class="fas fa-check"></i> Responsive tasarım</li>
+
+        <div class="price-card glass featured fade-in">
+            <h4>Professional</h4>
+            <div class="price-amount"><span class="r-icon">R$</span> 4,000 <span>start</span></div>
+            <div class="price-note">Best value for most games</div>
+            <ul class="price-features">
+                <li><i class="fas fa-check"></i> 3-5 UI screens</li>
+                <li><i class="fas fa-check"></i> Advanced animations</li>
+                <li><i class="fas fa-check"></i> 3 revisions</li>
+                <li><i class="fas fa-check"></i> 5-7 day delivery</li>
+                <li><i class="fas fa-check"></i> Source files + icons</li>
+                <li><i class="fas fa-check"></i> Responsive design</li>
             </ul>
         </div>
-        <div class="price-card fi">
+
+        <div class="price-card glass fade-in">
             <h4>Premium</h4>
-            <div class="price-tag">₺800+ <span>başlangıç</span></div>
-            <ul class="price-feats">
-                <li><i class="fas fa-check"></i> Komple GUI sistemi</li>
-                <li><i class="fas fa-check"></i> Full animasyon paketi</li>
-                <li><i class="fas fa-check"></i> Sınırsız revizyon</li>
-                <li><i class="fas fa-check"></i> 7-14 gün teslimat</li>
-                <li><i class="fas fa-check"></i> Tüm kaynak dosyalar</li>
-                <li><i class="fas fa-check"></i> Öncelikli destek</li>
-                <li><i class="fas fa-check"></i> Scripting desteği</li>
+            <div class="price-amount"><span class="r-icon">R$</span> 8,000<span>+</span></div>
+            <div class="price-note">Full game UI system</div>
+            <ul class="price-features">
+                <li><i class="fas fa-check"></i> Complete GUI system</li>
+                <li><i class="fas fa-check"></i> Full animation pack</li>
+                <li><i class="fas fa-check"></i> Unlimited revisions</li>
+                <li><i class="fas fa-check"></i> 7-14 day delivery</li>
+                <li><i class="fas fa-check"></i> All source files</li>
+                <li><i class="fas fa-check"></i> Priority support</li>
             </ul>
         </div>
     </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- REVIEWS -->
-<section style="background:rgba(124,58,237,.02)">
-    <div class="sec-head fi">
-        <div class="sec-tag">Yorumlar</div>
-        <h2 class="sec-title">Müşteri Görüşleri</h2>
-        <p class="sec-desc">Birlikte çalıştığım kişilerin söyledikleri</p>
+<section id="reviews">
+    <div class="section-header fade-in">
+        <span class="section-tag">Testimonials</span>
+        <h2 class="section-title">What Clients Say</h2>
+        <p class="section-desc">Feedback from people I've worked with</p>
     </div>
 
     <div class="reviews-grid">
-        <div class="rev-card fi">
+        <!--
+        ╔════════════════════════════════════╗
+        ║  SETUP: Add real client reviews    ║
+        ╚════════════════════════════════════╝
+        -->
+        <div class="rev-card glass fade-in">
             <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"Harika bir tasarımcı! Oyunumuz için yaptığı UI tam istediğimiz gibi oldu. Kesinlikle tekrar çalışacağız."</div>
+            <div class="rev-text">"Amazing designer! The UI they made for our game was exactly what we wanted. Clean, modern, and the animations are smooth."</div>
             <div class="rev-author">
-                <div class="rev-avatar">A</div>
+                <div class="rev-pfp">A</div>
                 <div>
                     <div class="rev-name">Alex</div>
                     <div class="rev-role">Game Developer</div>
                 </div>
             </div>
         </div>
-        <div class="rev-card fi">
+        <div class="rev-card glass fade-in">
             <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"Çok profesyonel çalışma. Hızlı teslimat, temiz tasarım ve iletişimi mükemmel. 10/10 tavsiye ederim."</div>
+            <div class="rev-text">"Very professional work. Fast delivery, clean design, and great communication. Would definitely hire again. 10/10."</div>
             <div class="rev-author">
-                <div class="rev-avatar">M</div>
+                <div class="rev-pfp">M</div>
                 <div>
                     <div class="rev-name">MrBuilder</div>
                     <div class="rev-role">Studio Owner</div>
                 </div>
             </div>
         </div>
-        <div class="rev-card fi">
+        <div class="rev-card glass fade-in">
             <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"UI'larımız eskiden çok basitti ama bu arkadaş sayesinde oyunumuzun görünümü inanılmaz değişti!"</div>
+            <div class="rev-text">"Our game's UI was very basic before. After working with them, the whole look and feel completely transformed. Players love it!"</div>
             <div class="rev-author">
-                <div class="rev-avatar">K</div>
+                <div class="rev-pfp">K</div>
                 <div>
                     <div class="rev-name">KaanDev</div>
                     <div class="rev-role">Scripter</div>
@@ -877,90 +1224,90 @@
     </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- CONTACT -->
 <section id="contact">
-    <div class="sec-head fi">
-        <div class="sec-tag">İletişim</div>
-        <h2 class="sec-title">Benimle Çalışalım</h2>
-        <p class="sec-desc">Projeniz için bana ulaşın, hemen dönüş yaparım</p>
+    <div class="section-header fade-in">
+        <span class="section-tag">Contact</span>
+        <h2 class="section-title">Let's Work Together</h2>
+        <p class="section-desc">Got a project in mind? Reach out!</p>
     </div>
 
-    <div class="contact-grid">
-        <div class="contact-info fi">
-            <h3>İletişim Bilgileri</h3>
-            <p>Proje detaylarınızı paylaşın, size en uygun çözümü sunayım. Commission durumumu kontrol etmeyi unutmayın!</p>
+    <div class="contact-layout">
+        <div class="contact-left fade-in">
+            <h3>Get in Touch</h3>
+            <p>Share your project details and I'll get back to you as soon as possible. Check my commission status before reaching out!</p>
 
             <div class="c-links">
-                <a href="https://twitter.com/SENIN_TWITTER" target="_blank" class="c-link">
-                    <i class="fab fa-twitter"></i>
+                <!--
+                ╔════════════════════════════════════╗
+                ║  SETUP: Change your social links   ║
+                ╚════════════════════════════════════╝
+                -->
+                <a href="https://twitter.com/YOUR_TWITTER" target="_blank" class="c-link glass">
+                    <div class="c-link-icon"><i class="fab fa-twitter"></i></div>
                     <div>
-                        <div class="c-lbl">Twitter / X</div>
-                        <div class="c-val">@SENIN_TWITTER</div>
+                        <div class="c-link-label">Twitter / X</div>
+                        <div class="c-link-value">@YOUR_TWITTER</div>
                     </div>
                 </a>
-                <a href="https://discord.com/users/SENIN_ID" target="_blank" class="c-link">
-                    <i class="fab fa-discord"></i>
+                <a href="https://discord.com/users/YOUR_ID" target="_blank" class="c-link glass">
+                    <div class="c-link-icon"><i class="fab fa-discord"></i></div>
                     <div>
-                        <div class="c-lbl">Discord</div>
-                        <div class="c-val">username#0000</div>
+                        <div class="c-link-label">Discord</div>
+                        <div class="c-link-value">yourname</div>
                     </div>
                 </a>
-                <a href="https://www.roblox.com/users/SENIN_ID/profile" target="_blank" class="c-link">
-                    <i class="fas fa-gamepad"></i>
+                <a href="https://www.roblox.com/users/YOUR_ID/profile" target="_blank" class="c-link glass">
+                    <div class="c-link-icon"><i class="fas fa-gamepad"></i></div>
                     <div>
-                        <div class="c-lbl">Roblox</div>
-                        <div class="c-val">YourRobloxName</div>
-                    </div>
-                </a>
-                <a href="mailto:email@example.com" class="c-link">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <div class="c-lbl">Email</div>
-                        <div class="c-val">email@example.com</div>
+                        <div class="c-link-label">Roblox</div>
+                        <div class="c-link-value">YourRobloxName</div>
                     </div>
                 </a>
             </div>
         </div>
 
-        <form class="contact-form fi" onsubmit="handleSubmit(event)">
+        <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
             <div class="f-row">
                 <div class="f-group">
-                    <label>İsim</label>
-                    <input type="text" placeholder="Adınız" required>
+                    <label>Name</label>
+                    <input type="text" placeholder="Your name" required>
                 </div>
                 <div class="f-group">
                     <label>Discord / Twitter</label>
-                    <input type="text" placeholder="username#0000" required>
+                    <input type="text" placeholder="username" required>
                 </div>
             </div>
             <div class="f-group">
-                <label>Hizmet Türü</label>
+                <label>Service</label>
                 <select required>
-                    <option value="" disabled selected>Seçiniz...</option>
-                    <option>Komple GUI Sistemi</option>
-                    <option>Tekil UI Tasarım</option>
-                    <option>UI Yenileme / Revamp</option>
-                    <option>Animasyonlu UI</option>
-                    <option>İkon & Asset Tasarım</option>
-                    <option>Diğer</option>
+                    <option value="" disabled selected>Select a service...</option>
+                    <option>Full GUI System</option>
+                    <option>Single UI Screen</option>
+                    <option>UI Revamp</option>
+                    <option>Animated UI</option>
+                    <option>Icons & Assets</option>
+                    <option>Other</option>
                 </select>
             </div>
             <div class="f-group">
-                <label>Bütçe</label>
+                <label>Budget (Robux)</label>
                 <select>
-                    <option value="" disabled selected>Bütçe aralığı...</option>
-                    <option>₺100 - ₺250</option>
-                    <option>₺250 - ₺500</option>
-                    <option>₺500 - ₺1000</option>
-                    <option>₺1000+</option>
+                    <option value="" disabled selected>Select budget range...</option>
+                    <option>R$ 500 - R$ 2,000</option>
+                    <option>R$ 2,000 - R$ 5,000</option>
+                    <option>R$ 5,000 - R$ 10,000</option>
+                    <option>R$ 10,000+</option>
                 </select>
             </div>
             <div class="f-group">
-                <label>Proje Detayları</label>
-                <textarea placeholder="Projeniz hakkında detay verin..."></textarea>
+                <label>Project Details</label>
+                <textarea placeholder="Tell me about your project..."></textarea>
             </div>
-            <button type="submit" class="btn btn-p" style="justify-content:center">
-                <i class="fas fa-paper-plane"></i> Gönder
+            <button type="submit" class="btn btn-primary" style="justify-content:center;width:100%">
+                <i class="fas fa-paper-plane"></i> Send Message
             </button>
         </form>
     </div>
@@ -969,9 +1316,14 @@
 <!-- FOOTER -->
 <footer>
     <div class="footer-inner">
-        <div class="footer-txt">© 2024 YourName. Tüm hakları saklıdır.</div>
+        <div class="footer-text">© 2024 YourName — All rights reserved</div>
         <div class="footer-socials">
-            <a href="https://twitter.com/SENIN_TWITTER" target="_blank"><i class="fab fa-twitter"></i></a>
+            <!--
+            ╔════════════════════════════════════╗
+            ║  SETUP: Change your social links   ║
+            ╚════════════════════════════════════╝
+            -->
+            <a href="https://twitter.com/YOUR_TWITTER" target="_blank"><i class="fab fa-twitter"></i></a>
             <a href="https://discord.com" target="_blank"><i class="fab fa-discord"></i></a>
             <a href="https://www.roblox.com" target="_blank"><i class="fas fa-gamepad"></i></a>
             <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
@@ -980,87 +1332,97 @@
 </footer>
 
 <script>
-// ==============================================
-//  ⚡ COMMISSION DURUMU - BURAYI DEĞİŞTİR!
-//  true = Açık (Open Comms)
-//  false = Kapalı (Closed Comms)
-// ==============================================
-const COMMISSIONS_OPEN = true;
-// ==============================================
+/*
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║   ⚡ SETUP AREA — CHANGE THESE VALUES ⚡             ║
+║                                                      ║
+║   COMMISSIONS_OPEN:                                  ║
+║     true  = commissions are OPEN (green badge)       ║
+║     false = commissions are CLOSED (red badge)       ║
+║                                                      ║
+║   To change for EVERYONE:                            ║
+║     1. Edit this value below                         ║
+║     2. Save file                                     ║
+║     3. Push to GitHub                                ║
+║                                                      ║
+║   Quick toggle (only for your session):              ║
+║     Press Ctrl + Shift + K                           ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+*/
 
-// --- COMMISSION SYSTEM ---
+const COMMISSIONS_OPEN = true; // ← CHANGE THIS: true = Open, false = Closed
+
+// ======================================================
+//  DON'T EDIT BELOW UNLESS YOU KNOW WHAT YOU'RE DOING
+// ======================================================
+
 let commOpen = COMMISSIONS_OPEN;
 
-function updateCommStatus(open) {
+function updateCommission(open) {
     commOpen = open;
     const badge = document.getElementById('commBadge');
     const text = document.getElementById('commText');
-    const statusTxt = document.getElementById('adminStatusTxt');
+    const status = document.getElementById('adminStatus');
     const toggle = document.getElementById('commToggle');
 
     if (open) {
         badge.className = 'comm-badge open';
         text.textContent = 'OPEN';
-        statusTxt.textContent = 'Durum: ✅ Açık (Open)';
-        statusTxt.style.color = '#10b981';
+        status.textContent = 'Status: ✅ Open';
+        status.style.color = '#10b981';
     } else {
         badge.className = 'comm-badge closed';
         text.textContent = 'CLOSED';
-        statusTxt.textContent = 'Durum: ❌ Kapalı (Closed)';
-        statusTxt.style.color = '#ef4444';
+        status.textContent = 'Status: ❌ Closed';
+        status.style.color = '#ef4444';
     }
     toggle.checked = open;
 }
 
-// Init commission status
+// Init
 document.addEventListener('DOMContentLoaded', () => {
-    updateCommStatus(COMMISSIONS_OPEN);
+    updateCommission(COMMISSIONS_OPEN);
 });
 
-// --- ADMIN PANEL (Ctrl+Shift+K) ---
+// Admin Panel — Ctrl+Shift+K
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.key === 'K') {
         e.preventDefault();
         document.getElementById('adminPanel').classList.add('show');
-        updateCommStatus(commOpen);
     }
 });
 
-document.getElementById('commToggle').addEventListener('change', function() {
-    updateCommStatus(this.checked);
+document.getElementById('commToggle').addEventListener('change', function () {
+    updateCommission(this.checked);
     const msg = document.getElementById('saveMsg');
-    msg.textContent = '⚠️ GitHub\'daki kodu da güncelle! (COMMISSIONS_OPEN = ' + this.checked + ')';
-    setTimeout(() => { msg.textContent = ''; }, 5000);
+    msg.textContent = '⚠ Change COMMISSIONS_OPEN = ' + this.checked + ' in code & push to GitHub!';
+    setTimeout(() => { msg.textContent = ''; }, 6000);
 });
 
 function closeAdmin() {
     document.getElementById('adminPanel').classList.remove('show');
 }
-
-document.getElementById('adminPanel').addEventListener('click', function(e) {
+document.getElementById('adminPanel').addEventListener('click', function (e) {
     if (e.target === this) closeAdmin();
 });
 
-// --- NAV SCROLL ---
+// Nav scroll
 window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    nav.classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 
-    // Active link
-    const sections = document.querySelectorAll('section[id]');
-    const scrollY = window.scrollY + 200;
-    sections.forEach(sec => {
-        const top = sec.offsetTop;
-        const height = sec.offsetHeight;
-        const id = sec.getAttribute('id');
-        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    document.querySelectorAll('section[id]').forEach(sec => {
+        const link = document.querySelector(`.nav-links a[href="#${sec.id}"]`);
         if (link) {
-            link.classList.toggle('active', scrollY >= top && scrollY < top + height);
+            const top = sec.offsetTop - 200;
+            const bot = top + sec.offsetHeight;
+            link.classList.toggle('active', window.scrollY >= top && window.scrollY < bot);
         }
     });
 });
 
-// --- MOBILE MENU ---
+// Mobile menu
 function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('open');
     document.getElementById('hamburger').classList.toggle('active');
@@ -1070,110 +1432,42 @@ function closeMenu() {
     document.getElementById('hamburger').classList.remove('active');
 }
 
-// --- CURSOR FOLLOW ---
-document.addEventListener('mousemove', (e) => {
-    const cf = document.getElementById('cursorFollow');
-    cf.style.left = e.clientX + 'px';
-    cf.style.top = e.clientY + 'px';
-});
-
-// --- FADE IN ANIMATION ---
+// Fade in observer
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.classList.add('vis');
-            }, i * 80);
+            setTimeout(() => entry.target.classList.add('visible'), i * 60);
         }
     });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-document.querySelectorAll('.fi').forEach(el => observer.observe(el));
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function (e) {
+        const t = document.querySelector(this.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+});
 
-// --- FORM SUBMIT ---
+// Form submit
 function handleSubmit(e) {
     e.preventDefault();
-
     if (!commOpen) {
-        alert('⚠️ Şu anda commission\'lar kapalıdır. Daha sonra tekrar deneyin!');
+        alert('⚠ Commissions are currently CLOSED. Please try again later!');
         return;
     }
-
     const btn = e.target.querySelector('button[type="submit"]');
-    const originalHTML = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check"></i> Gönderildi!';
-    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-
-    setTimeout(() => {
-        btn.innerHTML = originalHTML;
-        btn.style.background = '';
-        e.target.reset();
-    }, 3000);
+    const og = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+    btn.style.background = '#10b981';
+    setTimeout(() => { btn.innerHTML = og; btn.style.background = ''; e.target.reset(); }, 3000);
 }
 
-// --- SMOOTH SCROLL for all anchor links ---
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
-});
-
-// --- PARTICLE EFFECT ---
-function createParticle() {
-    const p = document.createElement('div');
-    p.style.cssText = `
-        position:fixed;
-        width:${Math.random()*3+1}px;
-        height:${Math.random()*3+1}px;
-        background:${Math.random()>.5?'var(--primary-light)':'var(--accent)'};
-        border-radius:50%;pointer-events:none;z-index:0;
-        left:${Math.random()*100}vw;
-        bottom:-10px;opacity:0;
-        animation:floatP ${Math.random()*6+6}s linear forwards;
-    `;
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 12000);
-}
-
-// Add particle animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes floatP {
-        0%{opacity:0;transform:translateY(0) scale(0)}
-        10%{opacity:.5}
-        90%{opacity:.3}
-        100%{opacity:0;transform:translateY(-110vh) scale(1)}
-    }
-`;
-document.head.appendChild(style);
-
-setInterval(createParticle, 800);
-
-// --- TILT EFFECT on project cards ---
-document.querySelectorAll('.proj-card, .svc-card, .price-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-    });
-});
-
-// --- TYPING EFFECT for hero (optional flair) ---
-console.log('%c🎨 Portfolio by YourName', 'color:#7c3aed;font-size:20px;font-weight:bold');
-console.log('%cRoblox UI Designer | Ctrl+Shift+K for admin', 'color:#06b6d4;font-size:12px');
+// Console branding
+console.log('%c🎨 YourName Portfolio', 'color:#ff6b00;font-size:18px;font-weight:bold');
+console.log('%cCtrl+Shift+K → Admin Panel', 'color:#666;font-size:11px');
 </script>
 
 </body>
-  </html>
+</html>
