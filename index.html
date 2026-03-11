@@ -3,1470 +3,666 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourName | Roblox UI Designer</title>
+    <title>Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /*
-        ╔══════════════════════════════════════════════╗
-        ║          🎨 SETUP / CONFIG AREA 🎨           ║
-        ║  Change colors below to customize your site  ║
-        ╚══════════════════════════════════════════════╝
-        */
         :root {
-            /* Main Accent - Change this to change the whole vibe */
-            --accent: #ff6b00;
-            --accent-light: #ff8c38;
-            --accent-dark: #cc5500;
-            --accent-glow: rgba(255, 107, 0, 0.3);
-            --accent-subtle: rgba(255, 107, 0, 0.08);
+            --accent:#ff6b00;--accent-light:#ff8c38;--accent-dark:#cc5500;
+            --accent-glow:rgba(255,107,0,0.25);--accent-subtle:rgba(255,107,0,0.07);
+            --bg:#000;--text:#fff;--text2:#a0a0a0;--text3:#555;
+            --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+            --glass:rgba(255,255,255,0.035);--glass2:rgba(255,255,255,0.06);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+        ::selection{background:var(--accent);color:#000}
+        ::-webkit-scrollbar{width:3px}
+        ::-webkit-scrollbar-thumb{background:var(--accent-dark);border-radius:3px}
 
-            /* Background Colors */
-            --bg: #000000;
-            --bg-secondary: #050505;
-            --bg-card: rgba(255, 255, 255, 0.03);
-            --bg-glass: rgba(255, 255, 255, 0.04);
-            --bg-glass-hover: rgba(255, 255, 255, 0.07);
+        /* BG */
+        .bg-n{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+        .bg-g{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 0%,rgba(255,107,0,.04),transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(255,107,0,.02),transparent 60%)}
+        .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:72px 72px}
 
-            /* Text Colors */
-            --text: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-dim: #666666;
+        .gl{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border)}
+        .gl:hover{background:var(--glass2);border-color:var(--border2)}
 
-            /* Border */
-            --border: rgba(255, 255, 255, 0.06);
-            --border-hover: rgba(255, 255, 255, 0.12);
-            --border-accent: rgba(255, 107, 0, 0.3);
+        /* NAV */
+        nav{position:fixed;top:0;width:100%;z-index:1000;padding:14px 0;transition:.4s}
+        nav.s{background:rgba(0,0,0,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:8px 0}
+        .nav-i{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center}
+        .logo{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.5px}
+        .logo b{color:var(--accent)}
+        .nav-l{display:flex;list-style:none;gap:2px;align-items:center}
+        .nav-l a{color:var(--text2);text-decoration:none;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;transition:.3s;letter-spacing:.3px}
+        .nav-l a:hover,.nav-l a.on{color:var(--text)}
+        .nav-l a.on{background:var(--accent-subtle);color:var(--accent-light)}
+        .cb{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-left:6px}
+        .cb.o{background:rgba(16,185,129,.08);color:#10b981;border:1px solid rgba(16,185,129,.2)}
+        .cb.c{background:rgba(239,68,68,.08);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+        .cd{width:5px;height:5px;border-radius:50%}
+        .cb.o .cd{background:#10b981;box-shadow:0 0 6px #10b981;animation:dp 2s infinite}
+        .cb.c .cd{background:#ef4444}
+        @keyframes dp{0%,100%{opacity:1}50%{opacity:.3}}
+        .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;padding:4px}
+        .ham span{width:20px;height:1.5px;background:var(--text);border-radius:2px;transition:.3s}
+        .ham.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .ham.on span:nth-child(2){opacity:0}
+        .ham.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-            /* Glass */
-            --glass-blur: 20px;
-        }
+        /* HERO */
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:110px 32px 70px}
+        .hero-c{text-align:center;max-width:660px;position:relative;z-index:1}
+        .h-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:20px;font-size:10px;font-weight:500;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px;background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(10px)}
+        .h-badge i{color:var(--accent)}
+        .hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,7vw,68px);font-weight:800;line-height:1.06;margin-bottom:18px;letter-spacing:-2px}
+        .hero h1 .a{color:var(--accent)}
+        .hero h1 .o{-webkit-text-stroke:1.5px var(--text3);color:transparent}
+        .hero p{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:36px;max-width:460px;margin-left:auto;margin-right:auto;font-weight:300}
+        .hero-b{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:9px;font-size:12px;font-weight:500;text-decoration:none;transition:.3s;cursor:pointer;border:none;font-family:'Inter',sans-serif;letter-spacing:.3px}
+        .bp{background:var(--accent);color:#000;box-shadow:0 0 28px var(--accent-glow)}
+        .bp:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 8px 36px var(--accent-glow)}
+        .bg{background:transparent;color:var(--text2);border:1px solid var(--border)}
+        .bg:hover{color:var(--text);border-color:var(--border2);background:var(--glass);transform:translateY(-2px)}
+        .stats{display:flex;gap:40px;justify-content:center;margin-top:56px;flex-wrap:wrap}
+        .st-v{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700}
+        .st-v span{color:var(--accent)}
+        .st-l{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px}
+        .scroll-h{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text3);font-size:9px;letter-spacing:2px;text-transform:uppercase;animation:sb 2s infinite}
+        @keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        /* SECTIONS */
+        section{padding:90px 32px;position:relative;z-index:1}
+        .sh{text-align:center;margin-bottom:48px}
+        .s-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:10px;display:block}
+        .s-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:700;letter-spacing:-1px;margin-bottom:10px}
+        .s-d{color:var(--text3);font-size:13px;max-width:400px;margin:0 auto;line-height:1.7;font-weight:300}
+        .dv{width:100%;height:1px;background:var(--border);position:relative;z-index:1}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
+        /* ABOUT */
+        .ab-g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:50px;align-items:center}
+        .ab-aw{width:240px;height:240px;border-radius:20px;overflow:hidden;position:relative}
+        .ab-aw::before{content:'';position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(135deg,var(--accent),transparent,var(--accent));z-index:-1}
+        .ab-av{width:100%;height:100%;background:linear-gradient(135deg,#111,#1a1a1a);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:72px}
+        .ab-av img{width:100%;height:100%;object-fit:cover;border-radius:20px}
+        .ab-t h3{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:14px;letter-spacing:-.5px}
+        .ab-t h3 span{color:var(--accent)}
+        .ab-t p{color:var(--text2);font-size:13px;line-height:1.8;margin-bottom:20px;font-weight:300}
+        .sk{display:flex;flex-wrap:wrap;gap:6px}
+        .sk span{padding:5px 12px;border-radius:5px;font-size:10px;font-weight:500;background:var(--glass);border:1px solid var(--border);color:var(--text2)}
 
-        ::selection {
-            background: var(--accent);
-            color: #000;
-        }
+        /* PROJECTS */
+        .pj-g{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+        .pj-c{border-radius:14px;overflow:hidden;transition:.4s;cursor:default}
+        .pj-c:hover{transform:translateY(-5px);border-color:var(--border2)}
+        .pj-th{position:relative;height:200px;overflow:hidden;background:#0a0a0a}
+        .pj-th img{width:100%;height:100%;object-fit:cover;transition:.5s}
+        .pj-c:hover .pj-th img{transform:scale(1.05)}
+        .pj-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a0a,#111);font-size:36px;color:var(--text3)}
+        .pj-to{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent 60%)}
+        .pj-b{padding:18px 20px}
+        .pj-tags{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+        .pj-tag{padding:2px 8px;border-radius:3px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--accent-subtle);color:var(--accent-light);border:1px solid rgba(255,107,0,.1)}
+        .pj-n{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px}
+        .pj-d{font-size:11px;color:var(--text3);line-height:1.6;font-weight:300}
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--accent-dark); border-radius: 4px; }
+        /* PRICING */
+        .pr-g{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+        .pr-c{border-radius:14px;padding:32px 24px;transition:.4s;position:relative}
+        .pr-c.ft{border-color:var(--accent-dark);box-shadow:0 0 50px rgba(255,107,0,.05)}
+        .pr-c.ft::before{content:'POPULAR';position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:3px 12px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:1px}
+        .pr-c:hover{transform:translateY(-3px)}
+        .pr-c h4{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:3px;color:var(--text2)}
+        .pr-a{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;margin-bottom:3px}
+        .pr-a .ri{color:var(--accent)}
+        .pr-a span{font-size:12px;color:var(--text3);font-weight:300}
+        .pr-nt{font-size:10px;color:var(--text3);margin-bottom:20px;font-weight:300}
+        .pr-f{list-style:none;display:flex;flex-direction:column;gap:8px}
+        .pr-f li{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2);font-weight:300}
+        .pr-f li i{color:var(--accent);font-size:9px;width:12px}
+        .pr-f li.off{color:var(--text3);text-decoration:line-through;opacity:.4}
+        .pr-f li.off i{color:var(--text3)}
 
-        /* ============ BG EFFECTS ============ */
-        .bg-noise {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none;
-            opacity: 0.015;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        }
+        /* REVIEWS */
+        .rv-g{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+        .rv-c{border-radius:14px;padding:24px;transition:.3s}
+        .rv-c:hover{transform:translateY(-3px)}
+        .rv-s{color:var(--accent);font-size:11px;margin-bottom:14px;letter-spacing:3px}
+        .rv-t{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:18px;font-weight:300;font-style:italic}
+        .rv-a{display:flex;align-items:center;gap:10px}
+        .rv-p{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000}
+        .rv-n{font-size:12px;font-weight:600}
+        .rv-r{font-size:9px;color:var(--text3)}
 
-        .bg-gradient {
-            position: fixed; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(255,107,0,0.04) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(255,107,0,0.02) 0%, transparent 50%);
-            z-index: 0; pointer-events: none;
-            animation: bgShift 20s ease-in-out infinite;
-        }
-        @keyframes bgShift {
-            0%,100% { transform: translate(0,0); }
-            50% { transform: translate(-3%,-3%); }
-        }
+        /* CONTACT - in footer area */
+        .ct{max-width:600px;margin:0 auto;text-align:center}
+        .ct p{color:var(--text2);font-size:13px;line-height:1.8;margin-bottom:28px;font-weight:300}
+        .ct-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+        .ct-l{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:10px;text-decoration:none;color:var(--text);transition:.3s;font-size:13px;font-weight:500}
+        .ct-l:hover{transform:translateY(-2px);background:var(--glass2)}
+        .ct-l i{color:var(--accent);font-size:16px;width:20px;text-align:center}
 
-        .grid-overlay {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-            background-size: 80px 80px;
-        }
+        /* FOOTER */
+        footer{padding:28px 32px;border-top:1px solid var(--border);position:relative;z-index:1}
+        .ft-i{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .ft-t{font-size:11px;color:var(--text3);font-weight:300}
+        .ft-s{display:flex;gap:6px}
+        .ft-s a{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:13px;color:var(--text3);text-decoration:none;transition:.3s;background:var(--glass);border:1px solid var(--border)}
+        .ft-s a:hover{color:var(--accent);border-color:var(--accent-dark);transform:translateY(-2px)}
 
-        /* ============ GLASS MIXIN ============ */
-        .glass {
-            background: var(--bg-glass);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--border);
-        }
-        .glass:hover {
-            background: var(--bg-glass-hover);
-            border-color: var(--border-hover);
-        }
+        /* ADMIN */
+        .adm-o{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(14px);z-index:99999;align-items:center;justify-content:center}
+        .adm-o.show{display:flex}
+        .adm-p{background:#0a0a0a;border:1px solid var(--border);border-radius:18px;padding:32px;max-width:340px;width:92%;text-align:center}
+        .adm-p h3{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-bottom:4px}
+        .adm-p>p{color:var(--text3);font-size:11px;margin-bottom:20px}
+        .tg-r{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px}
+        .tg-l{font-size:12px;font-weight:500}
+        .tg{position:relative;width:46px;height:24px;cursor:pointer;display:inline-block}
+        .tg input{display:none}
+        .tg-s{position:absolute;inset:0;background:rgba(239,68,68,.2);border-radius:24px;transition:.3s;border:1px solid rgba(239,68,68,.3)}
+        .tg-s::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#ef4444;top:3px;left:3px;transition:.3s}
+        .tg input:checked+.tg-s{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.3)}
+        .tg input:checked+.tg-s::before{transform:translateX(22px);background:#10b981}
+        .adm-st{font-size:12px;font-weight:600;margin-bottom:6px}
+        .adm-msg{font-size:10px;color:var(--accent);min-height:14px;margin-bottom:14px}
+        .adm-btn{padding:8px 20px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;transition:.3s}
+        .adm-btn:hover{background:var(--glass2)}
+        .adm-nt{margin-top:14px;font-size:8px;color:var(--text3);line-height:1.6}
 
-        /* ============ NAV ============ */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 16px 0; transition: all 0.4s ease;
-        }
-        nav.scrolled {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--border);
-            padding: 10px 0;
-        }
-        .nav-inner {
-            max-width: 1200px; margin: 0 auto; padding: 0 40px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .nav-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px; font-weight: 700;
-            color: var(--text); text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-        .nav-logo span { color: var(--accent); }
+        /* FADE */
+        .fi{opacity:0;transform:translateY(22px);transition:.6s cubic-bezier(.16,1,.3,1)}
+        .fi.v{opacity:1;transform:translateY(0)}
 
-        .nav-links {
-            display: flex; list-style: none; gap: 2px; align-items: center;
-        }
-        .nav-links a {
-            color: var(--text-secondary); text-decoration: none;
-            padding: 8px 16px; border-radius: 8px;
-            font-size: 13px; font-weight: 400; letter-spacing: 0.3px;
-            transition: all 0.3s ease;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text);
-        }
-        .nav-links a.active {
-            background: var(--accent-subtle);
-            color: var(--accent-light);
-        }
-
-        .comm-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 5px 14px; border-radius: 20px;
-            font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-            margin-left: 8px; transition: all 0.3s ease;
-        }
-        .comm-badge.open {
-            background: rgba(16,185,129,0.08);
-            color: #10b981;
-            border: 1px solid rgba(16,185,129,0.2);
-        }
-        .comm-badge.closed {
-            background: rgba(239,68,68,0.08);
-            color: #ef4444;
-            border: 1px solid rgba(239,68,68,0.2);
-        }
-        .comm-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-        }
-        .comm-badge.open .comm-dot {
-            background: #10b981;
-            box-shadow: 0 0 6px #10b981;
-            animation: dotPulse 2s infinite;
-        }
-        .comm-badge.closed .comm-dot {
-            background: #ef4444;
-        }
-        @keyframes dotPulse {
-            0%,100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .hamburger {
-            display: none; flex-direction: column; gap: 5px;
-            cursor: pointer; z-index: 1001; padding: 4px;
-        }
-        .hamburger span {
-            width: 22px; height: 1.5px; background: var(--text);
-            border-radius: 2px; transition: all 0.3s ease;
-        }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
-
-        /* ============ HERO ============ */
-        .hero {
-            min-height: 100vh; display: flex; align-items: center;
-            justify-content: center; position: relative;
-            padding: 120px 40px 80px;
-        }
-        .hero-content {
-            text-align: center; max-width: 700px;
-            position: relative; z-index: 1;
-        }
-
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 16px; border-radius: 24px;
-            font-size: 11px; font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 1.5px; text-transform: uppercase;
-            margin-bottom: 32px;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-        .hero-badge i { color: var(--accent); }
-
-        .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(36px, 7vw, 72px);
-            font-weight: 800; line-height: 1.05;
-            margin-bottom: 20px; letter-spacing: -2px;
-        }
-        .hero h1 .accent { color: var(--accent); }
-        .hero h1 .outline {
-            -webkit-text-stroke: 1.5px var(--text-dim);
-            color: transparent;
-        }
-
-        .hero p {
-            font-size: 15px; color: var(--text-secondary);
-            line-height: 1.8; margin-bottom: 40px;
-            max-width: 500px; margin-left: auto; margin-right: auto;
-            font-weight: 300;
-        }
-
-        .hero-btns {
-            display: flex; gap: 12px;
-            justify-content: center; flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 13px 28px; border-radius: 10px;
-            font-size: 13px; font-weight: 500; text-decoration: none;
-            transition: all 0.3s ease; cursor: pointer;
-            border: none; font-family: 'Inter', sans-serif;
-            letter-spacing: 0.3px;
-        }
-        .btn-primary {
-            background: var(--accent); color: #000;
-            box-shadow: 0 0 30px var(--accent-glow);
-        }
-        .btn-primary:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px var(--accent-glow);
-        }
-        .btn-ghost {
-            background: transparent; color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        .btn-ghost:hover {
-            color: var(--text); border-color: var(--border-hover);
-            background: var(--bg-glass); transform: translateY(-2px);
-        }
-
-        .stats-row {
-            display: flex; gap: 48px; justify-content: center;
-            margin-top: 64px; flex-wrap: wrap;
-        }
-        .stat { text-align: center; }
-        .stat-val {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px; font-weight: 700; color: var(--text);
-        }
-        .stat-val span { color: var(--accent); }
-        .stat-label {
-            font-size: 11px; color: var(--text-dim);
-            text-transform: uppercase; letter-spacing: 1.5px;
-            margin-top: 4px;
-        }
-
-        .scroll-hint {
-            position: absolute; bottom: 40px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center;
-            gap: 8px; color: var(--text-dim); font-size: 10px;
-            letter-spacing: 2px; text-transform: uppercase;
-            animation: scrollBounce 2s infinite;
-        }
-        @keyframes scrollBounce {
-            0%,100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
-
-        /* ============ SECTION BASE ============ */
-        section {
-            padding: 100px 40px; position: relative; z-index: 1;
-        }
-        .section-header {
-            text-align: center; margin-bottom: 56px;
-        }
-        .section-tag {
-            font-size: 10px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 3px;
-            color: var(--accent); margin-bottom: 12px;
-            display: block;
-        }
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(26px, 4vw, 40px);
-            font-weight: 700; letter-spacing: -1px;
-            margin-bottom: 12px;
-        }
-        .section-desc {
-            color: var(--text-dim); font-size: 14px;
-            max-width: 420px; margin: 0 auto;
-            line-height: 1.7; font-weight: 300;
-        }
-
-        .divider {
-            width: 100%; height: 1px;
-            background: var(--border);
-            position: relative; z-index: 1;
-        }
-
-        /* ============ ABOUT ============ */
-        .about-grid {
-            max-width: 1000px; margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 60px; align-items: center;
-        }
-        .about-visual {
-            position: relative;
-        }
-        .about-avatar-wrap {
-            width: 280px; height: 280px;
-            border-radius: 24px; overflow: hidden;
-            position: relative; margin: 0 auto;
-        }
-        .about-avatar-wrap::before {
-            content: ''; position: absolute; inset: -2px;
-            border-radius: 26px;
-            background: linear-gradient(135deg, var(--accent), transparent, var(--accent));
-            z-index: -1;
-        }
-        .about-avatar {
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, #111, #1a1a1a);
-            border-radius: 24px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 80px;
-        }
-        .about-float-card {
-            position: absolute; padding: 10px 16px;
-            border-radius: 10px; font-size: 11px;
-            font-weight: 600; backdrop-filter: blur(16px);
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--border);
-        }
-        .about-float-card.c1 { bottom: 20px; right: -30px; color: var(--accent); }
-        .about-float-card.c2 { top: 20px; left: -30px; color: #10b981; }
-
-        .about-text h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px; font-weight: 700;
-            margin-bottom: 16px; letter-spacing: -0.5px;
-        }
-        .about-text p {
-            color: var(--text-secondary); font-size: 14px;
-            line-height: 1.8; margin-bottom: 24px; font-weight: 300;
-        }
-        .about-skills {
-            display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .skill-tag {
-            padding: 6px 14px; border-radius: 6px;
-            font-size: 11px; font-weight: 500;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        /* ============ SERVICES ============ */
-        .services-grid {
-            max-width: 1100px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-        }
-        .svc-card {
-            border-radius: 16px; padding: 32px 28px;
-            transition: all 0.4s ease; position: relative;
-            overflow: hidden; cursor: default;
-        }
-        .svc-card::before {
-            content: ''; position: absolute; top: 0; left: 0;
-            width: 3px; height: 0;
-            background: var(--accent);
-            transition: height 0.4s ease;
-        }
-        .svc-card:hover::before { height: 100%; }
-        .svc-card:hover { transform: translateY(-4px); }
-
-        .svc-num {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px; color: var(--text-dim);
-            margin-bottom: 20px; letter-spacing: 2px;
-        }
-        .svc-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px; font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .svc-card p {
-            font-size: 13px; color: var(--text-dim);
-            line-height: 1.7; font-weight: 300;
-        }
-        .svc-price {
-            margin-top: 20px; padding-top: 16px;
-            border-top: 1px solid var(--border);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px; font-weight: 700;
-            color: var(--accent);
-        }
-        .svc-price .robux-icon {
-            display: inline-flex; align-items: center; gap: 4px;
-        }
-        .svc-price span {
-            font-size: 12px; color: var(--text-dim);
-            font-weight: 300; font-family: 'Inter', sans-serif;
-        }
-
-        /* ============ PROJECTS ============ */
-        .projects-grid {
-            max-width: 1200px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 16px;
-        }
-        .proj-card {
-            border-radius: 16px; overflow: hidden;
-            transition: all 0.4s ease; cursor: default;
-        }
-        .proj-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--border-hover);
-        }
-        .proj-thumb {
-            position: relative; height: 220px;
-            overflow: hidden; background: #0a0a0a;
-        }
-        .proj-thumb img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .proj-card:hover .proj-thumb img { transform: scale(1.05); }
-        .proj-placeholder {
-            width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #0a0a0a, #111);
-            font-size: 40px; color: var(--text-dim);
-        }
-        .proj-thumb-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
-        }
-        .proj-body { padding: 20px 24px; }
-        .proj-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-        .proj-tag {
-            padding: 3px 10px; border-radius: 4px;
-            font-size: 9px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            background: var(--accent-subtle);
-            color: var(--accent-light);
-            border: 1px solid rgba(255,107,0,0.1);
-        }
-        .proj-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 17px; font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .proj-desc {
-            font-size: 12px; color: var(--text-dim);
-            line-height: 1.6; font-weight: 300;
-        }
-
-        /* ============ PRICING ============ */
-        .pricing-grid {
-            max-width: 1000px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .price-card {
-            border-radius: 16px; padding: 36px 28px;
-            transition: all 0.4s ease; position: relative;
-        }
-        .price-card.featured {
-            border-color: var(--accent-dark);
-            box-shadow: 0 0 60px rgba(255,107,0,0.06);
-        }
-        .price-card.featured::before {
-            content: 'POPULAR'; position: absolute;
-            top: -10px; left: 50%; transform: translateX(-50%);
-            background: var(--accent); color: #000;
-            padding: 4px 14px; border-radius: 5px;
-            font-size: 9px; font-weight: 700; letter-spacing: 1px;
-        }
-        .price-card:hover { transform: translateY(-4px); }
-        .price-card h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 16px; font-weight: 600;
-            margin-bottom: 4px; color: var(--text-secondary);
-        }
-        .price-amount {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 32px; font-weight: 700;
-            color: var(--text); margin-bottom: 4px;
-        }
-        .price-amount .r-icon { color: var(--accent); }
-        .price-amount span {
-            font-size: 13px; color: var(--text-dim);
-            font-weight: 300;
-        }
-        .price-note {
-            font-size: 11px; color: var(--text-dim);
-            margin-bottom: 24px; font-weight: 300;
-        }
-        .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .price-features li {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 12px; color: var(--text-secondary); font-weight: 300;
-        }
-        .price-features li i { color: var(--accent); font-size: 10px; width: 14px; }
-        .price-features li.disabled { color: var(--text-dim); text-decoration: line-through; opacity: 0.4; }
-        .price-features li.disabled i { color: var(--text-dim); }
-
-        /* ============ REVIEWS ============ */
-        .reviews-grid {
-            max-width: 1000px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
-        }
-        .rev-card {
-            border-radius: 16px; padding: 28px;
-            transition: all 0.3s ease;
-        }
-        .rev-card:hover { transform: translateY(-3px); }
-        .rev-stars {
-            color: var(--accent); font-size: 12px;
-            margin-bottom: 16px; letter-spacing: 3px;
-        }
-        .rev-text {
-            font-size: 13px; color: var(--text-secondary);
-            line-height: 1.8; margin-bottom: 20px;
-            font-weight: 300; font-style: italic;
-        }
-        .rev-author { display: flex; align-items: center; gap: 12px; }
-        .rev-pfp {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700; color: #000;
-        }
-        .rev-name { font-size: 13px; font-weight: 600; }
-        .rev-role { font-size: 10px; color: var(--text-dim); }
-
-        /* ============ CONTACT ============ */
-        .contact-layout {
-            max-width: 960px; margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 48px;
-        }
-        .contact-left h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px; font-weight: 700;
-            margin-bottom: 12px; letter-spacing: -0.5px;
-        }
-        .contact-left > p {
-            color: var(--text-dim); font-size: 13px;
-            line-height: 1.8; margin-bottom: 28px; font-weight: 300;
-        }
-        .c-links { display: flex; flex-direction: column; gap: 10px; }
-        .c-link {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 18px; border-radius: 12px;
-            text-decoration: none; color: var(--text);
-            transition: all 0.3s ease;
-        }
-        .c-link:hover {
-            transform: translateX(6px);
-        }
-        .c-link-icon {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: var(--accent-subtle);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px; color: var(--accent);
-            flex-shrink: 0;
-        }
-        .c-link-label {
-            font-size: 10px; color: var(--text-dim);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .c-link-value { font-size: 13px; font-weight: 500; }
-
-        .contact-form { display: flex; flex-direction: column; gap: 12px; }
-        .f-group { display: flex; flex-direction: column; gap: 5px; }
-        .f-group label {
-            font-size: 11px; font-weight: 500;
-            color: var(--text-dim); text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .f-group input, .f-group textarea, .f-group select {
-            padding: 12px 16px;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            border-radius: 10px; color: var(--text);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px; transition: all 0.3s ease;
-            outline: none; backdrop-filter: blur(10px);
-        }
-        .f-group input:focus, .f-group textarea:focus, .f-group select:focus {
-            border-color: var(--accent-dark);
-            box-shadow: 0 0 0 3px rgba(255,107,0,0.08);
-        }
-        .f-group textarea { min-height: 100px; resize: vertical; }
-        .f-group select option { background: #111; color: var(--text); }
-        .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-        /* ============ FOOTER ============ */
-        footer {
-            padding: 32px 40px;
-            border-top: 1px solid var(--border);
-            position: relative; z-index: 1;
-        }
-        .footer-inner {
-            max-width: 1200px; margin: 0 auto;
-            display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 16px;
-        }
-        .footer-text {
-            font-size: 12px; color: var(--text-dim); font-weight: 300;
-        }
-        .footer-socials { display: flex; gap: 8px; }
-        .footer-socials a {
-            width: 36px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 8px; font-size: 14px;
-            color: var(--text-dim); text-decoration: none;
-            transition: all 0.3s ease;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-        }
-        .footer-socials a:hover {
-            color: var(--accent); border-color: var(--accent-dark);
-            transform: translateY(-2px);
-        }
-
-        /* ============ ADMIN PANEL ============ */
-        .admin-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(16px);
-            z-index: 99999;
-            align-items: center; justify-content: center;
-        }
-        .admin-overlay.show { display: flex; }
-        .admin-panel {
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 36px;
-            max-width: 360px; width: 92%; text-align: center;
-        }
-        .admin-panel h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px; margin-bottom: 4px;
-        }
-        .admin-panel > p {
-            color: var(--text-dim); font-size: 12px;
-            margin-bottom: 24px;
-        }
-        .toggle-row {
-            display: flex; align-items: center;
-            justify-content: center; gap: 14px;
-            margin-bottom: 20px;
-        }
-        .toggle-label { font-size: 13px; font-weight: 500; }
-        .toggle {
-            position: relative; width: 50px; height: 26px;
-            cursor: pointer; display: inline-block;
-        }
-        .toggle input { display: none; }
-        .toggle-slider {
-            position: absolute; inset: 0;
-            background: rgba(239,68,68,0.2);
-            border-radius: 26px; transition: all 0.3s ease;
-            border: 1px solid rgba(239,68,68,0.3);
-        }
-        .toggle-slider::before {
-            content: ''; position: absolute;
-            width: 18px; height: 18px; border-radius: 50%;
-            background: #ef4444; top: 3px; left: 3px;
-            transition: all 0.3s ease;
-        }
-        .toggle input:checked + .toggle-slider {
-            background: rgba(16,185,129,0.2);
-            border-color: rgba(16,185,129,0.3);
-        }
-        .toggle input:checked + .toggle-slider::before {
-            transform: translateX(24px); background: #10b981;
-        }
-        .admin-status {
-            font-size: 13px; font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .admin-save-msg {
-            font-size: 11px; color: var(--accent);
-            min-height: 16px; margin-bottom: 16px;
-        }
-        .admin-close-btn {
-            padding: 10px 24px;
-            background: var(--bg-glass); border: 1px solid var(--border);
-            border-radius: 10px; color: var(--text);
-            cursor: pointer; font-family: 'Inter', sans-serif;
-            font-size: 12px; font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .admin-close-btn:hover { background: var(--bg-glass-hover); }
-        .admin-note {
-            margin-top: 18px; font-size: 9px;
-            color: var(--text-dim); line-height: 1.6;
-        }
-
-        /* ============ ANIMATIONS ============ */
-        .fade-in {
-            opacity: 0; transform: translateY(24px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-in.visible {
-            opacity: 1; transform: translateY(0);
-        }
-
-        /* ============ RESPONSIVE ============ */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none; position: fixed; inset: 0;
-                background: rgba(0,0,0,0.95);
-                backdrop-filter: blur(24px);
-                flex-direction: column; align-items: center;
-                justify-content: center; gap: 12px;
-            }
-            .nav-links.open { display: flex; }
-            .hamburger { display: flex; }
-            section { padding: 72px 20px; }
-            .hero { padding: 100px 20px 60px; }
-            .about-grid { grid-template-columns: 1fr; gap: 40px; }
-            .projects-grid, .services-grid, .reviews-grid { grid-template-columns: 1fr; }
-            .contact-layout { grid-template-columns: 1fr; gap: 32px; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .f-row { grid-template-columns: 1fr; }
-            .footer-inner { flex-direction: column; text-align: center; }
-            .stats-row { gap: 28px; }
-            .nav-inner { padding: 0 20px; }
+        @media(max-width:768px){
+            .nav-l{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:10px}
+            .nav-l.open{display:flex}
+            .ham{display:flex}
+            section{padding:64px 18px}
+            .hero{padding:90px 18px 50px}
+            .ab-g{grid-template-columns:1fr;gap:32px;text-align:center}
+            .ab-aw{margin:0 auto}
+            .sk{justify-content:center}
+            .pj-g,.rv-g{grid-template-columns:1fr}
+            .pr-g{grid-template-columns:1fr}
+            .ft-i{flex-direction:column;text-align:center}
+            .stats{gap:24px}
+            .nav-i{padding:0 18px}
+            .ct-links{flex-direction:column;align-items:center}
         }
     </style>
 </head>
 <body>
 
-<div class="bg-noise"></div>
-<div class="bg-gradient"></div>
-<div class="grid-overlay"></div>
+<div class="bg-n"></div>
+<div class="bg-g"></div>
+<div class="bg-grid"></div>
 
-<!-- ============================================
-     ADMIN PANEL — Press Ctrl+Shift+K to open
-     ============================================ -->
-<div class="admin-overlay" id="adminPanel">
-    <div class="admin-panel">
-        <h3>🔒 Admin Panel</h3>
-        <p>Toggle commission status</p>
-        <div class="admin-status" id="adminStatus">Status: Open</div>
-        <div class="toggle-row">
-            <span class="toggle-label">Closed</span>
-            <label class="toggle">
-                <input type="checkbox" id="commToggle" checked>
-                <div class="toggle-slider"></div>
-            </label>
-            <span class="toggle-label">Open</span>
+<!-- ADMIN (Ctrl+Shift+K) -->
+<div class="adm-o" id="adm">
+    <div class="adm-p">
+        <h3>🔒 Admin</h3>
+        <p>Toggle commissions</p>
+        <div class="adm-st" id="admSt">Status: Open</div>
+        <div class="tg-r">
+            <span class="tg-l">Closed</span>
+            <label class="tg"><input type="checkbox" id="commTog" checked><div class="tg-s"></div></label>
+            <span class="tg-l">Open</span>
         </div>
-        <div class="admin-save-msg" id="saveMsg"></div>
-        <button class="admin-close-btn" onclick="closeAdmin()">Close</button>
-        <div class="admin-note">
-            ⚠ To make it permanent for everyone:<br>
-            Change <code>COMMISSIONS_OPEN = true/false</code><br>
-            in the script section and push to GitHub.
-        </div>
+        <div class="adm-msg" id="admMsg"></div>
+        <button class="adm-btn" onclick="document.getElementById('adm').classList.remove('show')">Close</button>
+        <div class="adm-nt">⚠ To make permanent: edit COMMISSIONS_OPEN in the CONFIG below & push to GitHub.</div>
     </div>
 </div>
 
 <!-- NAV -->
-<nav id="navbar">
-    <div class="nav-inner">
-        <a href="#home" class="nav-logo">Your<span>Name</span></a>
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+<nav id="nav">
+    <div class="nav-i">
+        <a href="#home" class="logo" id="logoEl"></a>
+        <div class="ham" id="ham" onclick="document.getElementById('nl').classList.toggle('open');this.classList.toggle('on')">
             <span></span><span></span><span></span>
         </div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home" class="active" onclick="closeMenu()">Home</a></li>
-            <li><a href="#about" onclick="closeMenu()">About</a></li>
-            <li><a href="#work" onclick="closeMenu()">Work</a></li>
-            <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
-            <li><a href="#pricing" onclick="closeMenu()">Pricing</a></li>
-            <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
-            <li>
-                <span class="comm-badge open" id="commBadge">
-                    <span class="comm-dot"></span>
-                    <span id="commText">OPEN</span>
-                </span>
-            </li>
+        <ul class="nav-l" id="nl">
+            <li><a href="#home" onclick="cm()">Home</a></li>
+            <li><a href="#about" onclick="cm()">About</a></li>
+            <li><a href="#projects" onclick="cm()">Projects</a></li>
+            <li><a href="#pricing" onclick="cm()">Pricing</a></li>
+            <li><a href="#reviews" onclick="cm()">Reviews</a></li>
+            <li><a href="#contact" onclick="cm()">Contact</a></li>
+            <li><span class="cb o" id="commB"><span class="cd"></span><span id="commT">OPEN</span></span></li>
         </ul>
     </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
-    <div class="hero-content fade-in">
-        <div class="hero-badge">
-            <i class="fas fa-gamepad"></i> Roblox UI Designer
+    <div class="hero-c fi">
+        <div class="h-badge"><i class="fas fa-gamepad"></i> <span id="heroRole"></span></div>
+        <h1 id="heroTitle"></h1>
+        <p id="heroDesc"></p>
+        <div class="hero-b">
+            <a href="#contact" class="btn bp"><i class="fas fa-paper-plane"></i> Get in Touch</a>
+            <a href="#projects" class="btn bg"><i class="fas fa-arrow-down"></i> View Work</a>
         </div>
-        <h1>
-            I design <span class="accent">interfaces</span><br>
-            that <span class="outline">players</span> love
-        </h1>
-        <p>
-            Creating clean, modern, and immersive UI experiences
-            for Roblox games. Every pixel matters.
-        </p>
-        <div class="hero-btns">
-            <a href="#contact" class="btn btn-primary">
-                <i class="fas fa-paper-plane"></i> Get in Touch
-            </a>
-            <a href="#projects" class="btn btn-ghost">
-                <i class="fas fa-arrow-down"></i> View Work
-            </a>
-        </div>
-
-        <div class="stats-row">
-            <div class="stat">
-                <div class="stat-val">50<span>+</span></div>
-                <div class="stat-label">Projects</div>
-            </div>
-            <div class="stat">
-                <div class="stat-val">30<span>+</span></div>
-                <div class="stat-label">Clients</div>
-            </div>
-            <div class="stat">
-                <div class="stat-val">2<span>+</span></div>
-                <div class="stat-label">Years</div>
-            </div>
-        </div>
+        <div class="stats" id="statsEl"></div>
     </div>
-    <div class="scroll-hint">
-        <span>Scroll</span>
-        <i class="fas fa-chevron-down"></i>
-    </div>
+    <div class="scroll-h"><span>Scroll</span><i class="fas fa-chevron-down"></i></div>
 </section>
 
-<div class="divider"></div>
+<div class="dv"></div>
 
 <!-- ABOUT -->
 <section id="about">
-    <div class="about-grid">
-        <div class="about-visual fade-in">
-            <div class="about-avatar-wrap">
-                <!--
-                ╔════════════════════════════════════╗
-                ║  SETUP: Replace emoji with your    ║
-                ║  avatar image:                     ║
-                ║  <img src="avatar.png" ...>        ║
-                ╚════════════════════════════════════╝
-                -->
-                <div class="about-avatar">🎨</div>
-            </div>
-            <div class="about-float-card c1">
-                <i class="fas fa-fire"></i> Available for work
-            </div>
-            <div class="about-float-card c2">
-                <i class="fas fa-check-circle"></i> Verified Seller
-            </div>
+    <div class="ab-g">
+        <div class="fi">
+            <div class="ab-aw"><div class="ab-av" id="avatarEl"></div></div>
         </div>
-        <div class="about-text fade-in">
-            <!--
-            ╔════════════════════════════════════╗
-            ║  SETUP: Edit your bio below        ║
-            ╚════════════════════════════════════╝
-            -->
-            <h3>Hey, I'm <span style="color:var(--accent)">YourName</span></h3>
-            <p>
-                I'm a Roblox UI designer with 2+ years of experience
-                crafting clean, modern interfaces for games. I focus
-                on user experience and pixel-perfect designs that
-                make games feel professional.
-            </p>
-            <p>
-                From full GUI systems to single screen designs,
-                I bring your vision to life with attention to detail
-                and smooth animations.
-            </p>
-            <div class="about-skills">
-                <span class="skill-tag">UI Design</span>
-                <span class="skill-tag">UX Design</span>
-                <span class="skill-tag">Roblox Studio</span>
-                <span class="skill-tag">Figma</span>
-                <span class="skill-tag">Photoshop</span>
-                <span class="skill-tag">Animations</span>
-                <span class="skill-tag">Luau</span>
-            </div>
+        <div class="ab-t fi">
+            <h3 id="aboutTitle"></h3>
+            <p id="aboutDesc"></p>
+            <div class="sk" id="skillsEl"></div>
         </div>
     </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- SERVICES / WORK -->
-<section id="work">
-    <div class="section-header fade-in">
-        <span class="section-tag">Services</span>
-        <h2 class="section-title">What I Offer</h2>
-        <p class="section-desc">Professional UI/UX solutions for your Roblox game</p>
-    </div>
-
-    <div class="services-grid">
-        <!--
-        ╔════════════════════════════════════╗
-        ║  SETUP: Edit services & prices     ║
-        ║  Prices are in ROBUX (R$)          ║
-        ╚════════════════════════════════════╝
-        -->
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">01</div>
-            <h3>Full GUI System</h3>
-            <p>Complete interface system for your game. Main menu, inventory, shop, settings, and more — all cohesive and polished.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 5,000+</span>
-                <span> / project</span>
-            </div>
-        </div>
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">02</div>
-            <h3>Single UI Screen</h3>
-            <p>One screen or panel design. HUD, loading screen, popup, or any individual UI element you need.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 1,500+</span>
-                <span> / piece</span>
-            </div>
-        </div>
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">03</div>
-            <h3>UI Revamp</h3>
-            <p>Give your existing game's interface a modern, professional makeover. Fresh look, same soul.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 3,500+</span>
-                <span> / project</span>
-            </div>
-        </div>
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">04</div>
-            <h3>Animated UI</h3>
-            <p>Tween animations, transition effects, and interactive elements that bring your UI to life.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 2,000+</span>
-                <span> / piece</span>
-            </div>
-        </div>
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">05</div>
-            <h3>Icons & Assets</h3>
-            <p>Custom icons, buttons, and visual assets designed specifically for your game's style.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 800+</span>
-                <span> / set</span>
-            </div>
-        </div>
-        <div class="svc-card glass fade-in">
-            <div class="svc-num">06</div>
-            <h3>UI Consultation</h3>
-            <p>UX analysis for your game with improvement suggestions and design guidance.</p>
-            <div class="svc-price">
-                <span class="robux-icon">R$ 500+</span>
-                <span> / hour</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="divider"></div>
+<div class="dv"></div>
 
 <!-- PROJECTS -->
 <section id="projects">
-    <div class="section-header fade-in">
-        <span class="section-tag">Portfolio</span>
-        <h2 class="section-title">Recent Projects</h2>
-        <p class="section-desc">Some of my latest work</p>
+    <div class="sh fi">
+        <span class="s-tag">Portfolio</span>
+        <h2 class="s-t">Recent Projects</h2>
+        <p class="s-d">Some of my latest work</p>
     </div>
-
-    <div class="projects-grid">
-        <!--
-        ╔══════════════════════════════════════════════════╗
-        ║  SETUP: HOW TO ADD YOUR OWN PROJECTS             ║
-        ║                                                   ║
-        ║  1. Replace the <div class="proj-placeholder">   ║
-        ║     with: <img src="YOUR_IMAGE.png" alt="...">  ║
-        ║                                                   ║
-        ║  2. Edit the title, tags, and description         ║
-        ║                                                   ║
-        ║  3. Copy-paste a proj-card block to add more      ║
-        ║                                                   ║
-        ║  4. Put images in same folder or use full URL     ║
-        ╚══════════════════════════════════════════════════╝
-        -->
-
-        <!-- PROJECT 1 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <!-- Replace with: <img src="project1.png" alt="Project Name"> -->
-                <div class="proj-placeholder">🎮</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">RPG</span>
-                    <span class="proj-tag">Full GUI</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-
-        <!-- PROJECT 2 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <div class="proj-placeholder">⚔️</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">PVP</span>
-                    <span class="proj-tag">HUD</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-
-        <!-- PROJECT 3 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <div class="proj-placeholder">🏪</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">Simulator</span>
-                    <span class="proj-tag">Shop UI</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-
-        <!-- PROJECT 4 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <div class="proj-placeholder">🏠</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">Tycoon</span>
-                    <span class="proj-tag">Menu</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-
-        <!-- PROJECT 5 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <div class="proj-placeholder">🎵</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">Rhythm</span>
-                    <span class="proj-tag">Animated</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-
-        <!-- PROJECT 6 -->
-        <div class="proj-card glass fade-in">
-            <div class="proj-thumb">
-                <div class="proj-placeholder">🌍</div>
-                <div class="proj-thumb-overlay"></div>
-            </div>
-            <div class="proj-body">
-                <div class="proj-tags">
-                    <span class="proj-tag">MMO</span>
-                    <span class="proj-tag">Complex</span>
-                </div>
-                <div class="proj-title">Project Name Here</div>
-                <div class="proj-desc">Brief description of this project. What you designed and the outcome.</div>
-            </div>
-        </div>
-    </div>
+    <div class="pj-g" id="projGrid"></div>
 </section>
 
-<div class="divider"></div>
+<div class="dv"></div>
 
 <!-- PRICING -->
 <section id="pricing">
-    <div class="section-header fade-in">
-        <span class="section-tag">Pricing</span>
-        <h2 class="section-title">Packages</h2>
-        <p class="section-desc">Choose a package that fits your needs. All prices in Robux.</p>
+    <div class="sh fi">
+        <span class="s-tag">Pricing</span>
+        <h2 class="s-t">Packages</h2>
+        <p class="s-d">All prices in Robux (R$)</p>
     </div>
-
-    <div class="pricing-grid">
-        <!--
-        ╔════════════════════════════════════╗
-        ║  SETUP: Edit prices (in Robux)     ║
-        ╚════════════════════════════════════╝
-        -->
-        <div class="price-card glass fade-in">
-            <h4>Starter</h4>
-            <div class="price-amount"><span class="r-icon">R$</span> 1,500 <span>start</span></div>
-            <div class="price-note">Perfect for small projects</div>
-            <ul class="price-features">
-                <li><i class="fas fa-check"></i> 1 UI screen</li>
-                <li><i class="fas fa-check"></i> Basic animations</li>
-                <li><i class="fas fa-check"></i> 1 revision</li>
-                <li><i class="fas fa-check"></i> 3-5 day delivery</li>
-                <li><i class="fas fa-check"></i> Source file</li>
-                <li class="disabled"><i class="fas fa-times"></i> Priority support</li>
-            </ul>
-        </div>
-
-        <div class="price-card glass featured fade-in">
-            <h4>Professional</h4>
-            <div class="price-amount"><span class="r-icon">R$</span> 4,000 <span>start</span></div>
-            <div class="price-note">Best value for most games</div>
-            <ul class="price-features">
-                <li><i class="fas fa-check"></i> 3-5 UI screens</li>
-                <li><i class="fas fa-check"></i> Advanced animations</li>
-                <li><i class="fas fa-check"></i> 3 revisions</li>
-                <li><i class="fas fa-check"></i> 5-7 day delivery</li>
-                <li><i class="fas fa-check"></i> Source files + icons</li>
-                <li><i class="fas fa-check"></i> Responsive design</li>
-            </ul>
-        </div>
-
-        <div class="price-card glass fade-in">
-            <h4>Premium</h4>
-            <div class="price-amount"><span class="r-icon">R$</span> 8,000<span>+</span></div>
-            <div class="price-note">Full game UI system</div>
-            <ul class="price-features">
-                <li><i class="fas fa-check"></i> Complete GUI system</li>
-                <li><i class="fas fa-check"></i> Full animation pack</li>
-                <li><i class="fas fa-check"></i> Unlimited revisions</li>
-                <li><i class="fas fa-check"></i> 7-14 day delivery</li>
-                <li><i class="fas fa-check"></i> All source files</li>
-                <li><i class="fas fa-check"></i> Priority support</li>
-            </ul>
-        </div>
-    </div>
+    <div class="pr-g" id="priceGrid"></div>
 </section>
 
-<div class="divider"></div>
+<div class="dv"></div>
 
 <!-- REVIEWS -->
 <section id="reviews">
-    <div class="section-header fade-in">
-        <span class="section-tag">Testimonials</span>
-        <h2 class="section-title">What Clients Say</h2>
-        <p class="section-desc">Feedback from people I've worked with</p>
+    <div class="sh fi">
+        <span class="s-tag">Testimonials</span>
+        <h2 class="s-t">Client Reviews</h2>
+        <p class="s-d">What people say about my work</p>
     </div>
-
-    <div class="reviews-grid">
-        <!--
-        ╔════════════════════════════════════╗
-        ║  SETUP: Add real client reviews    ║
-        ╚════════════════════════════════════╝
-        -->
-        <div class="rev-card glass fade-in">
-            <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"Amazing designer! The UI they made for our game was exactly what we wanted. Clean, modern, and the animations are smooth."</div>
-            <div class="rev-author">
-                <div class="rev-pfp">A</div>
-                <div>
-                    <div class="rev-name">Alex</div>
-                    <div class="rev-role">Game Developer</div>
-                </div>
-            </div>
-        </div>
-        <div class="rev-card glass fade-in">
-            <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"Very professional work. Fast delivery, clean design, and great communication. Would definitely hire again. 10/10."</div>
-            <div class="rev-author">
-                <div class="rev-pfp">M</div>
-                <div>
-                    <div class="rev-name">MrBuilder</div>
-                    <div class="rev-role">Studio Owner</div>
-                </div>
-            </div>
-        </div>
-        <div class="rev-card glass fade-in">
-            <div class="rev-stars">★★★★★</div>
-            <div class="rev-text">"Our game's UI was very basic before. After working with them, the whole look and feel completely transformed. Players love it!"</div>
-            <div class="rev-author">
-                <div class="rev-pfp">K</div>
-                <div>
-                    <div class="rev-name">KaanDev</div>
-                    <div class="rev-role">Scripter</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="rv-g" id="revGrid"></div>
 </section>
 
-<div class="divider"></div>
+<div class="dv"></div>
 
 <!-- CONTACT -->
 <section id="contact">
-    <div class="section-header fade-in">
-        <span class="section-tag">Contact</span>
-        <h2 class="section-title">Let's Work Together</h2>
-        <p class="section-desc">Got a project in mind? Reach out!</p>
+    <div class="sh fi">
+        <span class="s-tag">Contact</span>
+        <h2 class="s-t">Let's Work Together</h2>
     </div>
-
-    <div class="contact-layout">
-        <div class="contact-left fade-in">
-            <h3>Get in Touch</h3>
-            <p>Share your project details and I'll get back to you as soon as possible. Check my commission status before reaching out!</p>
-
-            <div class="c-links">
-                <!--
-                ╔════════════════════════════════════╗
-                ║  SETUP: Change your social links   ║
-                ╚════════════════════════════════════╝
-                -->
-                <a href="https://twitter.com/YOUR_TWITTER" target="_blank" class="c-link glass">
-                    <div class="c-link-icon"><i class="fab fa-twitter"></i></div>
-                    <div>
-                        <div class="c-link-label">Twitter / X</div>
-                        <div class="c-link-value">@YOUR_TWITTER</div>
-                    </div>
-                </a>
-                <a href="https://discord.com/users/YOUR_ID" target="_blank" class="c-link glass">
-                    <div class="c-link-icon"><i class="fab fa-discord"></i></div>
-                    <div>
-                        <div class="c-link-label">Discord</div>
-                        <div class="c-link-value">yourname</div>
-                    </div>
-                </a>
-                <a href="https://www.roblox.com/users/YOUR_ID/profile" target="_blank" class="c-link glass">
-                    <div class="c-link-icon"><i class="fas fa-gamepad"></i></div>
-                    <div>
-                        <div class="c-link-label">Roblox</div>
-                        <div class="c-link-value">YourRobloxName</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
-            <div class="f-row">
-                <div class="f-group">
-                    <label>Name</label>
-                    <input type="text" placeholder="Your name" required>
-                </div>
-                <div class="f-group">
-                    <label>Discord / Twitter</label>
-                    <input type="text" placeholder="username" required>
-                </div>
-            </div>
-            <div class="f-group">
-                <label>Service</label>
-                <select required>
-                    <option value="" disabled selected>Select a service...</option>
-                    <option>Full GUI System</option>
-                    <option>Single UI Screen</option>
-                    <option>UI Revamp</option>
-                    <option>Animated UI</option>
-                    <option>Icons & Assets</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <div class="f-group">
-                <label>Budget (Robux)</label>
-                <select>
-                    <option value="" disabled selected>Select budget range...</option>
-                    <option>R$ 500 - R$ 2,000</option>
-                    <option>R$ 2,000 - R$ 5,000</option>
-                    <option>R$ 5,000 - R$ 10,000</option>
-                    <option>R$ 10,000+</option>
-                </select>
-            </div>
-            <div class="f-group">
-                <label>Project Details</label>
-                <textarea placeholder="Tell me about your project..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="justify-content:center;width:100%">
-                <i class="fas fa-paper-plane"></i> Send Message
-            </button>
-        </form>
+    <div class="ct fi">
+        <p id="contactDesc"></p>
+        <div class="ct-links" id="contactLinks"></div>
     </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-    <div class="footer-inner">
-        <div class="footer-text">© 2024 YourName — All rights reserved</div>
-        <div class="footer-socials">
-            <!--
-            ╔════════════════════════════════════╗
-            ║  SETUP: Change your social links   ║
-            ╚════════════════════════════════════╝
-            -->
-            <a href="https://twitter.com/YOUR_TWITTER" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://discord.com" target="_blank"><i class="fab fa-discord"></i></a>
-            <a href="https://www.roblox.com" target="_blank"><i class="fas fa-gamepad"></i></a>
-            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
+    <div class="ft-i">
+        <div class="ft-t" id="footerText"></div>
+        <div class="ft-s" id="footerSocials"></div>
     </div>
 </footer>
 
 <script>
 /*
-╔══════════════════════════════════════════════════════╗
-║                                                      ║
-║   ⚡ SETUP AREA — CHANGE THESE VALUES ⚡             ║
-║                                                      ║
-║   COMMISSIONS_OPEN:                                  ║
-║     true  = commissions are OPEN (green badge)       ║
-║     false = commissions are CLOSED (red badge)       ║
-║                                                      ║
-║   To change for EVERYONE:                            ║
-║     1. Edit this value below                         ║
-║     2. Save file                                     ║
-║     3. Push to GitHub                                ║
-║                                                      ║
-║   Quick toggle (only for your session):              ║
-║     Press Ctrl + Shift + K                           ║
-║                                                      ║
-╚══════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║   ██████  ██████  ███    ██ ███████ ██  ██████                ║
+║  ██      ██    ██ ████   ██ ██      ██ ██                     ║
+║  ██      ██    ██ ██ ██  ██ █████   ██ ██   ███               ║
+║  ██      ██    ██ ██  ██ ██ ██      ██ ██    ██               ║
+║   ██████  ██████  ██   ████ ██      ██  ██████                ║
+║                                                               ║
+║   EDIT EVERYTHING BELOW TO CUSTOMIZE YOUR SITE                ║
+║   Then save & push to GitHub                                  ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
 */
 
-const COMMISSIONS_OPEN = true; // ← CHANGE THIS: true = Open, false = Closed
+const CONFIG = {
 
-// ======================================================
-//  DON'T EDIT BELOW UNLESS YOU KNOW WHAT YOU'RE DOING
-// ======================================================
+    // ═══════════ GENERAL ═══════════
+    name: "YourName",           // Your display name
+    logo: "Your|Name",          // Nav logo (use | to split color, left=white right=orange)
+    role: "Roblox UI Designer", // Your role/title
+    footerText: "© 2024 YourName — All rights reserved",
 
-let commOpen = COMMISSIONS_OPEN;
+    // ═══════════ COMMISSIONS ═══════════
+    commissionsOpen: true,      // true = OPEN, false = CLOSED (change & push to GitHub)
 
-function updateCommission(open) {
-    commOpen = open;
-    const badge = document.getElementById('commBadge');
-    const text = document.getElementById('commText');
-    const status = document.getElementById('adminStatus');
-    const toggle = document.getElementById('commToggle');
+    // ═══════════ HERO SECTION ═══════════
+    heroTitle: 'I design <span class="a">interfaces</span><br>that <span class="o">players</span> love',
+    heroDesc: "Creating clean, modern, and immersive UI experiences for Roblox games. Every pixel matters.",
+    stats: [
+        { value: "50+",  label: "Projects" },
+        { value: "30+",  label: "Clients" },
+        { value: "2+",   label: "Years" },
+    ],
 
-    if (open) {
-        badge.className = 'comm-badge open';
-        text.textContent = 'OPEN';
-        status.textContent = 'Status: ✅ Open';
-        status.style.color = '#10b981';
+    // ═══════════ ABOUT SECTION ═══════════
+    // Avatar: use emoji like "🎨" OR image path like "avatar.png"
+    avatar: "🎨",
+    aboutTitle: 'Hey, I\'m <span>YourName</span>',
+    aboutDesc: "I'm a Roblox UI designer with 2+ years of experience crafting clean, modern interfaces for games. From full GUI systems to single screens, I bring your vision to life with smooth animations and pixel-perfect designs.",
+    skills: ["UI Design", "UX Design", "Roblox Studio", "Figma", "Photoshop", "Animations", "Luau"],
+
+    // ═══════════ PROJECTS ═══════════
+    // image: use emoji like "🎮" OR image path like "images/project1.png" OR full URL
+    projects: [
+        {
+            image: "🎮",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["RPG", "Full GUI"],
+        },
+        {
+            image: "⚔️",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["PVP", "HUD"],
+        },
+        {
+            image: "🏪",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["Simulator", "Shop"],
+        },
+        {
+            image: "🏠",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["Tycoon", "Menu"],
+        },
+        {
+            image: "🎵",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["Rhythm", "Animated"],
+        },
+        {
+            image: "🌍",
+            title: "Project Name",
+            desc: "Brief description of this project.",
+            tags: ["MMO", "Complex"],
+        },
+    ],
+
+    // ═══════════ PRICING (in Robux) ═══════════
+    pricing: [
+        {
+            name: "Starter",
+            price: "R$ 1,500",
+            suffix: "start",
+            note: "Perfect for small projects",
+            popular: false,
+            features: [
+                { text: "1 UI screen", included: true },
+                { text: "Basic animations", included: true },
+                { text: "1 revision", included: true },
+                { text: "3-5 day delivery", included: true },
+                { text: "Source file", included: true },
+                { text: "Priority support", included: false },
+            ],
+        },
+        {
+            name: "Professional",
+            price: "R$ 4,000",
+            suffix: "start",
+            note: "Best value for most games",
+            popular: true,
+            features: [
+                { text: "3-5 UI screens", included: true },
+                { text: "Advanced animations", included: true },
+                { text: "3 revisions", included: true },
+                { text: "5-7 day delivery", included: true },
+                { text: "Source files + icons", included: true },
+                { text: "Responsive design", included: true },
+            ],
+        },
+        {
+            name: "Premium",
+            price: "R$ 8,000+",
+            suffix: "",
+            note: "Full game UI system",
+            popular: false,
+            features: [
+                { text: "Complete GUI system", included: true },
+                { text: "Full animation pack", included: true },
+                { text: "Unlimited revisions", included: true },
+                { text: "7-14 day delivery", included: true },
+                { text: "All source files", included: true },
+                { text: "Priority support", included: true },
+            ],
+        },
+    ],
+
+    // ═══════════ REVIEWS ═══════════
+    reviews: [
+        {
+            stars: 5,
+            text: "Amazing designer! The UI was exactly what we wanted. Clean, modern, and smooth animations.",
+            name: "Alex",
+            role: "Game Developer",
+        },
+        {
+            stars: 5,
+            text: "Very professional. Fast delivery, clean design, great communication. 10/10 would hire again.",
+            name: "MrBuilder",
+            role: "Studio Owner",
+        },
+        {
+            stars: 5,
+            text: "Our game UI completely transformed. Players love the new look. Highly recommended!",
+            name: "KaanDev",
+            role: "Scripter",
+        },
+    ],
+
+    // ═══════════ CONTACT / SOCIALS ═══════════
+    contactDesc: "Feel free to reach out through any of these platforms. Check my commission status before messaging!",
+    socials: [
+        { platform: "Twitter",  icon: "fab fa-twitter",  label: "@YOUR_TWITTER",   url: "https://twitter.com/YOUR_TWITTER" },
+        { platform: "Discord",  icon: "fab fa-discord",  label: "yourname",         url: "https://discord.com/users/YOUR_ID" },
+        { platform: "Roblox",   icon: "fas fa-gamepad",  label: "YourRobloxName",   url: "https://www.roblox.com/users/YOUR_ID/profile" },
+        { platform: "GitHub",   icon: "fab fa-github",   label: "yourgithub",       url: "https://github.com/YOUR_GITHUB" },
+    ],
+};
+
+/*
+╔═══════════════════════════════════════════╗
+║  DON'T EDIT BELOW (site engine)          ║
+╚═══════════════════════════════════════════╝
+*/
+
+// BUILD SITE FROM CONFIG
+function build() {
+    // Logo
+    const lp = CONFIG.logo.split("|");
+    document.getElementById("logoEl").innerHTML = lp[0] + (lp[1] ? `<b>${lp[1]}</b>` : "");
+
+    // Hero
+    document.getElementById("heroRole").textContent = CONFIG.role;
+    document.getElementById("heroTitle").innerHTML = CONFIG.heroTitle;
+    document.getElementById("heroDesc").textContent = CONFIG.heroDesc;
+
+    // Stats
+    const se = document.getElementById("statsEl");
+    se.innerHTML = CONFIG.stats.map(s =>
+        `<div><div class="st-v">${s.value.replace(/\+/g,'<span>+</span>')}</div><div class="st-l">${s.label}</div></div>`
+    ).join("");
+
+    // About
+    const av = document.getElementById("avatarEl");
+    if (CONFIG.avatar.length <= 4) {
+        av.textContent = CONFIG.avatar;
     } else {
-        badge.className = 'comm-badge closed';
-        text.textContent = 'CLOSED';
-        status.textContent = 'Status: ❌ Closed';
-        status.style.color = '#ef4444';
+        av.innerHTML = `<img src="${CONFIG.avatar}" alt="avatar">`;
     }
-    toggle.checked = open;
+    document.getElementById("aboutTitle").innerHTML = CONFIG.aboutTitle;
+    document.getElementById("aboutDesc").textContent = CONFIG.aboutDesc;
+    document.getElementById("skillsEl").innerHTML = CONFIG.skills.map(s => `<span>${s}</span>`).join("");
+
+    // Projects
+    const pg = document.getElementById("projGrid");
+    pg.innerHTML = CONFIG.projects.map(p => {
+        const isEmoji = p.image.length <= 4;
+        const thumb = isEmoji
+            ? `<div class="pj-ph">${p.image}</div>`
+            : `<img src="${p.image}" alt="${p.title}">`;
+        const tags = p.tags.map(t => `<span class="pj-tag">${t}</span>`).join("");
+        return `<div class="pj-c gl fi">
+            <div class="pj-th">${thumb}<div class="pj-to"></div></div>
+            <div class="pj-b">
+                <div class="pj-tags">${tags}</div>
+                <div class="pj-n">${p.title}</div>
+                <div class="pj-d">${p.desc}</div>
+            </div>
+        </div>`;
+    }).join("");
+
+    // Pricing
+    const prg = document.getElementById("priceGrid");
+    prg.innerHTML = CONFIG.pricing.map(p => {
+        const feats = p.features.map(f =>
+            `<li class="${f.included?'':'off'}"><i class="fas fa-${f.included?'check':'times'}"></i>${f.text}</li>`
+        ).join("");
+        return `<div class="pr-c gl${p.popular?' ft':''} fi">
+            <h4>${p.name}</h4>
+            <div class="pr-a"><span class="ri">R$</span> ${p.price.replace('R$ ','')} <span>${p.suffix}</span></div>
+            <div class="pr-nt">${p.note}</div>
+            <ul class="pr-f">${feats}</ul>
+        </div>`;
+    }).join("");
+
+    // Reviews
+    const rvg = document.getElementById("revGrid");
+    rvg.innerHTML = CONFIG.reviews.map(r => {
+        return `<div class="rv-c gl fi">
+            <div class="rv-s">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</div>
+            <div class="rv-t">"${r.text}"</div>
+            <div class="rv-a">
+                <div class="rv-p">${r.name[0]}</div>
+                <div><div class="rv-n">${r.name}</div><div class="rv-r">${r.role}</div></div>
+            </div>
+        </div>`;
+    }).join("");
+
+    // Contact
+    document.getElementById("contactDesc").textContent = CONFIG.contactDesc;
+    const cl = document.getElementById("contactLinks");
+    cl.innerHTML = CONFIG.socials.map(s =>
+        `<a href="${s.url}" target="_blank" class="ct-l gl"><i class="${s.icon}"></i>${s.label}</a>`
+    ).join("");
+
+    // Footer
+    document.getElementById("footerText").textContent = CONFIG.footerText;
+    const fs = document.getElementById("footerSocials");
+    fs.innerHTML = CONFIG.socials.map(s =>
+        `<a href="${s.url}" target="_blank"><i class="${s.icon}"></i></a>`
+    ).join("");
+
+    // Commission
+    updateComm(CONFIG.commissionsOpen);
 }
 
-// Init
-document.addEventListener('DOMContentLoaded', () => {
-    updateCommission(COMMISSIONS_OPEN);
-});
+// COMMISSION SYSTEM
+let commOpen = CONFIG.commissionsOpen;
+function updateComm(open) {
+    commOpen = open;
+    const b = document.getElementById("commB");
+    const t = document.getElementById("commT");
+    const st = document.getElementById("admSt");
+    const tg = document.getElementById("commTog");
+    b.className = open ? "cb o" : "cb c";
+    t.textContent = open ? "OPEN" : "CLOSED";
+    st.textContent = open ? "Status: ✅ Open" : "Status: ❌ Closed";
+    st.style.color = open ? "#10b981" : "#ef4444";
+    tg.checked = open;
+}
 
-// Admin Panel — Ctrl+Shift+K
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+// Admin panel: Ctrl+Shift+K
+document.addEventListener("keydown", e => {
+    if (e.ctrlKey && e.shiftKey && e.key === "K") {
         e.preventDefault();
-        document.getElementById('adminPanel').classList.add('show');
+        document.getElementById("adm").classList.add("show");
     }
 });
-
-document.getElementById('commToggle').addEventListener('change', function () {
-    updateCommission(this.checked);
-    const msg = document.getElementById('saveMsg');
-    msg.textContent = '⚠ Change COMMISSIONS_OPEN = ' + this.checked + ' in code & push to GitHub!';
-    setTimeout(() => { msg.textContent = ''; }, 6000);
+document.getElementById("commTog").addEventListener("change", function() {
+    updateComm(this.checked);
+    const m = document.getElementById("admMsg");
+    m.textContent = "⚠ Edit commissionsOpen: " + this.checked + " in CONFIG & push!";
+    setTimeout(() => m.textContent = "", 5000);
 });
-
-function closeAdmin() {
-    document.getElementById('adminPanel').classList.remove('show');
-}
-document.getElementById('adminPanel').addEventListener('click', function (e) {
-    if (e.target === this) closeAdmin();
+document.getElementById("adm").addEventListener("click", function(e) {
+    if (e.target === this) this.classList.remove("show");
 });
 
 // Nav scroll
-window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-
-    document.querySelectorAll('section[id]').forEach(sec => {
-        const link = document.querySelector(`.nav-links a[href="#${sec.id}"]`);
-        if (link) {
-            const top = sec.offsetTop - 200;
-            const bot = top + sec.offsetHeight;
-            link.classList.toggle('active', window.scrollY >= top && window.scrollY < bot);
+window.addEventListener("scroll", () => {
+    document.getElementById("nav").classList.toggle("s", scrollY > 40);
+    document.querySelectorAll("section[id]").forEach(s => {
+        const a = document.querySelector(`.nav-l a[href="#${s.id}"]`);
+        if (a) {
+            const t = s.offsetTop - 180;
+            a.classList.toggle("on", scrollY >= t && scrollY < t + s.offsetHeight);
         }
     });
 });
 
-// Mobile menu
-function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
-    document.getElementById('hamburger').classList.toggle('active');
+// Close mobile menu
+function cm() {
+    document.getElementById("nl").classList.remove("open");
+    document.getElementById("ham").classList.remove("on");
 }
-function closeMenu() {
-    document.getElementById('navLinks').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('active');
-}
-
-// Fade in observer
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => entry.target.classList.add('visible'), i * 60);
-        }
-    });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', function (e) {
-        const t = document.querySelector(this.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-    });
+document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (a) {
+        const t = document.querySelector(a.getAttribute("href"));
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+    }
 });
 
-// Form submit
-function handleSubmit(e) {
-    e.preventDefault();
-    if (!commOpen) {
-        alert('⚠ Commissions are currently CLOSED. Please try again later!');
-        return;
-    }
-    const btn = e.target.querySelector('button[type="submit"]');
-    const og = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
-    btn.style.background = '#10b981';
-    setTimeout(() => { btn.innerHTML = og; btn.style.background = ''; e.target.reset(); }, 3000);
+// Fade in
+const obs = new IntersectionObserver(entries => {
+    entries.forEach((en, i) => {
+        if (en.isIntersecting) setTimeout(() => en.target.classList.add("v"), i * 50);
+    });
+}, { threshold: 0.06 });
+
+function observeAll() {
+    document.querySelectorAll(".fi").forEach(el => obs.observe(el));
 }
 
-// Console branding
-console.log('%c🎨 YourName Portfolio', 'color:#ff6b00;font-size:18px;font-weight:bold');
-console.log('%cCtrl+Shift+K → Admin Panel', 'color:#666;font-size:11px');
+// INIT
+document.addEventListener("DOMContentLoaded", () => {
+    build();
+    observeAll();
+});
 </script>
 
 </body>
