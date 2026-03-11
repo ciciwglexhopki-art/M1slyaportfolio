@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Satoshi:wght@400;500;700;900&family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
@@ -16,9 +16,30 @@
         ::selection{background:#fff;color:#000}
         ::-webkit-scrollbar{width:2px}
         ::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+
+        /* ANIMATED BG */
+        .bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
         .noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-        .gl{background:var(--gl);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b1);transition:.3s}
+        .bg-orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:orbFloat 12s ease-in-out infinite}
+        .bg-orb-1{width:400px;height:400px;top:-100px;left:-100px;background:rgba(255,255,255,.015);animation-delay:0s}
+        .bg-orb-2{width:350px;height:350px;bottom:-100px;right:-100px;background:rgba(255,255,255,.01);animation-delay:4s}
+        .bg-orb-3{width:250px;height:250px;top:40%;left:60%;background:rgba(255,255,255,.008);animation-delay:8s}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-20px) scale(1.05)}50%{transform:translate(-20px,30px) scale(.95)}75%{transform:translate(20px,20px) scale(1.02)}}
+
+        .gl{background:var(--gl);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b1);transition:.3s;position:relative;overflow:hidden}
         .gl:hover{background:var(--gl2);border-color:var(--b2)}
+
+        /* SHINE EFFECT */
+        .gl::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);transform:translateX(-100%);transition:none;pointer-events:none}
+        .gl:hover::after{animation:shine .6s ease forwards}
+        @keyframes shine{to{transform:translateX(100%)}}
+
+        /* RIPPLE */
+        .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);transform:scale(0);animation:rippleAnim .6s ease-out forwards;pointer-events:none}
+        @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+
+        /* CURSOR GLOW */
+        .cursor-glow{position:fixed;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.02),transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease}
 
         nav{position:fixed;top:0;width:100%;z-index:1000;padding:14px 0;transition:.4s}
         nav.s{background:rgba(3,3,3,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);padding:8px 0}
@@ -32,7 +53,7 @@
         .nl{display:flex;list-style:none;gap:1px;align-items:center}
         .nl a{color:var(--t2);text-decoration:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:500;transition:.3s}
         .nl a:hover,.nl a.on{color:var(--text)}
-        .cb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-left:4px}
+        .cb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-left:4px;transition:.3s}
         .cb.o{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.07)}
         .cb.c{background:rgba(255,255,255,.02);color:var(--t3);border:1px solid rgba(255,255,255,.03)}
         .cd{width:4px;height:4px;border-radius:50%}
@@ -45,29 +66,54 @@
         .hm.on span:nth-child(2){opacity:0}
         .hm.on span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
 
+        /* HERO */
         .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:100px 28px 60px}
-        .hc{text-align:center;max-width:520px;position:relative;z-index:1}
-        .h-av{width:76px;height:76px;border-radius:50%;margin:0 auto 18px;overflow:hidden;border:1.5px solid var(--b2);position:relative}
+        .hc{text-align:center;max-width:560px;position:relative;z-index:1}
+        .h-av{width:80px;height:80px;border-radius:50%;margin:0 auto 20px;overflow:hidden;border:1.5px solid var(--b2);position:relative;transition:.4s}
+        .h-av:hover{transform:scale(1.05);border-color:rgba(255,255,255,.15)}
         .h-av img{width:100%;height:100%;object-fit:cover}
-        .h-av .em{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0a0a0a;font-size:34px}
-        .h-dot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg)}
-        .h-dot.on{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.25)}
+        .h-av .em{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0a0a0a;font-size:36px}
+        .h-dot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg);transition:.3s}
+        .h-dot.on{background:#fff;box-shadow:0 0 8px rgba(255,255,255,.3)}
         .h-dot.off{background:var(--t3)}
-        .h-name{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,42px);font-weight:800;letter-spacing:-1.5px;margin-bottom:6px;line-height:1.1}
-        .h-role{font-size:10px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;font-weight:400;margin-bottom:6px}
+
+        /* FONT CYCLING NAME */
+        .h-name{font-size:clamp(28px,5.5vw,48px);font-weight:800;letter-spacing:-1.5px;margin-bottom:4px;line-height:1.1;transition:font-family .4s ease}
+
+        .h-comm{margin:12px auto;display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;transition:.3s}
+        .h-comm.o{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.07)}
+        .h-comm.c{background:rgba(255,255,255,.02);color:var(--t3);border:1px solid rgba(255,255,255,.03)}
+        .h-comm .hcd{width:5px;height:5px;border-radius:50%}
+        .h-comm.o .hcd{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.4);animation:dp 2s infinite}
+        .h-comm.c .hcd{background:var(--t3)}
+
+        .h-role{font-size:10px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;font-weight:400;margin-bottom:8px}
         .h-meta{display:flex;gap:14px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
         .h-mi{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2)}
         .h-mi i{font-size:9px;opacity:.4}
         .h-bio{font-size:12px;color:var(--t2);line-height:1.9;margin-bottom:24px;font-weight:300}
         .h-links{display:flex;gap:6px;justify-content:center;margin-bottom:28px}
-        .h-lk{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--t2);text-decoration:none;transition:.3s}
-        .h-lk:hover{color:var(--text);transform:translateY(-1px)}
+        .h-lk{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t2);text-decoration:none;transition:.3s;position:relative;overflow:hidden}
+        .h-lk:hover{color:var(--text);transform:translateY(-2px) scale(1.05)}
         .h-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-        .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:11px;font-weight:500;text-decoration:none;transition:.3s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+        .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:11px;font-weight:500;text-decoration:none;transition:.3s;cursor:pointer;border:none;font-family:'Inter',sans-serif;position:relative;overflow:hidden}
         .bw{background:#fff;color:#000}
-        .bw:hover{opacity:.85;transform:translateY(-1px)}
+        .bw:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.06)}
         .bo{background:transparent;color:var(--t2);border:1px solid var(--b1)}
-        .bo:hover{color:var(--text);border-color:var(--b2);transform:translateY(-1px)}
+        .bo:hover{color:var(--text);border-color:var(--b2);transform:translateY(-2px)}
+        .btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.1) 50%,transparent 60%);transform:translateX(-100%)}
+        .btn:hover::after{animation:shine .5s ease forwards}
+
+        .stats{display:flex;gap:32px;justify-content:center;margin-top:44px;flex-wrap:wrap}
+        .stat{text-align:center;transition:.3s;cursor:default}
+        .stat:hover{transform:translateY(-2px)}
+        .sv{font-family:'Syne',sans-serif;font-size:22px;font-weight:700}
+        .sl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-top:2px}
+
+        /* SCROLL LINE */
+        .scroll-line{position:absolute;bottom:28px;left:50%;width:1px;height:40px;overflow:hidden}
+        .scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.2));animation:scrollDown 1.8s ease-in-out infinite}
+        @keyframes scrollDown{0%{top:-100%}100%{top:100%}}
 
         section{padding:64px 28px;position:relative;z-index:1}
         .sh{text-align:center;margin-bottom:36px}
@@ -77,46 +123,54 @@
         .dv{width:100%;height:1px;background:var(--b1);z-index:1;position:relative}
 
         .sv-g{max-width:700px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .sv-c{border-radius:10px;padding:20px 18px}
-        .sv-c i{font-size:12px;color:var(--t3);margin-bottom:10px;display:block}
+        .sv-c{border-radius:10px;padding:20px 18px;cursor:default;transition:.3s}
+        .sv-c:hover{transform:translateY(-3px)}
+        .sv-c i{font-size:12px;color:var(--t3);margin-bottom:10px;display:block;transition:.3s}
+        .sv-c:hover i{color:var(--text);transform:scale(1.1)}
         .sv-c h4{font-size:12px;font-weight:600;margin-bottom:5px}
         .sv-c p{font-size:10px;color:var(--t3);line-height:1.7;font-weight:300}
 
         .pj-g{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
         .pj-c{border-radius:10px;overflow:hidden;transition:.35s;cursor:pointer}
-        .pj-c:hover{transform:translateY(-3px);border-color:var(--b2)}
+        .pj-c:hover{transform:translateY(-4px) scale(1.01);border-color:var(--b2);box-shadow:0 16px 40px rgba(0,0,0,.3)}
         .pj-img{position:relative;height:180px;overflow:hidden;background:#060606}
-        .pj-img img{width:100%;height:100%;object-fit:cover;transition:.4s}
-        .pj-c:hover .pj-img img{transform:scale(1.03)}
+        .pj-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+        .pj-c:hover .pj-img img{transform:scale(1.05)}
         .pj-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#060606;color:var(--t3);font-size:10px;letter-spacing:2px;text-transform:uppercase}
         .pj-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,3,3,.9),transparent 45%)}
-        .pj-twi{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:5px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t2)}
+        .pj-twi{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:5px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t2);transition:.3s}
+        .pj-c:hover .pj-twi{color:var(--text)}
         .pj-b{padding:12px 16px}
         .pj-tags{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap}
-        .pj-tag{padding:2px 6px;border-radius:3px;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.04);color:var(--t2);border:1px solid var(--b1)}
+        .pj-tag{padding:2px 6px;border-radius:3px;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.04);color:var(--t2);border:1px solid var(--b1);transition:.3s}
+        .pj-c:hover .pj-tag{background:rgba(255,255,255,.06)}
         .pj-n{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;margin-bottom:2px}
         .pj-d{font-size:10px;color:var(--t3);line-height:1.6;font-weight:300}
 
         .pr-wrap{max-width:520px;margin:0 auto}
         .pr-desc{font-size:12px;color:var(--t2);line-height:1.9;font-weight:300;text-align:center;margin-bottom:24px}
         .pr-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-        .pr-card{border-radius:10px;padding:22px 18px;text-align:center}
+        .pr-card{border-radius:10px;padding:22px 18px;text-align:center;transition:.3s;cursor:default}
+        .pr-card:hover{transform:translateY(-3px)}
         .pr-cl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;font-weight:500}
         .pr-cp{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
         .pr-cn{font-size:9px;color:var(--t3);font-weight:300}
         .pr-inc{border-radius:10px;padding:22px 20px}
         .pr-inc-t{font-size:10px;font-weight:600;margin-bottom:12px;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
         .pr-inc ul{list-style:none;display:flex;flex-direction:column;gap:7px}
-        .pr-inc li{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2);font-weight:300}
-        .pr-inc li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--t3);flex-shrink:0}
+        .pr-inc li{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2);font-weight:300;transition:.2s}
+        .pr-inc li:hover{color:var(--text);transform:translateX(3px)}
+        .pr-inc li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:.2s}
+        .pr-inc li:hover::before{background:var(--text)}
         .pr-ft{margin-top:16px;text-align:center;font-size:10px;color:var(--t3);line-height:1.8;font-weight:300}
 
         .ct{max-width:400px;margin:0 auto;text-align:center}
         .ct>p{color:var(--t2);font-size:11px;line-height:1.8;margin-bottom:20px;font-weight:300}
         .ct-g{display:flex;flex-direction:column;gap:6px}
-        .ct-l{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;text-decoration:none;color:var(--text);transition:.3s}
-        .ct-l:hover{transform:translateX(3px)}
-        .ct-ic{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0}
+        .ct-l{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;text-decoration:none;color:var(--text);transition:.3s;position:relative;overflow:hidden}
+        .ct-l:hover{transform:translateX(4px)}
+        .ct-ic{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0;transition:.3s}
+        .ct-l:hover .ct-ic{color:var(--text);background:rgba(255,255,255,.06)}
         .ct-pl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px}
         .ct-vl{font-size:12px;font-weight:500}
 
@@ -125,15 +179,14 @@
         .ftt{font-size:9px;color:var(--t3);font-weight:300}
         .fss{display:flex;gap:4px}
         .fss a{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;font-size:10px;color:var(--t3);text-decoration:none;transition:.3s}
-        .fss a:hover{color:var(--text)}
+        .fss a:hover{color:var(--text);transform:translateY(-2px)}
 
         .lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(24px);z-index:99998;align-items:center;justify-content:center;cursor:zoom-out;padding:20px}
         .lb.show{display:flex}
-        .lb img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain}
-        .lb-x{position:absolute;top:16px;right:20px;color:var(--t2);font-size:16px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:.3s}
-        .lb-x:hover{color:var(--text)}
+        .lb img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain;animation:lbIn .3s ease}
+        @keyframes lbIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+        .lb-x{position:absolute;top:16px;right:20px;color:var(--t2);font-size:16px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
         .lb-src{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;font-size:10px;color:var(--t3);text-decoration:none;padding:6px 12px;border-radius:6px;background:rgba(255,255,255,.03);border:1px solid var(--b1)}
-        .lb-src:hover{color:var(--t2)}
 
         .ao{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(20px);z-index:99999;align-items:center;justify-content:center}
         .ao.show{display:flex}
@@ -160,8 +213,13 @@
         .a-badge.live{background:rgba(255,255,255,.05);color:var(--text)}
         .a-badge.local{background:rgba(255,255,255,.02);color:var(--t3)}
         .a-cl{padding:5px 14px;background:var(--gl);border:1px solid var(--b1);border-radius:5px;color:var(--t2);cursor:pointer;font-size:9px;font-family:'Inter',sans-serif}
+
         .fi{opacity:0;transform:translateY(16px);transition:.5s cubic-bezier(.16,1,.3,1)}
         .fi.v{opacity:1;transform:translateY(0)}
+
+        /* PARTICLE */
+        .particle{position:fixed;width:2px;height:2px;background:rgba(255,255,255,.15);border-radius:50%;pointer-events:none;z-index:0}
+
         @media(max-width:768px){
             .nl{display:none;position:fixed;inset:0;background:rgba(3,3,3,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:8px}
             .nl.open{display:flex}.hm{display:flex}
@@ -170,13 +228,18 @@
             .sv-g{grid-template-columns:1fr}
             .pr-cards{grid-template-columns:1fr}
             .fw{flex-direction:column;text-align:center}
-            .ni{padding:0 16px}
+            .ni{padding:0 16px}.cursor-glow{display:none}
         }
     </style>
 </head>
 <body>
 
 <div class="noise"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<canvas class="bg-canvas" id="bgCanvas"></canvas>
+<div class="cursor-glow" id="curGlow"></div>
 
 <div class="lb" id="lb" onclick="closeLb()">
     <div class="lb-x"><i class="fas fa-times"></i></div>
@@ -186,173 +249,93 @@
 
 <div class="ao" id="adm">
     <div class="ap">
-        <h3>Admin</h3>
-        <p>Enter password</p>
-        <div id="pwS">
-            <div class="pw-w">
-                <input type="password" id="pwI" placeholder="••••" onkeydown="if(event.key==='Enter')chkPw()">
-                <div class="pw-e" id="pwE"></div>
-            </div>
-            <button class="pw-b" onclick="chkPw()">Unlock</button>
-        </div>
-        <div class="adm-c" id="admC">
-            <div class="a-badge" id="admBdg"></div>
-            <div class="a-st" id="aSt"></div>
-            <div class="tr">
-                <span class="tl">Closed</span>
-                <label class="tw"><input type="checkbox" id="cTog" checked><div class="ts"></div></label>
-                <span class="tl">Open</span>
-            </div>
-            <div class="a-msg" id="aMsg"></div>
-            <button class="a-cl" onclick="clAdm()">Close</button>
-        </div>
+        <h3>Admin</h3><p>Enter password</p>
+        <div id="pwS"><div class="pw-w"><input type="password" id="pwI" placeholder="••••" onkeydown="if(event.key==='Enter')chkPw()"><div class="pw-e" id="pwE"></div></div><button class="pw-b" onclick="chkPw()">Unlock</button></div>
+        <div class="adm-c" id="admC"><div class="a-badge" id="admBdg"></div><div class="a-st" id="aSt"></div><div class="tr"><span class="tl">Closed</span><label class="tw"><input type="checkbox" id="cTog" checked><div class="ts"></div></label><span class="tl">Open</span></div><div class="a-msg" id="aMsg"></div><button class="a-cl" onclick="clAdm()">Close</button></div>
     </div>
 </div>
 
-<nav id="nav">
-    <div class="ni">
-        <a href="#home" class="logo" id="logoEl"></a>
-        <div class="hm" id="hm" onclick="this.classList.toggle('on');document.getElementById('nl').classList.toggle('open')"><span></span><span></span><span></span></div>
-        <ul class="nl" id="nl"></ul>
-    </div>
-</nav>
+<nav id="nav"><div class="ni"><a href="#home" class="logo" id="logoEl"></a><div class="hm" id="hm" onclick="this.classList.toggle('on');document.getElementById('nl').classList.toggle('open')"><span></span><span></span><span></span></div><ul class="nl" id="nl"></ul></div></nav>
 
 <section class="hero" id="home">
     <div class="hc fi">
         <div class="h-av" id="hAv"></div>
         <div class="h-name" id="hNm"></div>
         <div class="h-role" id="hRl"></div>
+        <div class="h-comm o" id="hComm"><span class="hcd"></span><span id="hCommT">COMMISSIONS OPEN</span></div>
         <div class="h-meta" id="hMeta"></div>
         <div class="h-bio" id="hBi"></div>
         <div class="h-links" id="hLk"></div>
         <div class="h-btns" id="hBtns"></div>
+        <div class="stats" id="hSt"></div>
     </div>
+    <div class="scroll-line"></div>
 </section>
 <div class="dv"></div>
 
-<section id="services">
-    <div class="sh fi"><span class="stg" id="svcTag"></span><h2 class="stt" id="svcTitle"></h2><p class="sdd" id="svcNote"></p></div>
-    <div class="sv-g" id="svcG"></div>
-</section>
-<div class="dv"></div>
-
-<section id="projects">
-    <div class="sh fi"><span class="stg" id="pjTag"></span><h2 class="stt" id="pjTitle"></h2><p class="sdd" id="pjNote"></p></div>
-    <div class="pj-g" id="pjG"></div>
-</section>
-<div class="dv"></div>
-
-<section id="pricing">
-    <div class="sh fi"><span class="stg" id="prTag"></span><h2 class="stt" id="prTitle"></h2></div>
-    <div class="pr-wrap fi">
-        <div class="pr-desc" id="prD"></div>
-        <div class="pr-cards" id="prC"></div>
-        <div class="pr-inc gl" id="prI"></div>
-        <div class="pr-ft" id="prF"></div>
-    </div>
-</section>
-<div class="dv"></div>
-
-<section id="contact">
-    <div class="sh fi"><span class="stg" id="ctTag"></span><h2 class="stt" id="ctTitle"></h2></div>
-    <div class="ct fi"><p id="ctD"></p><div class="ct-g" id="ctL"></div></div>
-</section>
+<section id="services"><div class="sh fi"><span class="stg" id="svcTag"></span><h2 class="stt" id="svcTitle"></h2><p class="sdd" id="svcNote"></p></div><div class="sv-g" id="svcG"></div></section><div class="dv"></div>
+<section id="projects"><div class="sh fi"><span class="stg" id="pjTag"></span><h2 class="stt" id="pjTitle"></h2><p class="sdd" id="pjNote"></p></div><div class="pj-g" id="pjG"></div></section><div class="dv"></div>
+<section id="pricing"><div class="sh fi"><span class="stg" id="prTag"></span><h2 class="stt" id="prTitle"></h2></div><div class="pr-wrap fi"><div class="pr-desc" id="prD"></div><div class="pr-cards" id="prC"></div><div class="pr-inc gl" id="prI"></div><div class="pr-ft" id="prF"></div></div></section><div class="dv"></div>
+<section id="contact"><div class="sh fi"><span class="stg" id="ctTag"></span><h2 class="stt" id="ctTitle"></h2></div><div class="ct fi"><p id="ctD"></p><div class="ct-g" id="ctL"></div></div></section>
 
 <footer><div class="fw"><div class="ftt" id="ftT"></div><div class="fss" id="ftS"></div></div></footer>
 
 <script>
 /*
-╔══════════════════════════════════════════════════════════════════╗
-║                                                                  ║
-║     ██████  ██████  ███    ██ ███████ ██  ██████                 ║
-║    ██      ██    ██ ████   ██ ██      ██ ██                      ║
-║    ██      ██    ██ ██ ██  ██ █████   ██ ██   ███                ║
-║    ██      ██    ██ ██  ██ ██ ██      ██ ██    ██                ║
-║     ██████  ██████  ██   ████ ██      ██  ██████                 ║
-║                                                                  ║
-║    EVERYTHING IS HERE. EDIT → SAVE → PUSH TO GITHUB.             ║
-║    Your site updates automatically.                              ║
-║                                                                  ║
-║    Admin shortcut: Ctrl + Shift + K                              ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║     ██████  ██████  ███    ██ ███████ ██  ██████                     ║
+║    ██      ██    ██ ████   ██ ██      ██ ██                          ║
+║    ██      ██    ██ ██ ██  ██ █████   ██ ██   ███                    ║
+║    ██      ██    ██ ██  ██ ██ ██      ██ ██    ██                    ║
+║     ██████  ██████  ██   ████ ██      ██  ██████                     ║
+║                                                                      ║
+║    HOW TO EDIT YOUR SITE:                                            ║
+║                                                                      ║
+║    1. Go to your GitHub repo                                         ║
+║    2. Click on index.html                                            ║
+║    3. Click the pencil ✏️ icon (Edit this file)                      ║
+║    4. Find CONFIG section below                                      ║
+║    5. Change any value between the quotes "..."                      ║
+║    6. Scroll down → type a commit message → Commit changes           ║
+║    7. Wait ~1 min → your site is updated!                            ║
+║                                                                      ║
+║    ADMIN SHORTCUT: Ctrl + Shift + K                                  ║
+║                                                                      ║
+║    ADDING TWITTER IMAGES TO PROJECTS:                                ║
+║    1. Open your tweet → click image → right-click → copy image URL   ║
+║    2. Paste as "image" in the projects section below                 ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
 */
 
 const CONFIG = {
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           🏷️  BRANDING                       ║
-// ║  Your name, logo, title — the identity       ║
-// ╚══════════════════════════════════════════════╝
-
-    // Display name (shown in hero section)
+    // ── YOUR NAME ──
     name: "emsly",
 
-    // Navbar logo text
-    // Use | to split color: left part = bright, right part = dim
-    // Example: "ems|ly" shows "ems" white and "ly" gray
+    // ── LOGO (navbar) ──
+    // Use | to split: left = bright, right = dim
     logoText: "ems|ly",
+    logoIcon: "",  // emoji "🎨" or file "logo.png" or "" for none
 
-    // Logo icon next to text
-    // Options:
-    //   emoji   → "🎨"
-    //   image   → "logo.png"  (put file in your GitHub repo)
-    //   nothing → ""
-    logoIcon: "",
-
-    // Your role/title
+    // ── TITLE ──
     role: "UI Designer",
 
-    // Footer copyright
+    // ── FOOTER ──
     footer: "© 2024 emsly",
 
-    // Browser tab title (shows as "name | role")
-    // Automatically generated from name + role above
-
-
-// ╔══════════════════════════════════════════════╗
-// ║           🔒 ADMIN                           ║
-// ║  Password for the admin panel                ║
-// ║  Open with: Ctrl + Shift + K                 ║
-// ╚══════════════════════════════════════════════╝
-
+    // ── ADMIN PASSWORD ──
+    // Open admin: Ctrl + Shift + K
     adminPassword: "emsly123",
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           🟢 COMMISSION STATUS               ║
-// ║                                              ║
-// ║  true  = OPEN  (white glowing dot)           ║
-// ║  false = CLOSED (gray dot)                   ║
-// ║                                              ║
-// ║  WITHOUT Firebase:                           ║
-// ║    Change here → push to GitHub → done       ║
-// ║                                              ║
-// ║  WITH Firebase:                              ║
-// ║    Ctrl+Shift+K → password → toggle          ║
-// ║    Everyone sees it instantly                 ║
-// ╚══════════════════════════════════════════════╝
-
+    // ── COMMISSION STATUS ──
+    // true = open, false = closed
+    // With Firebase: toggle from admin panel, everyone sees instantly
+    // Without Firebase: change here, push to GitHub
     commissionsOpen: true,
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           🔥 FIREBASE                        ║
-// ║                                              ║
-// ║  Makes commission toggle work for everyone   ║
-// ║  in real-time. Free. One-time setup.         ║
-// ║                                              ║
-// ║  1. https://console.firebase.google.com      ║
-// ║  2. Add project → create                     ║
-// ║  3. Build → Realtime Database → Test Mode    ║
-// ║  4. ⚙️ Project settings → Your apps → </>    ║
-// ║  5. Copy config values below                 ║
-// ║  6. Push to GitHub                           ║
-// ║                                              ║
-// ║  Leave apiKey "" to skip Firebase             ║
-// ╚══════════════════════════════════════════════╝
-
+    // ── FIREBASE (optional, for live toggle) ──
     firebase: {
         apiKey: "",
         authDomain: "",
@@ -363,216 +346,40 @@ const CONFIG = {
         appId: "",
     },
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           👤 HERO / BIO                      ║
-// ║  Profile picture, bio text, info badges      ║
-// ╚══════════════════════════════════════════════╝
-
-    // Profile picture
-    // Options:
-    //   emoji → "🎨"
-    //   file  → "pfp.png"
-    //   url   → "https://..."
+    // ── PROFILE PICTURE ──
+    // emoji "🎨" or file "pfp.png" or URL
     avatar: "🎨",
 
-    // Short bio about yourself
+    // ── BIO ──
     bio: "I design clean, clear, and in-game friendly user interfaces for Roblox games. I focus on layout, readability, and usability.",
 
-    // Info badges under your role
+    // ── INFO BADGES ──
     meta: [
         { icon: "fas fa-coins",  text: "Robux" },
         { icon: "fas fa-tasks",  text: "Per Task" },
         { icon: "fas fa-image",  text: "Reference Based" },
     ],
 
-    // Hero buttons
+    // ── STATS ──
+    stats: [
+        { value: "50+", label: "Frames" },
+        { value: "30+", label: "Clients" },
+        { value: "2+",  label: "Years" },
+    ],
+
+    // ── BUTTONS ──
     buttons: [
         { text: "Commission Me", icon: "fas fa-arrow-right", link: "#contact", style: "primary" },
         { text: "View Work",     icon: "fas fa-eye",         link: "#projects", style: "outline" },
     ],
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           🔗 SOCIAL LINKS                    ║
-// ║  Shown in hero, contact section, and footer  ║
-// ╚══════════════════════════════════════════════╝
-
+    // ── SOCIAL LINKS ──
     socials: [
-        {
-            platform: "Twitter / X",         // Platform name
-            icon: "fab fa-x-twitter",        // FontAwesome icon
-            label: "@your_twitter",          // Display text
-            url: "https://x.com/your_twitter",
-        },
-        {
-            platform: "Discord",
-            icon: "fab fa-discord",
-            label: "yourname",
-            url: "https://discord.com/users/YOUR_DISCORD_ID",
-        },
-        // Add more:
-        // {
-        //     platform: "Roblox",
-        //     icon: "fas fa-gamepad",
-        //     label: "YourRobloxName",
-        //     url: "https://www.roblox.com/users/YOUR_ID/profile",
-        // },
+        { platform: "Twitter / X", icon: "fab fa-x-twitter", label: "@your_twitter", url: "https://x.com/your_twitter" },
+        { platform: "Discord",     icon: "fab fa-discord",   label: "yourname",       url: "https://discord.com/users/YOUR_ID" },
     ],
 
-
-// ╔══════════════════════════════════════════════╗
-// ║           🛠️ SERVICES                        ║
-// ║  What you offer                              ║
-// ╚══════════════════════════════════════════════╝
-
-    // Section labels (you can change these too)
-    servicesTag: "Services",
-    servicesTitle: "What I Do",
-    servicesNote: "Reference-based UI requests are preferred.",
-
-    services: [
-        {
-            icon: "fas fa-palette",
-            title: "All Types of UI",
-            desc: "Any UI for Roblox — menus, HUDs, shops, inventories, and more.",
-        },
-        {
-            icon: "fas fa-gamepad",
-            title: "Game-Concept Based",
-            desc: "Custom UI tailored to your game's theme and style.",
-        },
-        {
-            icon: "fas fa-cube",
-            title: "Studio Compatible",
-            desc: "Designed to work seamlessly inside Roblox Studio.",
-        },
-        {
-            icon: "fas fa-rotate",
-            title: "Revisions Included",
-            desc: "I'll revise until you're satisfied with the result.",
-        },
-    ],
-
-
-// ╔══════════════════════════════════════════════╗
-// ║           🖼️ PROJECTS                        ║
-// ║                                              ║
-// ║  HOW TO ADD IMAGES FROM TWITTER:             ║
-// ║                                              ║
-// ║  1. Open your tweet                          ║
-// ║  2. Click on the image (full size)           ║
-// ║  3. Right-click → "Copy image address"       ║
-// ║  4. Paste as "image" value below             ║
-// ║                                              ║
-// ║  URL looks like:                             ║
-// ║  https://pbs.twimg.com/media/XXX?format=jpg  ║
-// ║                                              ║
-// ║  tweetUrl = link to original tweet           ║
-// ║  (optional, shows Twitter icon on card)      ║
-// ╚══════════════════════════════════════════════╝
-
-    projectsTag: "Portfolio",
-    projectsTitle: "Recent Work",
-    projectsNote: "",
-
-    projects: [
-        {
-            image: "",           // Twitter image URL or local file
-            tweetUrl: "",        // Tweet link (optional)
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["RPG", "Main Menu"],
-        },
-        {
-            image: "",
-            tweetUrl: "",
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["Simulator", "Shop UI"],
-        },
-        {
-            image: "",
-            tweetUrl: "",
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["Tycoon", "HUD"],
-        },
-        {
-            image: "",
-            tweetUrl: "",
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["Horror", "Inventory"],
-        },
-        {
-            image: "",
-            tweetUrl: "",
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["PVP", "Lobby"],
-        },
-        {
-            image: "",
-            tweetUrl: "",
-            title: "Project Name",
-            desc: "Brief description.",
-            tags: ["Obby", "Menu"],
-        },
-    ],
-
-
-// ╔══════════════════════════════════════════════╗
-// ║           💰 PRICING                         ║
-// ║  Per-task Robux pricing                      ║
-// ╚══════════════════════════════════════════════╝
-
-    pricingTag: "Pricing",
-    pricingTitle: "Rates",
-
-    pricing: {
-        description: "I charge per task. Price depends on complexity. Send a reference or describe what you need, I'll give you a quote.",
-
-        tiers: [
-            {
-                label: "General Work",
-                price: "2,000 – 5,000",
-                note: "Depending on complexity",
-            },
-            {
-                label: "Simple Tasks",
-                price: "500 – 1,000",
-                note: "Single frame, small edits",
-            },
-        ],
-
-        includes: [
-            "Clean, modern UI design",
-            "Based on your reference or concept",
-            "Roblox Studio compatible",
-            "Revisions if needed",
-            "High-res export",
-            "Source file included",
-        ],
-
-        footNote: "Payment via Robux (gamepass). DM for exact quote.",
-    },
-
-
-// ╔══════════════════════════════════════════════╗
-// ║           📬 CONTACT                         ║
-// ╚══════════════════════════════════════════════╝
-
-    contactTag: "Contact",
-    contactTitle: "Get in Touch",
-    contactDesc: "DM me on Discord or Twitter with your reference image. Check if commissions are open before messaging.",
-
-
-// ╔══════════════════════════════════════════════╗
-// ║           🧭 NAVIGATION                      ║
-// ║  Menu items in the navbar                    ║
-// ╚══════════════════════════════════════════════╝
-
+    // ── NAVBAR MENU ──
     navLinks: [
         { text: "Home",     href: "#home" },
         { text: "Services", href: "#services" },
@@ -581,67 +388,143 @@ const CONFIG = {
         { text: "Contact",  href: "#contact" },
     ],
 
+    // ── FONTS THAT CYCLE ON YOUR NAME ──
+    // The name text will switch between these fonts every few seconds
+    nameFonts: ["Syne", "Space Grotesk", "Outfit", "Inter", "Clash Display"],
+
+    // ── SECTION TITLES ──
+    servicesTag: "Services",    servicesTitle: "What I Do",
+    servicesNote: "Reference-based UI requests are preferred.",
+    projectsTag: "Portfolio",   projectsTitle: "Recent Work",   projectsNote: "",
+    pricingTag: "Pricing",      pricingTitle: "Rates",
+    contactTag: "Contact",      contactTitle: "Get in Touch",
+    contactDesc: "DM me on Discord or Twitter with your reference. Check if commissions are open first.",
+
+    // ── SERVICES ──
+    services: [
+        { icon: "fas fa-palette",  title: "All Types of UI",     desc: "Any UI for Roblox — menus, HUDs, shops, inventories, and more." },
+        { icon: "fas fa-gamepad",  title: "Game-Concept Based",  desc: "Custom UI tailored to your game's theme and style." },
+        { icon: "fas fa-cube",     title: "Studio Compatible",   desc: "Designed to work seamlessly inside Roblox Studio." },
+        { icon: "fas fa-rotate",   title: "Revisions Included",  desc: "I'll revise until you're satisfied." },
+    ],
+
+    // ── PROJECTS ──
+    // image: right-click Twitter image → copy image URL → paste here
+    // tweetUrl: paste tweet link (optional, adds Twitter icon)
+    projects: [
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["RPG", "Main Menu"] },
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["Simulator", "Shop UI"] },
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["Tycoon", "HUD"] },
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["Horror", "Inventory"] },
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["PVP", "Lobby"] },
+        { image: "", tweetUrl: "", title: "Project Name", desc: "Brief description.", tags: ["Obby", "Menu"] },
+    ],
+
+    // ── PRICING (Robux) ──
+    pricing: {
+        description: "I charge per task. Price depends on complexity. Send a reference, I'll quote you.",
+        tiers: [
+            { label: "General Work", price: "2,000 – 5,000", note: "Depending on complexity" },
+            { label: "Simple Tasks", price: "500 – 1,000",   note: "Single frame, small edits" },
+        ],
+        includes: ["Clean, modern UI design","Based on your reference","Roblox Studio compatible","Revisions if needed","High-res export","Source file included"],
+        footNote: "Payment via Robux (gamepass). DM for exact quote.",
+    },
 };
 
-
 /*
-╔═══════════════════════════════════════════════════╗
-║  ⚙️ ENGINE — don't touch unless you know code    ║
-╚═══════════════════════════════════════════════════╝
+╔════════════════════════════════════════╗
+║  ENGINE — don't edit below            ║
+╚════════════════════════════════════════╝
 */
+let cO=CONFIG.commissionsOpen,fbOk=false,dbb=null,fontIdx=0;
 
-let cO=CONFIG.commissionsOpen,fbOk=false,dbb=null;
-
-function initFB(){
-    if(CONFIG.firebase?.apiKey){
-        try{firebase.initializeApp(CONFIG.firebase);dbb=firebase.database();fbOk=true;
-        dbb.ref("site/commissionsOpen").on("value",s=>{const v=s.val();v!==null?upC(v):dbb.ref("site/commissionsOpen").set(CONFIG.commissionsOpen)});
-        }catch(e){fbOk=false}
-    }
+// PARTICLE BG
+const canvas=document.getElementById("bgCanvas"),ctx=canvas.getContext("2d");
+let particles=[],W,H;
+function resizeCanvas(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+window.addEventListener("resize",resizeCanvas);resizeCanvas();
+class Particle{
+    constructor(){this.reset()}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.15;this.vy=(Math.random()-.5)*.15;this.r=Math.random()*1.2+.3;this.a=Math.random()*.12+.02;this.life=Math.random()*400+200;this.age=0}
+    update(){this.x+=this.vx;this.y+=this.vy;this.age++;if(this.age>this.life||this.x<0||this.x>W||this.y<0||this.y>H)this.reset()}
+    draw(){const fade=1-this.age/this.life;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${this.a*fade})`;ctx.fill()}
 }
-function setC(o){if(fbOk&&dbb){dbb.ref("site/commissionsOpen").set(o);sMsg("✓ Saved — everyone sees this","ok")}else{upC(o);sMsg("Local only — add Firebase","warn")}}
+for(let i=0;i<60;i++)particles.push(new Particle());
+function animBg(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw()});
+    // connect nearby
+    for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(255,255,255,${.015*(1-d/120)})`;ctx.stroke()}
+    }
+    requestAnimationFrame(animBg)}
+animBg();
+
+// CURSOR GLOW
+document.addEventListener("mousemove",e=>{const g=document.getElementById("curGlow");g.style.left=e.clientX+"px";g.style.top=e.clientY+"px"});
+
+// CLICK RIPPLE
+document.addEventListener("click",e=>{const r=document.createElement("div");r.className="ripple";r.style.left=e.clientX-10+"px";r.style.top=e.clientY-10+"px";r.style.width=r.style.height="20px";r.style.position="fixed";r.style.zIndex="9999";document.body.appendChild(r);setTimeout(()=>r.remove(),600)});
+
+// FONT CYCLE
+function cycleFonts(){
+    const el=document.getElementById("hNm");if(!el||!CONFIG.nameFonts.length)return;
+    fontIdx=(fontIdx+1)%CONFIG.nameFonts.length;
+    el.style.fontFamily=`'${CONFIG.nameFonts[fontIdx]}',sans-serif`;
+}
+setInterval(cycleFonts,2500);
+
+// FIREBASE
+function initFB(){if(CONFIG.firebase?.apiKey){try{firebase.initializeApp(CONFIG.firebase);dbb=firebase.database();fbOk=true;dbb.ref("site/commissionsOpen").on("value",s=>{const v=s.val();v!==null?upC(v):dbb.ref("site/commissionsOpen").set(CONFIG.commissionsOpen)})}catch(e){fbOk=false}}}
+function setC(o){if(fbOk&&dbb){dbb.ref("site/commissionsOpen").set(o);sMsg("✓ Everyone sees this now","ok")}else{upC(o);sMsg("Local only — add Firebase","warn")}}
 function sMsg(t,c){const m=document.getElementById("aMsg");m.textContent=t;m.className="a-msg "+c;setTimeout(()=>{m.textContent="";m.className="a-msg"},3500)}
 function upC(o){
-    cO=o;const b=document.getElementById("cB"),t=document.getElementById("cT"),st=document.getElementById("aSt"),tg=document.getElementById("cTog");
-    if(b){b.className=o?"cb o":"cb c"}if(t){t.textContent=o?"OPEN":"CLOSED"}
+    cO=o;
+    document.querySelectorAll(".cb,.nav-cb").forEach(b=>{b.className=b.className.replace(/\s*[oc]\b/g,"")+" "+(o?"o":"c")});
+    const cB=document.getElementById("cB"),cT=document.getElementById("cT");
+    if(cB){cB.className=o?"cb o":"cb c"}if(cT){cT.textContent=o?"OPEN":"CLOSED"}
+    const hC=document.getElementById("hComm"),hT=document.getElementById("hCommT");
+    if(hC){hC.className=o?"h-comm o":"h-comm c"}
+    if(hT){hT.textContent=o?"COMMISSIONS OPEN":"COMMISSIONS CLOSED"}
+    const st=document.getElementById("aSt"),tg=document.getElementById("cTog");
     if(st){st.textContent=o?"Status: ✅ Open":"Status: ❌ Closed";st.style.color=o?"#f0f0f0":"#444"}
-    if(tg)tg.checked=o;const d=document.querySelector(".h-dot");if(d)d.className=o?"h-dot on":"h-dot off";
+    if(tg)tg.checked=o;
+    const d=document.querySelector(".h-dot");if(d)d.className=o?"h-dot on":"h-dot off";
 }
-function chkPw(){const i=document.getElementById("pwI"),e=document.getElementById("pwE");if(i.value===CONFIG.adminPassword){document.getElementById("pwS").style.display="none";document.getElementById("admC").classList.add("u");const bg=document.getElementById("admBdg");bg.textContent=fbOk?"● LIVE — everyone sees":"○ LOCAL — only you";bg.className="a-badge "+(fbOk?"live":"local");upC(cO)}else{e.textContent="Wrong password";i.value="";setTimeout(()=>e.textContent="",2000)}}
+
+// ADMIN
+function chkPw(){const i=document.getElementById("pwI"),e=document.getElementById("pwE");if(i.value===CONFIG.adminPassword){document.getElementById("pwS").style.display="none";document.getElementById("admC").classList.add("u");document.getElementById("admBdg").textContent=fbOk?"● LIVE":"○ LOCAL";document.getElementById("admBdg").className="a-badge "+(fbOk?"live":"local");upC(cO)}else{e.textContent="Wrong password";i.value="";setTimeout(()=>e.textContent="",2000)}}
 function clAdm(){document.getElementById("adm").classList.remove("show");document.getElementById("pwS").style.display="";document.getElementById("admC").classList.remove("u");document.getElementById("pwI").value="";document.getElementById("pwE").textContent=""}
 document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key==="K"){e.preventDefault();document.getElementById("adm").classList.add("show");setTimeout(()=>document.getElementById("pwI").focus(),100)}});
 document.getElementById("cTog").addEventListener("change",function(){setC(this.checked)});
 document.getElementById("adm").addEventListener("click",function(e){if(e.target===this)clAdm()});
 
-function openLb(src,tw){const lb=document.getElementById("lb"),img=document.getElementById("lbImg"),lk=document.getElementById("lbSrc");img.src=src;lb.classList.add("show");document.body.style.overflow="hidden";if(tw){lk.href=tw;lk.style.display="flex"}else{lk.style.display="none"}}
+function openLb(s,t){document.getElementById("lbImg").src=s;document.getElementById("lb").classList.add("show");document.body.style.overflow="hidden";const l=document.getElementById("lbSrc");if(t){l.href=t;l.style.display="flex"}else l.style.display="none"}
 function closeLb(){document.getElementById("lb").classList.remove("show");document.body.style.overflow=""}
 
 function build(){
-    // Logo
     const le=document.getElementById("logoEl");let lh="";
     if(CONFIG.logoIcon){lh+=CONFIG.logoIcon.length<=4?`<div class="logo-ic"><span class="em">${CONFIG.logoIcon}</span></div>`:`<div class="logo-ic"><img src="${CONFIG.logoIcon}" alt=""></div>`}
     const lp=CONFIG.logoText.split("|");lh+=`<div class="logo-tx">${lp[0]}${lp[1]?`<span>${lp[1]}</span>`:""}</div>`;le.innerHTML=lh;
     document.title=CONFIG.name+" | "+CONFIG.role;
 
-    // Nav
-    const nl=document.getElementById("nl");
-    nl.innerHTML=CONFIG.navLinks.map(n=>`<li><a href="${n.href}" onclick="cm()">${n.text}</a></li>`).join("")+`<li><span class="cb o" id="cB"><span class="cd"></span><span id="cT">OPEN</span></span></li>`;
+    document.getElementById("nl").innerHTML=CONFIG.navLinks.map(n=>`<li><a href="${n.href}" onclick="cm()">${n.text}</a></li>`).join("")+`<li><span class="cb o" id="cB"><span class="cd"></span><span id="cT">OPEN</span></span></li>`;
 
-    // Avatar
     const ha=document.getElementById("hAv");
     const av=CONFIG.avatar?(CONFIG.avatar.length<=4?`<div class="em">${CONFIG.avatar}</div>`:`<img src="${CONFIG.avatar}" alt="">`):`<div class="em">?</div>`;
     ha.innerHTML=av+`<div class="h-dot ${cO?'on':'off'}"></div>`;
 
-    document.getElementById("hNm").textContent=CONFIG.name;
+    const nameEl=document.getElementById("hNm");
+    nameEl.textContent=CONFIG.name;
+    nameEl.style.fontFamily=`'${CONFIG.nameFonts[0]}',sans-serif`;
+
     document.getElementById("hRl").textContent=CONFIG.role;
     document.getElementById("hMeta").innerHTML=CONFIG.meta.map(m=>`<div class="h-mi"><i class="${m.icon}"></i>${m.text}</div>`).join("");
     document.getElementById("hBi").textContent=CONFIG.bio;
     document.getElementById("hLk").innerHTML=CONFIG.socials.map(s=>`<a href="${s.url}" target="_blank" class="h-lk gl" title="${s.platform}"><i class="${s.icon}"></i></a>`).join("");
-
-    // Buttons
     document.getElementById("hBtns").innerHTML=CONFIG.buttons.map(b=>`<a href="${b.link}" class="btn ${b.style==='primary'?'bw':'bo'}"><i class="${b.icon}"></i> ${b.text}</a>`).join("");
+    document.getElementById("hSt").innerHTML=CONFIG.stats.map(s=>`<div class="stat"><div class="sv">${s.value}</div><div class="sl">${s.label}</div></div>`).join("");
 
-    // Section labels
     document.getElementById("svcTag").textContent=CONFIG.servicesTag;
     document.getElementById("svcTitle").textContent=CONFIG.servicesTitle;
     document.getElementById("svcNote").textContent=CONFIG.servicesNote;
@@ -653,10 +536,8 @@ function build(){
     document.getElementById("ctTag").textContent=CONFIG.contactTag;
     document.getElementById("ctTitle").textContent=CONFIG.contactTitle;
 
-    // Services
     document.getElementById("svcG").innerHTML=CONFIG.services.map(s=>`<div class="sv-c gl fi"><i class="${s.icon}"></i><h4>${s.title}</h4><p>${s.desc}</p></div>`).join("");
 
-    // Projects
     document.getElementById("pjG").innerHTML=CONFIG.projects.map(p=>{
         let img,hasImg=false;
         if(!p.image)img=`<div class="pj-ph">No preview</div>`;
@@ -667,21 +548,16 @@ function build(){
         return`<div class="pj-c gl fi" ${click}><div class="pj-img">${img}${twi}<div class="pj-ov"></div></div><div class="pj-b"><div class="pj-tags">${p.tags.map(t=>`<span class="pj-tag">${t}</span>`).join("")}</div><div class="pj-n">${p.title}</div><div class="pj-d">${p.desc}</div></div></div>`;
     }).join("");
 
-    // Pricing
     const pr=CONFIG.pricing;
     document.getElementById("prD").textContent=pr.description;
     document.getElementById("prC").innerHTML=pr.tiers.map(t=>`<div class="pr-card gl"><div class="pr-cl">${t.label}</div><div class="pr-cp">R$ ${t.price}</div><div class="pr-cn">${t.note}</div></div>`).join("");
     document.getElementById("prI").innerHTML=`<div class="pr-inc-t">What's Included</div><ul>${pr.includes.map(f=>`<li>${f}</li>`).join("")}</ul>`;
     document.getElementById("prF").textContent=pr.footNote;
 
-    // Contact
     document.getElementById("ctD").textContent=CONFIG.contactDesc;
     document.getElementById("ctL").innerHTML=CONFIG.socials.map(s=>`<a href="${s.url}" target="_blank" class="ct-l gl"><div class="ct-ic"><i class="${s.icon}"></i></div><div><div class="ct-pl">${s.platform}</div><div class="ct-vl">${s.label}</div></div></a>`).join("");
-
-    // Footer
     document.getElementById("ftT").textContent=CONFIG.footer;
     document.getElementById("ftS").innerHTML=CONFIG.socials.map(s=>`<a href="${s.url}" target="_blank"><i class="${s.icon}"></i></a>`).join("");
-
     upC(CONFIG.commissionsOpen);
 }
 
