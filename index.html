@@ -6,8 +6,6 @@
     <title>Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 </head>
 <body>
 <script>
@@ -16,64 +14,50 @@
 ║                                                                  ║
 ║   📌 CONFIG — HER ŞEYİ BURADAN DEĞİŞTİR                        ║
 ║                                                                  ║
-║   GitHub'da index.html → ✏️ Edit → burayı düzenle → Commit      ║
+║   GitHub → index.html → ✏️ Edit → düzenle → Commit              ║
 ║                                                                  ║
-║   COMMISSION DEĞİŞTİRME:                                        ║
-║   Ctrl + Shift + K → şifre gir → toggle                         ║
-║   Firebase varsa herkes görür, yoksa sadece sen                  ║
+║   COMMISSION: Ctrl + Shift + K → şifre → toggle                 ║
 ║                                                                  ║
 ║   PROJE EKLEME:                                                  ║
-║   1. Resme sağ tıkla → "Resim adresini kopyala"                 ║
-║   2. Aşağıdaki projects dizisine yapıştır                        ║
-║   3. Commit et → resim sitede gözükür                            ║
+║   Resme sağ tıkla → "Resim adresini kopyala" → PROJECTS'e ekle  ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 
-═══════════════════════════════════════════════════════════════
-  🖼️ PROJELER — RESİM LİNKLERİNİ BURAYA YAPIŞTIR
+═══════════════════════════════════════
+  🖼️ PROJELER — RESİM LİNKİ YAPIŞTIR
   
-  Nasıl resim linki alırsın:
-  1. Twitter'da resme tıkla (tam ekran açılsın)
-  2. Resme sağ tıkla → "Resim adresini kopyala"
-  3. Aşağıya yapıştır
+  En yeni → EN ÜSTE
   
-  Ya da herhangi bir resim linki çalışır:
-  - Discord'dan
-  - Imgur'dan  
-  - Direkt dosya (repo'ya koy, "images/proje1.png" yaz)
-  
-  En yeni projeyi EN ÜSTE koy!
-═══════════════════════════════════════════════════════════════
+  Resim linki nereden:
+  - Twitter: resme tıkla → sağ tıkla → kopyala
+  - Discord: resme sağ tıkla → kopyala
+  - Imgur, vs.
+  - Kendi dosyan: "images/proje1.png"
+═══════════════════════════════════════
 */
 
 const PROJECTS = [
 
-    "https://pbs.twimg.com/media/HCzDImHW0AEWjAt?format=jpg&name=4096x4096",
-    "https://pbs.twimg.com/media/HCwUYYybwAAkLYN?format=jpg&name=large",
-    "RESIM_LINKI_BURAYA_3",
-    "RESIM_LINKI_BURAYA_4",
-    "RESIM_LINKI_BURAYA_5",
-    "RESIM_LINKI_BURAYA_6",
+    "RESIM_LINKI_1",
+    "RESIM_LINKI_2",
+    "RESIM_LINKI_3",
+    "RESIM_LINKI_4",
 
-    // Örnek (bunları sil, kendininkini koy):
-    // "https://pbs.twimg.com/media/abc123?format=jpg&name=large",
-    // "https://i.imgur.com/xyz789.png",
-    // "images/projem.png",
 ];
 
 
 // ═══════════════════════════════════════
-//  ⚡ COMMISSION DURUMU
-//  true = Açık | false = Kapalı
-//  Ya da Ctrl+Shift+K ile değiştir
+//  ⚡ COMMISSION (yedek değer)
+//  JSONBin bağlıysa oradan okur
+//  Bağlı değilse bunu kullanır
 // ═══════════════════════════════════════
 
 const COMMISSIONS_OPEN = true;
 
 
 // ═══════════════════════════════════════
-//  👤 HAKKINDA
+//  👤 SİTE BİLGİLERİ
 // ═══════════════════════════════════════
 
 const SITE = {
@@ -115,8 +99,26 @@ const SITE = {
     contactDesc: "DM me on Discord or Twitter with your reference. Check if commissions are open first.",
     nameFonts: ["Syne","Space Grotesk","Outfit","Inter"],
 
-    // FIREBASE (boş bırak = kapalı)
-    firebase: { apiKey:"", authDomain:"", databaseURL:"", projectId:"", storageBucket:"", messagingSenderId:"", appId:"" },
+
+    // ═══════════════════════════════════════════════════
+    //  🔗 JSONBin — COMMISSION TOGGLE (herkes görür)
+    //
+    //  KURULUM (2 dakika, bir kere):
+    //
+    //  1. https://jsonbin.io → hesap aç
+    //  2. Giriş yap → API KEY'i kopyala
+    //  3. "Create a Bin" → içine yaz: {"open": true}
+    //  4. Create → URL'deki BIN ID'yi kopyala
+    //  5. Aşağıya yapıştır
+    //
+    //  Boş bırakırsan = sadece kod ile değişir
+    // ═══════════════════════════════════════════════════
+
+    jsonbin: {
+        binId: "https://api.jsonbin.io/v3/b/69b18317b7ec241ddc5d773e",
+        apiKey: "$2a$10$mAsGjUYRZyXnyc6.57OJDuGBYw2bVRgW6uCRJCndy2WvxFwojboAW",
+    },
+
 };
 </script>
 
@@ -150,8 +152,7 @@ nav.s{background:rgba(3,3,3,.88);backdrop-filter:blur(20px);border-bottom:1px so
 .cb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-left:4px;transition:.3s}
 .cb.o{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.07)}
 .cb.c{background:rgba(255,255,255,.02);color:var(--t3);border:1px solid rgba(255,255,255,.03)}
-.dot{width:4px;height:4px;border-radius:50%}
-.cb.o .dot{background:#fff;box-shadow:0 0 5px rgba(255,255,255,.4);animation:dp 2s infinite}.cb.c .dot{background:var(--t3)}
+.dot{width:4px;height:4px;border-radius:50%}.cb.o .dot{background:#fff;box-shadow:0 0 5px rgba(255,255,255,.4);animation:dp 2s infinite}.cb.c .dot{background:var(--t3)}
 @keyframes dp{0%,100%{opacity:1}50%{opacity:.25}}
 .hm{display:none;flex-direction:column;gap:4px;cursor:pointer;z-index:1001;padding:4px}
 .hm span{width:17px;height:1.5px;background:var(--text);border-radius:2px;transition:.3s}
@@ -168,8 +169,7 @@ nav.s{background:rgba(3,3,3,.88);backdrop-filter:blur(20px);border-bottom:1px so
 .hcm{margin:12px auto;display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;transition:.3s}
 .hcm.o{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.07)}
 .hcm.c{background:rgba(255,255,255,.02);color:var(--t3);border:1px solid rgba(255,255,255,.03)}
-.hcd{width:5px;height:5px;border-radius:50%}
-.hcm.o .hcd{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.4);animation:dp 2s infinite}.hcm.c .hcd{background:var(--t3)}
+.hcd{width:5px;height:5px;border-radius:50%}.hcm.o .hcd{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.4);animation:dp 2s infinite}.hcm.c .hcd{background:var(--t3)}
 .hmt{display:flex;gap:14px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
 .hmi{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2)}.hmi i{font-size:9px;opacity:.4}
 .hbi{font-size:12px;color:var(--t2);line-height:1.9;margin-bottom:24px;font-weight:300}
@@ -180,8 +180,7 @@ nav.s{background:rgba(3,3,3,.88);backdrop-filter:blur(20px);border-bottom:1px so
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:11px;font-weight:500;text-decoration:none;transition:.3s;cursor:pointer;border:none;font-family:'Inter',sans-serif;position:relative;overflow:hidden}
 .bw{background:#fff;color:#000}.bw:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.06)}
 .bo{background:transparent;color:var(--t2);border:1px solid var(--b1)}.bo:hover{color:var(--text);border-color:var(--b2);transform:translateY(-2px)}
-.btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.1) 50%,transparent 60%);transform:translateX(-100%)}
-.btn:hover::after{animation:sh .5s ease forwards}
+.btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.1) 50%,transparent 60%);transform:translateX(-100%)}.btn:hover::after{animation:sh .5s ease forwards}
 .sts{display:flex;gap:32px;justify-content:center;margin-top:44px;flex-wrap:wrap}
 .st{text-align:center;transition:.3s;cursor:default}.st:hover{transform:translateY(-2px)}
 .stv{font-family:'Syne',sans-serif;font-size:22px;font-weight:700}.stl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-top:2px}
@@ -191,30 +190,26 @@ nav.s{background:rgba(3,3,3,.88);backdrop-filter:blur(20px);border-bottom:1px so
 
 section{padding:64px 28px;position:relative;z-index:1}
 .sh{text-align:center;margin-bottom:36px}
-.tg{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--t3);margin-bottom:7px;display:block}
+.tgg{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--t3);margin-bottom:7px;display:block}
 .tt{font-family:'Syne',sans-serif;font-size:clamp(18px,3vw,26px);font-weight:700;letter-spacing:-.8px;margin-bottom:6px}
 .td{color:var(--t3);font-size:11px;max-width:320px;margin:0 auto;line-height:1.8;font-weight:300}
 .dv{width:100%;height:1px;background:var(--b1);z-index:1;position:relative}
-
 .sg{max-width:700px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .sc{border-radius:10px;padding:20px 18px;cursor:default;transition:.3s}.sc:hover{transform:translateY(-3px)}
-.sc i.ic{font-size:12px;color:var(--t3);margin-bottom:10px;display:block;transition:.3s}
-.sc:hover i.ic{color:var(--text);transform:scale(1.1)}
+.sc i.ic{font-size:12px;color:var(--t3);margin-bottom:10px;display:block;transition:.3s}.sc:hover i.ic{color:var(--text);transform:scale(1.1)}
 .sc h4{font-size:12px;font-weight:600;margin-bottom:5px}.sc p{font-size:10px;color:var(--t3);line-height:1.7;font-weight:300}
 
-/* PROJECTS — masonry, images always visible */
 .pg{max-width:960px;margin:0 auto;columns:2;column-gap:10px}
 .pc{break-inside:avoid;margin-bottom:10px;border-radius:10px;overflow:hidden;transition:.35s;cursor:pointer;display:inline-block;width:100%}
 .pc:hover{transform:translateY(-4px);border-color:var(--b2);box-shadow:0 16px 40px rgba(0,0,0,.4)}
-.pimg{position:relative;overflow:hidden;background:#060606;min-height:100px}
-.pimg img{width:100%;display:block;transition:.5s}.pc:hover .pimg img{transform:scale(1.03)}
+.pim{position:relative;overflow:hidden;background:#060606;min-height:100px}
+.pim img{width:100%;display:block;transition:.5s}.pc:hover .pim img{transform:scale(1.03)}
 .pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,3,3,.7),transparent 35%);opacity:0;transition:.3s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px}
 .pc:hover .pov{opacity:1}
 .pov span{font-size:9px;color:var(--t2);background:rgba(0,0,0,.5);backdrop-filter:blur(8px);padding:4px 10px;border-radius:5px;display:flex;align-items:center;gap:4px}
-.pnone{width:100%;height:180px;display:flex;align-items:center;justify-content:center;background:#060606;color:var(--t3);font-size:10px;letter-spacing:2px}
 
 .pw{max-width:520px;margin:0 auto}
-.pd{font-size:12px;color:var(--t2);line-height:1.9;font-weight:300;text-align:center;margin-bottom:24px}
+.ppd{font-size:12px;color:var(--t2);line-height:1.9;font-weight:300;text-align:center;margin-bottom:24px}
 .pcs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .pcd{border-radius:10px;padding:22px 18px;text-align:center;transition:.3s;cursor:default}.pcd:hover{transform:translateY(-3px)}
 .pcl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;font-weight:500}
@@ -230,7 +225,7 @@ section{padding:64px 28px;position:relative;z-index:1}
 
 .ct{max-width:400px;margin:0 auto;text-align:center}
 .ct>p{color:var(--t2);font-size:11px;line-height:1.8;margin-bottom:20px;font-weight:300}
-.cg2{display:flex;flex-direction:column;gap:6px}
+.cgg{display:flex;flex-direction:column;gap:6px}
 .cl{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;text-decoration:none;color:var(--text);transition:.3s;overflow:hidden}
 .cl:hover{transform:translateX(4px)}
 .ci{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0;transition:.3s}
@@ -239,20 +234,17 @@ section{padding:64px 28px;position:relative;z-index:1}
 
 footer{padding:18px 28px;border-top:1px solid var(--b1);position:relative;z-index:1}
 .fw{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.ft{font-size:9px;color:var(--t3);font-weight:300}
+.ftt{font-size:9px;color:var(--t3);font-weight:300}
 .fs{display:flex;gap:4px}
 .fs a{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:5px;font-size:10px;color:var(--t3);text-decoration:none;transition:.3s}
 .fs a:hover{color:var(--text);transform:translateY(-2px)}
 
-/* LIGHTBOX */
 .lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(24px);z-index:99998;align-items:center;justify-content:center;cursor:zoom-out;padding:16px}
 .lb.show{display:flex}
 .lb img{max-width:94vw;max-height:90vh;border-radius:8px;object-fit:contain;animation:li .25s ease}
 @keyframes li{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
-.lx{position:absolute;top:14px;right:18px;color:var(--t2);font-size:18px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:.3s;z-index:1}
-.lx:hover{color:var(--text)}
+.lx{position:absolute;top:14px;right:18px;color:var(--t2);font-size:18px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;z-index:1}.lx:hover{color:var(--text)}
 
-/* ADMIN */
 .ao{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(20px);z-index:99999;align-items:center;justify-content:center}
 .ao.show{display:flex}
 .ap{background:#060606;border:1px solid var(--b1);border-radius:12px;padding:26px;max-width:280px;width:88%;text-align:center}
@@ -272,7 +264,6 @@ footer{padding:18px 28px;border-top:1px solid var(--b1);position:relative;z-inde
 .abg{display:inline-block;padding:2px 6px;border-radius:3px;font-size:7px;font-weight:700;letter-spacing:1.5px;margin-bottom:10px;text-transform:uppercase}
 .abg.lv{background:rgba(255,255,255,.05);color:var(--text)}.abg.lo{background:rgba(255,255,255,.02);color:var(--t3)}
 .acl{padding:5px 14px;background:var(--gl);border:1px solid var(--b1);border-radius:5px;color:var(--t2);cursor:pointer;font-size:9px;font-family:'Inter',sans-serif}
-
 .fi{opacity:0;transform:translateY(16px);transition:.5s cubic-bezier(.16,1,.3,1)}.fi.v{opacity:1;transform:translateY(0)}
 @media(max-width:768px){
     .nl{display:none;position:fixed;inset:0;background:rgba(3,3,3,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:8px}.nl.open{display:flex}.hm{display:flex}
@@ -286,19 +277,19 @@ footer{padding:18px 28px;border-top:1px solid var(--b1);position:relative;z-inde
 <div class="orb o1"></div>
 <div class="orb o2"></div>
 <canvas id="bgC" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
-<div class="cg" id="cgg"></div>
+<div class="cg" id="cur"></div>
 
-<div class="lb" id="lb" onclick="clLb(event)"><div class="lx" onclick="clLb()"><i class="fas fa-times"></i></div><img id="lbi" src="" alt="" onclick="event.stopPropagation()"></div>
+<div class="lb" id="lb" onclick="xLb(event)"><div class="lx" onclick="xLb()"><i class="fas fa-times"></i></div><img id="lbi" src="" alt="" onclick="event.stopPropagation()"></div>
 
 <div class="ao" id="adm"><div class="ap"><h3>Admin</h3><p>Enter password</p>
-<div id="pws"><div><input class="pwi" type="password" id="pwi" placeholder="••••" onkeydown="if(event.key==='Enter')ckPw()"><div class="pwe" id="pwe"></div></div><button class="pwb" onclick="ckPw()">Unlock</button></div>
-<div class="ac" id="adc"><div class="abg" id="abg"></div><div class="ast" id="ast"></div><div class="tr"><span class="trl">Closed</span><label class="tw"><input type="checkbox" id="ctg" checked><div class="ts"></div></label><span class="trl">Open</span></div><div class="amg" id="amg"></div><button class="acl" onclick="clA()">Close</button></div></div></div>
+<div id="pws"><div><input class="pwi" type="password" id="pw" placeholder="••••" onkeydown="if(event.key==='Enter')ckP()"><div class="pwe" id="pwe"></div></div><button class="pwb" onclick="ckP()">Unlock</button></div>
+<div class="ac" id="adc"><div class="abg" id="ab"></div><div class="ast" id="as"></div><div class="tr"><span class="trl">Closed</span><label class="tw"><input type="checkbox" id="tg" checked><div class="ts"></div></label><span class="trl">Open</span></div><div class="amg" id="am"></div><button class="acl" onclick="xA()">Close</button></div></div></div>
 
 <nav id="nv"><div class="ni"><a href="#home" class="logo" id="lg"></a><div class="hm" id="hm" onclick="this.classList.toggle('on');document.getElementById('nl').classList.toggle('open')"><span></span><span></span><span></span></div>
 <ul class="nl" id="nl"><li><a href="#home" onclick="cm()">Home</a></li><li><a href="#services" onclick="cm()">Services</a></li><li><a href="#projects" onclick="cm()">Projects</a></li><li><a href="#pricing" onclick="cm()">Pricing</a></li><li><a href="#contact" onclick="cm()">Contact</a></li><li><span class="cb o" id="ncb"><span class="dot"></span><span id="nct">OPEN</span></span></li></ul></div></nav>
 
 <section class="hero" id="home"><div class="hc fi">
-<div class="hav" id="hav"></div>
+<div class="hav" id="ha"></div>
 <div class="hn" id="hn"></div>
 <div class="hr" id="hrl"></div>
 <div class="hcm o" id="hcm"><span class="hcd"></span><span id="hct">COMMISSIONS OPEN</span></div>
@@ -309,59 +300,88 @@ footer{padding:18px 28px;border-top:1px solid var(--b1);position:relative;z-inde
 <div class="sts" id="hst"></div>
 </div><div class="scl"></div></section><div class="dv"></div>
 
-<section id="services"><div class="sh fi"><span class="tg">Services</span><h2 class="tt">What I Do</h2><p class="td" id="svn"></p></div><div class="sg" id="svg"></div></section><div class="dv"></div>
-<section id="projects"><div class="sh fi"><span class="tg">Portfolio</span><h2 class="tt">Recent Work</h2><p class="td">Click any image for full size</p></div><div class="pg" id="pjg"></div></section><div class="dv"></div>
-<section id="pricing"><div class="sh fi"><span class="tg">Pricing</span><h2 class="tt">Rates</h2></div><div class="pw fi"><div class="pd" id="prd"></div><div class="pcs" id="prc"></div><div class="pin gl" id="pri"></div><div class="pft" id="prf"></div></div></section><div class="dv"></div>
-<section id="contact"><div class="sh fi"><span class="tg">Contact</span><h2 class="tt">Get in Touch</h2></div><div class="ct fi"><p id="ctd"></p><div class="cg2" id="ctl"></div></div></section>
-<footer><div class="fw"><div class="ft" id="ftt"></div><div class="fs" id="fts"></div></div></footer>
+<section id="services"><div class="sh fi"><span class="tgg">Services</span><h2 class="tt">What I Do</h2><p class="td" id="svn"></p></div><div class="sg" id="svg"></div></section><div class="dv"></div>
+<section id="projects"><div class="sh fi"><span class="tgg">Portfolio</span><h2 class="tt">Recent Work</h2><p class="td">Click any image for full size</p></div><div class="pg" id="pjg"></div></section><div class="dv"></div>
+<section id="pricing"><div class="sh fi"><span class="tgg">Pricing</span><h2 class="tt">Rates</h2></div><div class="pw fi"><div class="ppd" id="prd"></div><div class="pcs" id="prc"></div><div class="pin gl" id="pri"></div><div class="pft" id="prf"></div></div></section><div class="dv"></div>
+<section id="contact"><div class="sh fi"><span class="tgg">Contact</span><h2 class="tt">Get in Touch</h2></div><div class="ct fi"><p id="ctd"></p><div class="cgg" id="ctl"></div></div></section>
+<footer><div class="fw"><div class="ftt" id="ft"></div><div class="fs" id="fss"></div></div></footer>
 
 <script>
-let cO=COMMISSIONS_OPEN,fbOk=false,dbb=null,fI=0;
+let cO=COMMISSIONS_OPEN,jbOk=false,fI=0;
 const pfp=`https://unavatar.io/twitter/${SITE.twitter}`;
 
 // PARTICLES
 const cv=document.getElementById("bgC"),cx=cv.getContext("2d");let pp=[],W,H;
 function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight}addEventListener("resize",rsz);rsz();
-class P{constructor(){this.r_()}r_(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.12;this.vy=(Math.random()-.5)*.12;this.r=Math.random()*1+.3;this.a=Math.random()*.08+.02;this.l=Math.random()*500+200;this.g=0}
+class Pt{constructor(){this.r_()}r_(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.12;this.vy=(Math.random()-.5)*.12;this.r=Math.random()*1+.3;this.a=Math.random()*.08+.02;this.l=Math.random()*500+200;this.g=0}
 u(){this.x+=this.vx;this.y+=this.vy;this.g++;if(this.g>this.l||this.x<0||this.x>W||this.y<0||this.y>H)this.r_()}
 d(){const f=1-this.g/this.l;cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${this.a*f})`;cx.fill()}}
-for(let i=0;i<40;i++)pp.push(new P);
+for(let i=0;i<40;i++)pp.push(new Pt);
 !function ab(){cx.clearRect(0,0,W,H);pp.forEach(p=>{p.u();p.d()});
 for(let i=0;i<pp.length;i++)for(let j=i+1;j<pp.length;j++){const dx=pp[i].x-pp[j].x,dy=pp[i].y-pp[j].y,d=Math.sqrt(dx*dx+dy*dy);
 if(d<100){cx.beginPath();cx.moveTo(pp[i].x,pp[i].y);cx.lineTo(pp[j].x,pp[j].y);cx.strokeStyle=`rgba(255,255,255,${.01*(1-d/100)})`;cx.stroke()}}
 requestAnimationFrame(ab)}();
 
-document.addEventListener("mousemove",e=>{const g=document.getElementById("cgg");if(g){g.style.left=e.clientX+"px";g.style.top=e.clientY+"px"}});
+document.addEventListener("mousemove",e=>{const g=document.getElementById("cur");if(g){g.style.left=e.clientX+"px";g.style.top=e.clientY+"px"}});
 document.addEventListener("click",e=>{const r=document.createElement("div");r.className="rp";r.style.cssText=`left:${e.clientX-10}px;top:${e.clientY-10}px;width:20px;height:20px`;document.body.appendChild(r);setTimeout(()=>r.remove(),600)});
 setInterval(()=>{const el=document.getElementById("hn");if(!el)return;fI=(fI+1)%SITE.nameFonts.length;el.style.fontFamily=`'${SITE.nameFonts[fI]}',sans-serif`},2500);
 
-// FIREBASE
-function iFB(){if(SITE.firebase?.apiKey){try{firebase.initializeApp(SITE.firebase);dbb=firebase.database();fbOk=true;dbb.ref("site/co").on("value",s=>{const v=s.val();v!==null?uC(v):dbb.ref("site/co").set(COMMISSIONS_OPEN)})}catch(e){fbOk=false}}}
-function sC(o){if(fbOk&&dbb){dbb.ref("site/co").set(o);sm("✓ Everyone sees this","ok")}else{uC(o);sm("Local only — add Firebase","w")}}
-function sm(t,c){const m=document.getElementById("amg");m.textContent=t;m.className="amg "+c;setTimeout(()=>{m.textContent="";m.className="amg"},3500)}
+// ══════════ JSONBin COMMISSION SYSTEM ══════════
+
+async function jbRead(){
+    if(!SITE.jsonbin?.binId||!SITE.jsonbin?.apiKey)return null;
+    try{
+        const r=await fetch(`https://api.jsonbin.io/v3/b/${SITE.jsonbin.binId}/latest`,{headers:{"X-Access-Key":SITE.jsonbin.apiKey}});
+        const d=await r.json();
+        return d.record?.open??null;
+    }catch(e){return null}
+}
+
+async function jbWrite(open){
+    if(!SITE.jsonbin?.binId||!SITE.jsonbin?.apiKey){uC(open);sm("Local only — set up JSONBin","w");return}
+    try{
+        await fetch(`https://api.jsonbin.io/v3/b/${SITE.jsonbin.binId}`,{
+            method:"PUT",
+            headers:{"Content-Type":"application/json","X-Access-Key":SITE.jsonbin.apiKey},
+            body:JSON.stringify({open})
+        });
+        uC(open);jbOk=true;
+        sm("✓ Saved — everyone sees this now","ok");
+    }catch(e){uC(open);sm("Save failed — try again","w")}
+}
+
+async function jbInit(){
+    const val=await jbRead();
+    if(val!==null){jbOk=true;uC(val)}
+    else{uC(COMMISSIONS_OPEN)}
+}
+
 function uC(o){
     cO=o;
     const b=document.getElementById("ncb"),t=document.getElementById("nct"),h=document.getElementById("hcm"),ht=document.getElementById("hct");
     if(b)b.className=o?"cb o":"cb c";if(t)t.textContent=o?"OPEN":"CLOSED";
     if(h)h.className=o?"hcm o":"hcm c";if(ht)ht.textContent=o?"COMMISSIONS OPEN":"COMMISSIONS CLOSED";
-    const s=document.getElementById("ast"),g=document.getElementById("ctg"),d=document.querySelector(".hdot");
+    const s=document.getElementById("as"),g=document.getElementById("tg"),d=document.querySelector(".hdot");
     if(s){s.textContent=o?"Status: ✅ Open":"Status: ❌ Closed";s.style.color=o?"#f0f0f0":"#444"}
     if(g)g.checked=o;if(d)d.className=o?"hdot on":"hdot off";
 }
-function ckPw(){const i=document.getElementById("pwi"),e=document.getElementById("pwe");if(i.value===SITE.adminPassword){document.getElementById("pws").style.display="none";document.getElementById("adc").classList.add("u");document.getElementById("abg").textContent=fbOk?"● LIVE":"○ LOCAL";document.getElementById("abg").className="abg "+(fbOk?"lv":"lo");uC(cO)}else{e.textContent="Wrong password";i.value="";setTimeout(()=>e.textContent="",2000)}}
-function clA(){document.getElementById("adm").classList.remove("show");document.getElementById("pws").style.display="";document.getElementById("adc").classList.remove("u");document.getElementById("pwi").value=""}
-document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key==="K"){e.preventDefault();document.getElementById("adm").classList.add("show");setTimeout(()=>document.getElementById("pwi").focus(),100)}});
-document.getElementById("ctg").addEventListener("change",function(){sC(this.checked)});
-document.getElementById("adm").addEventListener("click",function(e){if(e.target===this)clA()});
+function sm(t,c){const m=document.getElementById("am");m.textContent=t;m.className="amg "+c;setTimeout(()=>{m.textContent="";m.className="amg"},3500)}
 
-function opLb(src){document.getElementById("lbi").src=src;document.getElementById("lb").classList.add("show");document.body.style.overflow="hidden"}
-function clLb(e){if(e&&e.target.tagName==="IMG")return;document.getElementById("lb").classList.remove("show");document.body.style.overflow=""}
+// ADMIN
+function ckP(){const i=document.getElementById("pw"),e=document.getElementById("pwe");if(i.value===SITE.adminPassword){document.getElementById("pws").style.display="none";document.getElementById("adc").classList.add("u");document.getElementById("ab").textContent=jbOk?"● LIVE — everyone sees":"○ LOCAL — only you";document.getElementById("ab").className="abg "+(jbOk?"lv":"lo");uC(cO)}else{e.textContent="Wrong password";i.value="";setTimeout(()=>e.textContent="",2000)}}
+function xA(){document.getElementById("adm").classList.remove("show");document.getElementById("pws").style.display="";document.getElementById("adc").classList.remove("u");document.getElementById("pw").value=""}
+document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key==="K"){e.preventDefault();document.getElementById("adm").classList.add("show");setTimeout(()=>document.getElementById("pw").focus(),100)}});
+document.getElementById("tg").addEventListener("change",function(){jbWrite(this.checked)});
+document.getElementById("adm").addEventListener("click",function(e){if(e.target===this)xA()});
+
+function oLb(s){document.getElementById("lbi").src=s;document.getElementById("lb").classList.add("show");document.body.style.overflow="hidden"}
+function xLb(e){if(e&&e.target?.tagName==="IMG")return;document.getElementById("lb").classList.remove("show");document.body.style.overflow=""}
 
 // BUILD
 const lp=SITE.logoText.split("|");
 document.getElementById("lg").innerHTML=`<div class="logo-ic"><img src="${pfp}" alt=""></div><div class="logo-tx">${lp[0]}${lp[1]?`<span>${lp[1]}</span>`:""}</div>`;
 document.title=SITE.name+" | "+SITE.role;
-document.getElementById("hav").innerHTML=`<img src="${pfp}" alt=""><div class="hdot ${cO?'on':'off'}"></div>`;
+document.getElementById("ha").innerHTML=`<img src="${pfp}" alt=""><div class="hdot ${cO?'on':'off'}"></div>`;
 const nm=document.getElementById("hn");nm.textContent=SITE.name;nm.style.fontFamily=`'${SITE.nameFonts[0]}',sans-serif`;
 document.getElementById("hrl").textContent=SITE.role;
 document.getElementById("hmt").innerHTML=SITE.meta.map(m=>`<div class="hmi"><i class="${m.icon}"></i>${m.text}</div>`).join("");
@@ -373,34 +393,30 @@ document.getElementById("svg").innerHTML=SITE.services.map(s=>`<div class="sc gl
 
 // PROJECTS
 const pg=document.getElementById("pjg");
-const validProjects=PROJECTS.filter(p=>p&&!p.includes("BURAYA"));
-if(validProjects.length){
-    pg.innerHTML=validProjects.map((img,i)=>`<div class="pc gl fi" onclick="opLb('${img.replace(/'/g,"\\'")}')" style="animation-delay:${i*.08}s"><div class="pimg"><img src="${img}" alt="UI Design" loading="lazy"><div class="pov"><span><i class="fas fa-expand"></i> Full Size</span></div></div></div>`).join("");
+const vp=PROJECTS.filter(p=>p&&!p.includes("BURAYA")&&!p.includes("LINKI"));
+if(vp.length){
+    pg.innerHTML=vp.map((img,i)=>`<div class="pc gl fi" onclick="oLb('${img.replace(/'/g,"\\'")}')" style="animation-delay:${i*.06}s"><div class="pim"><img src="${img}" alt="UI" loading="lazy"><div class="pov"><span><i class="fas fa-expand"></i> Full Size</span></div></div></div>`).join("");
 }else{
-    pg.innerHTML=`<div style="text-align:center;color:var(--t3);font-size:11px;padding:40px;grid-column:1/-1">No projects yet — add image links to PROJECTS array</div>`;
+    pg.innerHTML=`<div style="text-align:center;color:var(--t3);font-size:11px;padding:40px">Add image links to PROJECTS array</div>`;
 }
 
-// PRICING
 const pr=SITE.pricing;
 document.getElementById("prd").textContent=pr.desc;
 document.getElementById("prc").innerHTML=pr.tiers.map(t=>`<div class="pcd gl"><div class="pcl">${t.label}</div><div class="pcp">R$ ${t.price}</div><div class="pcn">${t.note}</div></div>`).join("");
 document.getElementById("pri").innerHTML=`<div class="pit">What's Included</div><ul>${pr.includes.map(f=>`<li>${f}</li>`).join("")}</ul>`;
 document.getElementById("prf").textContent=pr.note;
-
-// CONTACT
 document.getElementById("ctd").textContent=SITE.contactDesc;
 document.getElementById("ctl").innerHTML=`<a href="https://x.com/${SITE.twitter}" target="_blank" class="cl gl"><div class="ci"><i class="fab fa-x-twitter"></i></div><div><div class="cp">Twitter / X</div><div class="cv">@${SITE.twitter}</div></div></a><a href="${SITE.discordUrl}" target="_blank" class="cl gl"><div class="ci"><i class="fab fa-discord"></i></div><div><div class="cp">Discord</div><div class="cv">${SITE.discord}</div></div></a>`;
-document.getElementById("ftt").textContent=SITE.footer;
-document.getElementById("fts").innerHTML=`<a href="https://x.com/${SITE.twitter}" target="_blank"><i class="fab fa-x-twitter"></i></a><a href="${SITE.discordUrl}" target="_blank"><i class="fab fa-discord"></i></a>`;
+document.getElementById("ft").textContent=SITE.footer;
+document.getElementById("fss").innerHTML=`<a href="https://x.com/${SITE.twitter}" target="_blank"><i class="fab fa-x-twitter"></i></a><a href="${SITE.discordUrl}" target="_blank"><i class="fab fa-discord"></i></a>`;
 
-uC(COMMISSIONS_OPEN);iFB();
+jbInit();
 
-// NAV & SCROLL
 window.addEventListener("scroll",()=>{document.getElementById("nv").classList.toggle("s",scrollY>40);document.querySelectorAll("section[id]").forEach(s=>{const a=document.querySelector(`.nl a[href="#${s.id}"]`);if(a){const t=s.offsetTop-130;a.classList.toggle("on",scrollY>=t&&scrollY<t+s.offsetHeight)}})});
 function cm(){document.getElementById("nl").classList.remove("open");document.getElementById("hm").classList.remove("on")}
 document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(a){const t=document.querySelector(a.getAttribute("href"));if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth"})}}});
-const ob=new IntersectionObserver(en=>{en.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add("v"),i*30)})},{threshold:.04});
-document.querySelectorAll(".fi").forEach(e=>ob.observe(e));
+new IntersectionObserver(en=>{en.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add("v"),i*30)})},{threshold:.04}).observe(document.querySelector(".fi")||document.body);
+document.querySelectorAll(".fi").forEach(e=>new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add("v")})},{threshold:.04}).observe(e));
 </script>
 </body>
 </html>
