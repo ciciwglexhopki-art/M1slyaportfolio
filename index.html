@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root { --bg: #030303; --accent: #ff3e3e; }
+        
+        /* Gojo Satoru Cursor */
+        body, a, button { cursor: url('cursor.ani'), auto !important; }
+
         body { 
             background: #000; 
             color: #fff; 
@@ -17,12 +21,21 @@
             background-attachment: fixed;
             margin: 0;
         }
-        .overlay { background: rgba(0,0,0,0.85); min-height: 100vh; padding: 50px 20px; }
+        .overlay { background: rgba(0,0,0,0.6); min-height: 100vh; padding: 50px 20px; }
         
-        /* Grafitili Stil Başlıklar */
+        /* Akrilik Blur Container */
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: rgba(20, 20, 20, 0.4); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px; 
+            border-left: 5px solid var(--accent); 
+            border-radius: 0 20px 20px 0; 
+        }
+        
         h1, h2 { font-family: 'Permanent Marker', cursive; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .container { max-width: 800px; margin: 0 auto; background: rgba(20,20,20,0.7); padding: 40px; border-left: 5px solid var(--accent); border-radius: 0 20px 20px 0; }
         
         .price-box { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin: 20px 0; }
         
@@ -70,14 +83,13 @@
 </div>
 
 <script>
-    // Fontları sürekli değiştiren "Graffiti / Street" scripti
     const fonts = ['Permanent Marker', 'Bangers', 'Special Elite', 'Creepster'];
     setInterval(() => {
         const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
         document.querySelectorAll('h1, h2').forEach(el => {
             el.style.fontFamily = randomFont;
         });
-    }, 3000); // 3 saniyede bir font değişir
+    }, 3000);
 </script>
 
 </body>
